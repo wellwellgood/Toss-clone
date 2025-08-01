@@ -2,10 +2,11 @@ import { useState, useEffect } from "react";
 import styles from "../css/3th.module.css";
 import { FaWonSign } from "react-icons/fa";
 import { IoCard } from "react-icons/io5";
-import { useAccountStore } from '../store/accountStore';
+import { month, day } from '../store/dateStore';
 
 export default function ThirdComponent() {
-    const { balance } = useAccountStore();
+
+    // const {month, day} = dateAccount();
 
     return (
         <div className={styles.container}>
@@ -16,8 +17,8 @@ export default function ThirdComponent() {
                             <FaWonSign size={24}/>
                         </div>
                         <div className={styles.month1}>
-                            <div className={styles.monthmoney}>{balance}원</div>
-                            <span className={styles.span}>{}월달에 쓴 돈</span>
+                            <div className={styles.monthmoney}>{}원</div>
+                            <span className={styles.span}>{month}월달에 쓴 돈</span>
                         </div>
                     </div>
                     <a href="" className={styles.firstbtn}>
@@ -31,8 +32,8 @@ export default function ThirdComponent() {
                     <IoCard size={24}/>
                 </div>
                     <div className={styles.month1}>
-                        <div className={styles.monthmoney}>{balance}원</div>
-                        <span className={styles.span}>{}월{}일에 낼 카드값</span>
+                        <div className={styles.monthmoney}>{}원</div>
+                        <span className={styles.span}>{month}월{day}일에 낼 카드값</span>
                     </div>
                 </div>
             </a>
