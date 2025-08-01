@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useAccountStore } from '../store/accountStore';
-import styles from '../css/home.module.css';
+import styles from '../css/Home.module.css';
 import { ChevronRight, StickyNote } from 'lucide-react';
 
 
