@@ -46,12 +46,13 @@ export default function Home() {
           </svg>
         </div>
       </div>
-            <FirstComponents />
-            <TwoThComponent />
-            <ThreeThComponent />
-            <FourthComponent />
-
-            <div>{owner} 님을 위해 준비했어요</div>
+            <div className={styles.components}>
+              <FirstComponents />
+              <TwoThComponent />
+              <ThreeThComponent />
+              <FourthComponent />
+              <div>{owner} 님을 위해 준비했어요</div>
+            </div>
     </div>
   );
 }
