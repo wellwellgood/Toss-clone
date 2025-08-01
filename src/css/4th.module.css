@@ -40,7 +40,7 @@
     position: relative;
     width: 40px;
     height: 40px;
-    background: #e3ebfc;
+    background: rgba(0, 100, 255, 0.1);
     border-radius: 30px;
 }
 .img svg{

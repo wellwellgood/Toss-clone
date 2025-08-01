@@ -37,7 +37,7 @@
     width: 40px;
     height: 40px;
     border-radius: 30%;
-    background-color: #e3ebfc;
+    background: rgba(0, 100, 255, 0.1);
 }
 .cardaccount{
     display: flex;
