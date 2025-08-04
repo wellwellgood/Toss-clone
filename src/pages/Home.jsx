@@ -1,8 +1,17 @@
 import { useState, useEffect } from 'react';
 import { useAccountStore } from '../store/accountStore';
 import styles from '../css/Home.module.css';
-import { ChevronRight, StickyNote } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
+import work from '../img/work.jpg';
+import img1 from "../img/11.jpg";
+import img2 from "../img/222.jpg";
+import { FaChevronRight } from "react-icons/fa";
+import main from "../img/main.jpg";
+import Benefit from "../img/benefit.jpg";
+import Securities from "../img/Securities.jpg";
+import shopping from "../img/shopping.jpg";
+import hamburger from "../img/hamburger.jpg";
 
 // Importing components
 import Loading from './loading';
@@ -10,9 +19,10 @@ import FirstComponents from './firstcomponents';
 import TwoThComponent from './2thcomponent';
 import ThreeThComponent from './3thcomponent';
 import FourthComponent from './4thcomponent';
+import FiveComponent from './5thcomponent';
 
 export default function Home() {
-  const { balance, owner, setAccount } = useAccountStore();
+  const {balance, owner, setAccount } = useAccountStore();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -31,11 +41,10 @@ export default function Home() {
       <div className={styles.top}>
         <div className={styles.work}>
           <div className={styles.workTitle}>
-            <StickyNote size={16} color="#626979" />
+            <img src={work} alt="" />
             <span>할 일</span>
           </div>
-          <a href="#"><ChevronRight size={16} />
-          </a>
+          <a href="#"><FaChevronRight size={12} /></a>
         </div>
         <div className={styles.notify}>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
@@ -46,13 +55,63 @@ export default function Home() {
           </svg>
         </div>
       </div>
-            <div className={styles.components}>
-              <FirstComponents />
-              <TwoThComponent />
-              <ThreeThComponent />
-              <FourthComponent />
-              <div>{owner} 님을 위해 준비했어요</div>
-            </div>
+      <div className={styles.components}>
+        <FirstComponents />
+        <TwoThComponent />
+        <ThreeThComponent />
+        <FourthComponent />
+        <div className={styles.text}>{owner}님을 위해 준비했어요</div>
+          <div className={styles.container}>
+              <div className={styles.img}>
+                  <Link to="/">
+                      <img
+                      src={img1}
+                      alt="" 
+                      />
+                  </Link>
+              </div>
+              <div className={styles.img}>
+                  <Link to ="/">
+                      <img 
+                      src={img2}
+                      alt=""
+                      />
+                  </Link>
+              </div>
+          </div>
+          <FiveComponent />
+      </div>
+      <div className={styles.btncontainer}>
+              <ul>
+                <li>
+                  <Link to="/">
+                  <img src={main} alt="" />
+                  홈
+                  </Link>
+
+                </li>
+                <li>
+                  <Link to="/">
+                  <img src={Benefit} alt="" />
+                  혜택
+                  </Link>
+                </li>
+                <li>
+                  <img src={shopping} alt="" />
+                  <Link to="/">토스쇼핑</Link>
+                </li>
+                <li>
+                  <Link to="/">
+                  <img src={Securities} alt="" />
+                  증권
+                  </Link>
+                </li>
+                <li>
+                  <img src={hamburger} alt="" />
+                  <Link to="/">전체</Link>
+                </li>
+              </ul>
+          </div>
     </div>
   );
 }

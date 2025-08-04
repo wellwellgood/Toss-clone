@@ -6,17 +6,26 @@ import Transaction from './pages/Transaction';
 import Loading from './pages/loading';
 
 function LoadingRedirect() {
+  
   const navigate = useNavigate();
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      sessionStorage.setItem('appLoaded', 'true');  // ✅ 로딩 완료 플래그 저장
-      navigate('/home');
-    }, 3000);
-    return () => clearTimeout(timer);
+    const alreadyLoaded = sessionStorage.getItem('appLoaded') === 'true';
+
+    if (alreadyLoaded) {
+      navigate('/home'); // 이미 로딩됐으면 바로 리디렉션
+    } else {
+      const timer = setTimeout(() => {
+        sessionStorage.setItem('appLoaded', 'true');
+        navigate('/home');
+      }, 3000);
+
+      return () => clearTimeout(timer);
+    }
   }, [navigate]);
 
-  return <Loading />;
+  const alreadyLoaded = sessionStorage.getItem('appLoaded') === 'true';
+  return alreadyLoaded ? null : <Loading />;
 }
 
 export default function App() {
