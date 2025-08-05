@@ -1,7 +1,7 @@
-import { Gauge } from 'lucide-react';
 import styles from "../css/4th.module.css";
 import { Link } from 'react-router-dom'; 
 
+import dash from '../img/dash.jpg';
 
 export default function FourthComponent() {
 
@@ -10,7 +10,7 @@ export default function FourthComponent() {
             <Link to="/" className={styles.a1}>
                 <div className={styles.FourthComponent}>
                     <div className={styles.img}>
-                        <Gauge size={24} />
+                        <img src={dash} alt="" />
                     </div>
                     <div className={styles.text}>내 신용점수</div>
                 </div>

@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 import { Link } from 'react-router-dom';
 import { Settings } from 'lucide-react';
 import styles from "../css/2th.module.css"
-import { CreditCard } from 'lucide-react';
+
+import CreditCard from "../img/cradit.jpg";
 
 export default function TwoThComponent() {
 
@@ -19,7 +20,7 @@ export default function TwoThComponent() {
             </div>
             <Link to="/" className={styles.cardaccount}>
                 <div className={styles.card}>
-                    <CreditCard size={24}/>
+                    <img src={CreditCard} alt="" />
                 </div>
                 모든 계좌 보기
             </Link>

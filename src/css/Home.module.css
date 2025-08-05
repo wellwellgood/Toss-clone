@@ -9,7 +9,7 @@
 body{
     display: flex;
     flex-direction: column;
-    background: #e6e8ec;
+    background: rgba(242, 243, 245, 0.507);
     padding: 30px 10px;
     width: 100%;
 }
@@ -18,14 +18,14 @@ body{
     position: fixed;
     top: 0;
     z-index: 999;
-    background-color: rgba(246, 248, 252, 0.507);
+    background-color: rgba(242, 243, 245, 0.507);
     backdrop-filter: blur(5px);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    /* margin: 20px 5px; */
     width: 100%;
-    padding: 30px 10px 10px 10px;
+    height: 60px;
+    padding: 24px 39px 24px 34px;
 }
 
 .background{
@@ -46,14 +46,14 @@ body{
     gap: 10px;
 }
 .workTitle img{
-    width: 16px;
-    height: 16px;
+    width: 30px;
+    height: 30px;
 }
 .work{
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 16px;
+    font-size: 20px;
     color: #202632;
     font-family: 'Spoqa Han Sans Neo', 'sans-serif';
     gap: 10px;
@@ -73,12 +73,11 @@ body{
 }
 .components{
     position: absolute;
-    top: 60px;
+    top: 50px;
     width: 100%;
     height: auto;
     overflow: hidden;
     margin-bottom: 60px;
-
 }
 
 .text{
@@ -148,3 +147,23 @@ body{
     /* width: 26px; */
     height: 26px;
 }
+.btncontainer a{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    gap: 5px;
+
+}
+
+.active img {
+    filter: grayscale(100%) opacity(1);
+    transition: filter 0.3s ease;
+}
+
+.active {
+    color: #000;
+    font-weight: bold;
+    /* border-top: 2px solid #000; */
+  }

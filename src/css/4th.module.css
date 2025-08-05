@@ -43,12 +43,12 @@
     background: rgba(0, 100, 255, 0.1);
     border-radius: 30px;
 }
-.img svg{
+.img img{
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 24px;
+    width: 28px;
     color: #367CCB;
 }
 .check{

@@ -44,7 +44,7 @@
     height: 40px;
     border-radius: 30%;
 }
-.img svg{
+.img img{
     position: absolute;
     top: 50%;
     left: 50%;
@@ -105,12 +105,12 @@ button{
     height: 40px;
     border-radius: 30%;
 }
-.img2 svg{
+.img2 img{
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 24px;
+    width: 18px;
 }
 .cardprice{
     display: flex;

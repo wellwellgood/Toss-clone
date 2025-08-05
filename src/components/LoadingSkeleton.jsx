@@ -1,3 +1,6 @@
+import LoadingSkeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
+
 export default function LoadingSkeleton() {
     return (
       <div className="p-4 animate-pulse">
