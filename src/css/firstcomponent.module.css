@@ -63,6 +63,8 @@
     flex-direction: column;
 }
 .money{
+    display: flex;
+    flex-direction: row;
     font-weight: 700;
 }
 .money span{

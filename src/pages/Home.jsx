@@ -7,6 +7,7 @@ import work from '../img/work.jpg';
 import img1 from "../img/11.jpg";
 import img2 from "../img/222.jpg";
 import { FaChevronRight } from "react-icons/fa";
+import payment from "../img/payment.jpg";
 import main from "../img/main.jpg";
 import Benefit from "../img/benefit.jpg";
 import Securities from "../img/Securities.jpg";
@@ -44,9 +45,10 @@ export default function Home() {
             <img src={work} alt="" />
             <span>할 일</span>
           </div>
-          <a href="#"><FaChevronRight size={12} /></a>
+          <Link to="#"><FaChevronRight size={12} /></Link>
         </div>
         <div className={styles.notify}>
+        <Link to="/"><img src={payment} alt="" /></Link>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
               fill="currentColor" className="size-6" color="#626979">
             <path fillRule="evenodd"
