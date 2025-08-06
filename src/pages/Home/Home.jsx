@@ -11,13 +11,7 @@ import img1 from "../../img/11.jpg";
 import img2 from "../../img/222.jpg";
 import { FaChevronRight } from "react-icons/fa";
 import payment from "../../img/payment.png";
-import main from "../../img/main.jpg";
-import Benefit from "../../img/benefit.jpg";
-import Securities from "../../img/Securities.jpg";
-import shopping from "../../img/shopping.jpg";
-import hamburger from "../../img/hamburger.jpg";
 
-import Mainblack from "../../img/main-black.jpg";
 
 // importing components
 import Loading from '../loading';
@@ -29,14 +23,6 @@ import FiveComponent from './5thcomponent';
 import TabBar from '../tabbar';
 
 export default function Home() {
-  const [image , setimage] = useState(main);
-
-  useEffect( () => {
-    setimage(Mainblack); 
-    return () => {
-      setimage(main)
-    }
-  },[])
 
   const { balance, owner, setAccount } = useAccountStore();
   const [appLoading, setAppLoading] = useState(true);
