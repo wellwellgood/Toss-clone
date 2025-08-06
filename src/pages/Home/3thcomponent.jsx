@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 import { Link } from 'react-router-dom';
-import styles from "../css/3th.module.css";
-import { month, day } from '../store/dateStore';
+import styles from "../../css/home/3th.module.css";
+import { month, day } from '../../store/dateStore';
 
-import Won from "../img/Won.png";
-import Card from "../img/card.jpg";
+import Won from "../../img/Won.png";
+import Card from "../../img/card.jpg";
 
 export default function ThirdComponent() {
 

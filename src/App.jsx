@@ -1,9 +1,11 @@
 import { BrowserRouter, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import Home from './pages/Home';
+import Home from './pages/Home/Home';
+import benefit from './pages/benefit/benefit';
 import SendMoney from './pages/SendMoney';
 import Transaction from './pages/Transaction';
 import Loading from './pages/loading';
+import AnimatedRoutes from './Route/AnimatedRoutes';
 
 function LoadingRedirect() {
   
@@ -40,9 +42,11 @@ export default function App() {
         />
         <Route path="/loading" element={<LoadingRedirect />} />
         <Route path="/home" element={<Home />} />
+        <Route path="/benefit" element={<benefit />} />
         <Route path="/send" element={<SendMoney />} />
         <Route path="/transactions" element={<Transaction />} />
       </Routes>
+      <AnimatedRoutes />
     </BrowserRouter>
   );
 }

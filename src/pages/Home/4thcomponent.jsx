@@ -1,7 +1,7 @@
-import styles from "../css/4th.module.css";
+import styles from "../../css/home/4th.module.css";
 import { Link } from 'react-router-dom'; 
 
-import dash from '../img/dash.jpg';
+import dash from '../../img/dash.jpg';
 
 export default function FourthComponent() {
 

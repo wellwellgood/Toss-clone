@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import { Link } from 'react-router-dom';
 import { Settings } from 'lucide-react';
-import styles from "../css/2th.module.css"
+import styles from "../../css/home/2th.module.css"
 
-import CreditCard from "../img/cradit.jpg";
+import CreditCard from "../../img/cradit.jpg";
 
 export default function TwoThComponent() {
 

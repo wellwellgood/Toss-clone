@@ -1,12 +1,13 @@
 import { Link } from 'react-router-dom';
-import styles from "../css/5th.module.css";
+import styles from "../../css/home/5th.module.css";
 
 
-import bag from "../img/moneyBag.jpg"
-import bag2 from "../img/houseMoneyBag.jpg"
-import per from "../img/percent.jpg"
+import bag from "../../img/moneyBag.jpg"
+import bag2 from "../../img/houseMoneyBag.jpg"
+import per from "../../img/percent.jpg"
 import { FaChevronRight } from "react-icons/fa";
 import { LuDot } from "react-icons/lu";
+
 export default function FifthComponent() {
 
     return (
