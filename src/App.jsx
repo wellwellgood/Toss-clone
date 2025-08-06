@@ -1,11 +1,13 @@
 import { BrowserRouter, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import Home from './pages/Home/Home';
-import benefit from './pages/benefit/benefit';
 import SendMoney from './pages/SendMoney';
 import Transaction from './pages/Transaction';
 import Loading from './pages/loading';
 import AnimatedRoutes from './Route/AnimatedRoutes';
+import AppView from './components/AppView';
+import { lazy, Suspense } from 'react';
+import Skeleton from 'react-loading-skeleton';
+
 
 function LoadingRedirect() {
   
@@ -30,23 +32,30 @@ function LoadingRedirect() {
   return alreadyLoaded ? null : <Loading />;
 }
 
+// Lazy loading components
+const Home = lazy(() => import('./pages/Home/Home'));
+const benefit = lazy(() => import('./pages/benefit/benefit'));
+
 export default function App() {
   const appLoaded = sessionStorage.getItem('appLoaded') === 'true';
 
   return (
     <BrowserRouter>
-      <Routes>
-        <Route
-          path="/"
-          element={appLoaded ? <Navigate to="/home" replace /> : <Navigate to="/loading" replace />}
-        />
-        <Route path="/loading" element={<LoadingRedirect />} />
-        <Route path="/home" element={<Home />} />
-        <Route path="/benefit" element={<benefit />} />
-        <Route path="/send" element={<SendMoney />} />
-        <Route path="/transactions" element={<Transaction />} />
-      </Routes>
-      <AnimatedRoutes />
+      <Suspense fallback={<Skeleton count={10} height={20} />}>
+        <Routes>
+          <Route
+            path="/"
+            element={appLoaded ? <Navigate to="/home" replace /> : <Navigate to="/loading" replace />}
+          />
+          <Route path="/loading" element={<LoadingRedirect />} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/benefit" element={<benefit />} />
+          <Route path="/send" element={<SendMoney />} />
+          <Route path="/transactions" element={<Transaction />} />
+        </Routes>
+        <AnimatedRoutes />
+        <AppView />
+      </Suspense>
     </BrowserRouter>
   );
 }

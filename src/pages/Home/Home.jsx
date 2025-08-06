@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, use } from 'react';
 import { useAccountStore } from '../../store/accountStore';
 import styles from '../../css/home/home.module.css';
 import { Link, NavLink } from 'react-router-dom';
@@ -17,6 +17,8 @@ import Securities from "../../img/Securities.jpg";
 import shopping from "../../img/shopping.jpg";
 import hamburger from "../../img/hamburger.jpg";
 
+import Mainblack from "../../img/main-black.jpg";
+
 // importing components
 import Loading from '../loading';
 import FirstComponents from './firstcomponents';
@@ -24,8 +26,18 @@ import TwoThComponent from './2thcomponent';
 import ThreeThComponent from './3thcomponent';
 import FourthComponent from './4thcomponent';
 import FiveComponent from './5thcomponent';
+import TabBar from '../tabbar';
 
 export default function Home() {
+  const [image , setimage] = useState(main);
+
+  useEffect( () => {
+    setimage(Mainblack); 
+    return () => {
+      setimage(main)
+    }
+  },[])
+
   const { balance, owner, setAccount } = useAccountStore();
   const [appLoading, setAppLoading] = useState(true);
   const [dataLoading, setDataLoading] = useState(true);
@@ -48,11 +60,13 @@ export default function Home() {
 
   // Step 2: Skeleton loading
   useEffect(() => {
+    const getMockDelay = () => Math.random() * 1500 + 500;
+
     if (!appLoading) {
       const dataTimer = setTimeout(() => {
         setAccount(120000, "김기윤");
         setDataLoading(false);
-      }, 2000); // 2초 스켈레톤 로딩
+      }, getMockDelay()); // 2초 스켈레톤 로딩
       return () => clearTimeout(dataTimer);
     }
   }, [appLoading, setAccount]);
@@ -124,38 +138,7 @@ export default function Home() {
           <FiveComponent />
         )}
       </div>
-
-      <div className={styles.btncontainer}>
-        <ul>
-          {[{
-            to: "/Home",
-            img: main,
-            label: "홈"
-          }, {
-            to: "/benefit",
-            img: Benefit,
-            label: "혜택"
-          }, {
-            to: "/shopping",
-            img: shopping,
-            label: "토스쇼핑"
-          }, {
-            to: "/securities",
-            img: Securities,
-            label: "증권"
-          }, {
-            to: "/all",
-            img: hamburger,
-            label: "전체"
-          }].map(({ to, img, label }) => (
-            <li key={to}>
-              <NavLink to={to} className={({ isActive }) => isActive ? styles.active : ""}>
-                <img src={img} alt={label} /> {label}
-              </NavLink>
-            </li>
-          ))}
-        </ul>
-      </div>
+        <TabBar />
     </div>
   );
 }

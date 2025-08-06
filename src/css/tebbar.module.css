@@ -1,0 +1,50 @@
+.btncontainer{
+    position: fixed;
+    bottom: 0;
+    z-index: 999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    width: 100%;
+    height: 60px;
+    background: #fff;
+    border-radius: 24px 24px 0 0;
+}
+.btncontainer ul{
+    display: flex;
+    width: 100%;
+}
+.btncontainer ul li{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: calc(100% / 5);
+    text-align: center;
+    color: #8e9092;
+}
+.btncontainer ul li img{
+    /* width: 26px; */
+    height: 22px;
+}
+.btncontainer a{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    gap: 5px;
+
+}
+
+.active img {
+    filter: grayscale(100%) opacity(1);
+    transition: filter 0.3s ease;
+}
+
+.active {
+    color: #000;
+    font-weight: bold;
+    /* border-top: 2px solid #000; */
+}
