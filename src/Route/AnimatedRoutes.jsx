@@ -19,7 +19,7 @@ export default function AnimatedRoutes() {
   const location = useLocation();
   const [prevIndex, setPrevIndex] = useState(0); // starting Home
   const currentIndex = tabs.indexOf(location.pathname);
-  const direction = currentIndex > prevIndex ? -1 : 1;
+  const direction = currentIndex > prevIndex ? 1 : -1;
 
   useEffect(() => {
     setPrevIndex(currentIndex);
@@ -42,8 +42,9 @@ export default function AnimatedRoutes() {
         transition={{ duration: 0.1 }}
       >
         <Routes location={location} key={location.pathname}>
-          <Route path="/Home" element={<Home />} />
-          <Route path="/benefit" element={<Benefit />} />
+            <Route path="/" element={<Home />} />
+            <Route path="/Home" element={<Home />} />
+            <Route path="/benefit" element={<Benefit />} />
           {/* <Route path="/shopping" element={<Shopping />} /> */}
           {/* <Route path="/securities" element={<Securities />} /> */}
           {/* <Route path="/all" element={<All />} /> */}
