@@ -1,6 +1,6 @@
 import { useState, useEffect, use } from 'react';
 import { useAccountStore } from '../../store/accountStore';
-import styles from '../../css/home/home.module.css';
+import styles from '../../css/home/Home.module.css';
 import { Link, NavLink } from 'react-router-dom';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
