@@ -13,7 +13,7 @@ import shopping from "../../img/shopping.jpg";
 import hamburger from "../../img/hamburger.jpg";
 
 // importing components
-import Home from '../Home/Home';
+import Home from '../home/Home';
 import TabBar from '../tabbar'
 
 

@@ -9,7 +9,7 @@ import { useState, useRef, useEffect } from "react";
 // 탭 배열 순서대로
 const tabs = ["/Home", "/benefit",/* "/shopping", "/securities", "/all"*/];
 
-import Home from "../pages/Home/Home";
+import Home from "../pages/home/Home";
 import Benefit from "../pages/benefit/benefit";
 // import Shopping from "../pages/shopping/shopping";
 // import Securities from "../pages/Securities/Securities";
