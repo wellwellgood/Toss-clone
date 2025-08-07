@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import Home from '../pages/Home/Home';
+import Home from '../pages/home/Home';
 import Benefit from '../pages/benefit/benefit';
 
 export default function AppView() {

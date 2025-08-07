@@ -17,11 +17,11 @@ function LoadingRedirect() {
     const alreadyLoaded = sessionStorage.getItem('appLoaded') === 'true';
 
     if (alreadyLoaded) {
-      navigate('/home'); // 이미 로딩됐으면 바로 리디렉션
+      navigate('/Home'); // 이미 로딩됐으면 바로 리디렉션
     } else {
       const timer = setTimeout(() => {
         sessionStorage.setItem('appLoaded', 'true');
-        navigate('/home');
+        navigate('/Home');
       }, 3000);
 
       return () => clearTimeout(timer);
@@ -33,8 +33,8 @@ function LoadingRedirect() {
 }
 
 // Lazy loading components
-const Home = lazy(() => import('./pages/home/Home'));
-const benefit = lazy(() => import('./pages/benefit/benefit'));
+const Home = lazy(() => import("./pages/home/Home.jsx"));
+const Benefit = lazy(() => import('./pages/benefit/benefit.jsx'));
 
 export default function App() {
   const appLoaded = sessionStorage.getItem('appLoaded') === 'true';
@@ -45,11 +45,11 @@ export default function App() {
         <Routes>
           <Route
             path="/"
-            element={appLoaded ? <Navigate to="/home" replace /> : <Navigate to="/loading" replace />}
+            element={appLoaded ? <Navigate to="/Home" replace /> : <Navigate to="/loading" replace />}
           />
           <Route path="/loading" element={<LoadingRedirect />} />
           <Route path="/home" element={<Home />} />
-          <Route path="/benefit" element={<benefit />} />
+          <Route path="/benefit" element={<Benefit />} />
           <Route path="/send" element={<SendMoney />} />
           <Route path="/transactions" element={<Transaction />} />
         </Routes>
