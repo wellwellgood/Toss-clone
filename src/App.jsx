@@ -33,7 +33,7 @@ function LoadingRedirect() {
 }
 
 // Lazy loading components
-const Home = lazy(() => import("./pages/home/Home.jsx"));
+const Home = lazy(() => import("./pages/Home/Home.jsx"));
 const Benefit = lazy(() => import('./pages/benefit/benefit.jsx'));
 
 export default function App() {
