@@ -62,13 +62,9 @@ export default function Home() {
   return (
     <div className={styles.background}>
       <div className={styles.top}>
-        {dataLoading ? (
-          <Skeleton height={50} width={150} style={{ marginBottom: 16 }} />
-        ) : (
-          <>
-            <div className={styles.work}>
-              <div className={styles.workTitle}>
-                <img src={work1} alt="" />
+        <div className={styles.work}>
+            <div className={styles.workTitle}>
+              <img src={work1} alt="" />
                 <span>할 일</span>
               </div>
               <Link to="#"><FaChevronRight size={12} /></Link>
@@ -82,47 +78,29 @@ export default function Home() {
                   clipRule="evenodd" />
               </svg>
             </div>
-          </>
-        )}
       </div>
 
       <div className={styles.components}>
-        {dataLoading ? (
-          Array(4).fill(0).map((_, i) => (
-            <Skeleton key={i} height={80} style={{ marginBottom: 16 }} />
-          ))
-        ) : (
-          <>
-            <FirstComponents />
+          <FirstComponents />
             <TwoThComponent />
             <ThreeThComponent />
             <FourthComponent />
-          </>
-        )}
 
         <div className={styles.text}>
-          {dataLoading ? <Skeleton width={200} height={30} /> : `${owner}님을 위해 준비했어요`}
+          {owner}님을 위해 준비했어요
         </div>
 
         <div className={styles.container}>
           {[img1, img2].map((img, i) => (
             <div className={styles.img} key={i}>
-              {dataLoading ? (
-                <Skeleton height={100} />
-              ) : (
-                <Link to="/">
+              <Link to="/">
                   <img src={img} alt={`추천${i + 1}`} />
                 </Link>
-              )}
             </div>
           ))}
         </div>
 
-        {dataLoading ? (
-          <Skeleton height={200} />
-        ) : (
-          <FiveComponent />
-        )}
+        <FiveComponent />
       </div>
         <TabBar />
     </div>
