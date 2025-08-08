@@ -33,7 +33,7 @@ function LoadingRedirect() {
 }
 
 // Lazy loading components
-const Home = lazy(() => import("./pages/Home/Home.jsx"));
+const Home = lazy(() => import('./pages/Home/Home.jsx'));
 const Benefit = lazy(() => import('./pages/benefit/benefit.jsx'));
 
 export default function App() {
@@ -41,21 +41,7 @@ export default function App() {
 
   return (
     <BrowserRouter>
-      <Suspense fallback={<Skeleton count={10} height={20} />}>
-        <Routes>
-          <Route
-            path="/"
-            element={appLoaded ? <Navigate to="/Home" replace /> : <Navigate to="/loading" replace />}
-          />
-          <Route path="/loading" element={<LoadingRedirect />} />
-          <Route path="/home" element={<Home />} />
-          <Route path="/benefit" element={<Benefit />} />
-          <Route path="/send" element={<SendMoney />} />
-          <Route path="/transactions" element={<Transaction />} />
-        </Routes>
-        <AnimatedRoutes />
-        <AppView />
-      </Suspense>
+          <AnimatedRoutes />
     </BrowserRouter>
   );
 }

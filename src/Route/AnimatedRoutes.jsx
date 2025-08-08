@@ -1,23 +1,31 @@
-// routes/AnimatedRoutes.jsx
-import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
+import { Routes, Route, useLocation, Navigate, useNavigate } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
-import { useState, useRef, useEffect } from "react";
-
-
-//import components
-
-// 탭 배열 순서대로
-const tabs = ["/Home", "/benefit",/* "/shopping", "/securities", "/all"*/];
-
-import Home from "../pages/home/Home";
+import { useState, useEffect } from "react";
+import Home from "../pages/Home/Home";
 import Benefit from "../pages/benefit/benefit";
-// import Shopping from "../pages/shopping/shopping";
-// import Securities from "../pages/Securities/Securities";
-// import All from "../pages/All/All";
+import Loading from "../pages/loading";
+
+function LoadingRedirect() {
+  const navigate = useNavigate();
+  useEffect(() => {
+    const alreadyLoaded = sessionStorage.getItem('appLoaded') === 'true';
+    if (alreadyLoaded) {
+      navigate('/Home');
+    } else {
+      const timer = setTimeout(() => {
+        sessionStorage.setItem('appLoaded', 'true');
+        navigate('/Home');
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [navigate]);
+  return sessionStorage.getItem('appLoaded') === 'true' ? null : <Loading />;
+}
 
 export default function AnimatedRoutes() {
   const location = useLocation();
-  const [prevIndex, setPrevIndex] = useState(0); // starting Home
+  const [prevIndex, setPrevIndex] = useState(0);
+  const tabs = ["/Home", "/benefit"];
   const currentIndex = tabs.indexOf(location.pathname);
   const direction = currentIndex > prevIndex ? 1 : -1;
 
@@ -31,6 +39,8 @@ export default function AnimatedRoutes() {
     exit: { x: direction * -100, opacity: 0 }
   };
 
+  const appLoaded = sessionStorage.getItem('appLoaded') === 'true';
+
   return (
     <AnimatePresence mode="wait">
       <motion.div
@@ -42,12 +52,13 @@ export default function AnimatedRoutes() {
         transition={{ duration: 0.1 }}
       >
         <Routes location={location} key={location.pathname}>
-            <Route path="/" element={<Home />} />
-            <Route path="/Home" element={<Home />} />
-            <Route path="/benefit" element={<Benefit />} />
-          {/* <Route path="/shopping" element={<Shopping />} /> */}
-          {/* <Route path="/securities" element={<Securities />} /> */}
-          {/* <Route path="/all" element={<All />} /> */}
+          <Route
+            path="/"
+            element={appLoaded ? <Navigate to="/Home" replace /> : <Navigate to="/loading" replace />}
+          />
+          <Route path="/loading" element={<LoadingRedirect />} />
+          <Route path="/Home" element={<Home />} />
+          <Route path="/benefit" element={<Benefit />} />
         </Routes>
       </motion.div>
     </AnimatePresence>

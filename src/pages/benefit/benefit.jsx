@@ -5,38 +5,24 @@ import { Link, NavLink } from 'react-router-dom';
 import SkeletonPage from '../../components/LoadingSkeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 
+
 // importing images
-import main from "../../img/main.jpg";
-import BenefitBlack from "../../img/benefit-black.jpg";
-import Securities from "../../img/Securities.jpg";
-import shopping from "../../img/shopping.jpg";
-import hamburger from "../../img/hamburger.jpg";
 
 // importing components
-import Home from '../home/Home';
-import TabBar from '../tabbar'
+import TabBar from '../tabbar';
+import FirstComponent from './1stcomponent';
+import TwoComponent from './2stcomponent';
 
 
 
 // importing images
 export default function benefit () {
 
-    const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-    const timer = setTimeout(() => {
-        setLoading(false);
-    }, 2000);
-    
-    return () => clearTimeout(timer);
-    }, []);
-    
-    if (loading) return <SkeletonPage />;
-
-
     return (
-        <div className={styles.container}>
+        <div className={styles.page}>
+            <FirstComponent />
+            <TwoComponent />
             <TabBar />
         </div>
-    )
+    );
 }
