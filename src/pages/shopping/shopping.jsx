@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect, useLayoutEffect } from 'react';
 import styles from '../../css/shopping/shopping.module.css';
 import { Link } from 'react-router-dom';
 import Magnifier from './img/Magnifier.png';
@@ -16,12 +16,24 @@ export default function Shopping() {
   const [active, setActive] = useState(0);
   const [indicator, setIndicator] = useState({ left: 0, width: 0 });
 
+  useLayoutEffect(() => {
+    if ('scrollRestoration' in history) {
+      history.scrollRestoration = 'manual';
+    }
+  }, []);
+
+  useLayoutEffect(() => {
+    if (navRef.current) {
+      navRef.current.scrollLeft = 0;
+    }
+  }, []);
+
   // 인디케이터 위치 업데이트
   useEffect(() => {
     const el = btnRefs.current[active];
     if (el) setIndicator({ left: el.offsetLeft, width: el.offsetWidth });
-    if (navRef.current && active === 0) navRef.current.scrollLeft = 0; // 처음은 맨 앞
   }, [active]);
+
 
   // 드래그 & 터치 스크롤 로직
   const dragging = useRef(false);

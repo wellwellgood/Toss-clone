@@ -60,7 +60,7 @@ body{
     gap: 12px;
     overflow-x: auto;
     /* ✅ 네브바가 포인터 독점: 브라우저 기본 제스처 끄고 우리가 스크롤 */
-    touch-action: none;                 /* ← 핵심 */
+    touch-action: auto;                 /* ← 핵심 */
     -webkit-overflow-scrolling: touch;
     white-space: nowrap;
     padding: 8px 12px 10px;
