@@ -1,84 +1,108 @@
+import { useRef, useState, useEffect } from 'react';
 import styles from '../../css/shopping/shopping.module.css';
 import { Link } from 'react-router-dom';
-import { useRef, useState, useEffect } from 'react';
-
-
-
 import Magnifier from './img/Magnifier.png';
 import My from './img/My.png';
 import cart from './img/cart.png';
 
+const LABELS = [
+  '추천', '특가', '식품', '생활용품', '뷰피',
+  '패션', '주방용품', '전자제품', '자동차용품', '취미'
+];
+
 export default function Shopping() {
+  const navRef = useRef(null);
+  const btnRefs = useRef([]);
+  const [active, setActive] = useState(0);
+  const [indicator, setIndicator] = useState({ left: 0, width: 0 });
 
-    const navRef = useRef(null);
-    const btnRefs = useRef([]);
-    const [active, setActive] = useState(0);
-    const [indicatorLeft, setIndicatorLeft] = useState(0);
-    const [indicatorWidth, setIndicatorWidth] = useState(0);
+  // 인디케이터 위치 업데이트
+  useEffect(() => {
+    const el = btnRefs.current[active];
+    if (el) setIndicator({ left: el.offsetLeft, width: el.offsetWidth });
+    if (navRef.current && active === 0) navRef.current.scrollLeft = 0; // 처음은 맨 앞
+  }, [active]);
 
-    useEffect(() => {
-        const btn = btnRefs.current[active];
-        if (btn) {
-          const { offsetLeft, offsetWidth } = btn;
-          setIndicatorLeft(offsetLeft);
-          setIndicatorWidth(offsetWidth);
-          btn.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
-        }
-      }, [active])
+  // 드래그 & 터치 스크롤 로직
+  const dragging = useRef(false);
+  const isDown = useRef(false);
+  const startX = useRef(0);
+  const startScroll = useRef(0);
 
-    return (
-        <div>
-            <div className={styles.container}>
-                <div className={styles.header}>
-                    <div className={styles.recentProduct}>
-                        <Link
-                            to="/"
-                            className={styles.recent}
-                        >
-                            <img src="" alt="" />
-                            <span>최근 본 상품</span>
-                            <img src="" alt="" />
-                        </Link>
-                    </div>
-                    <div className={styles.headerbtn}>
-                        <Link
-                            to=""
-                            >
-                            <img src={Magnifier} alt="" />
-                        </Link>
-                        <Link
-                            to=""
-                            >
-                            <img src={My} alt="" />
-                        </Link>
-                        <Link
-                            to=""
-                            >
-                            <img src={cart} alt="" />
-                        </Link>
-                    </div>
-                </div>
-                <div className={styles.navmenu} ref={navRef}>
-                {[
-                    "쇼핑홈", "특가", "식품", "생활용품", "뷰티",
-                    "패션", "주방용품", "전자제품", "반려동물", "자동차용품", "취미"
-                ].map((label, idx) => (
-                    <button
-                    key={idx}
-                    ref={(el) => (btnRefs.current[idx] = el)}
-                    className={`${styles.navItem} ${active === idx ? styles.active : ""}`}
-                    onClick={() => setActive(idx)}
-                    >
-                    {label}
-                    </button>
-                ))}
-                <span
-                    className={styles.indicator}
-                    style={{ left: indicatorLeft, width: indicatorWidth }}
-                />
-                </div>
-                <div className={styles.mainProduct}></div>
-            </div>
-            </div>
-    )
+  const onPointerDown = (e) => {
+    const wrap = navRef.current;
+    if (!wrap) return;
+    isDown.current = true;
+    dragging.current = false;
+    startX.current = e.clientX;
+    startScroll.current = wrap.scrollLeft;
+    wrap.setPointerCapture?.(e.pointerId);
+    wrap.classList.add(styles.grabbing);
+  };
+  const onPointerMove = (e) => {
+    const wrap = navRef.current;
+    if (!wrap || !isDown.current) return;
+    const dx = e.clientX - startX.current;
+    if (Math.abs(dx) > 3) dragging.current = true;
+    wrap.scrollLeft = startScroll.current - dx;
+    // ↓ 페이지로 스크롤 이벤트 전파 차단
+    e.preventDefault();
+    e.stopPropagation();
+  };
+  const onPointerUp = (e) => {
+    const wrap = navRef.current;
+    isDown.current = false;
+    wrap?.releasePointerCapture?.(e.pointerId);
+    wrap?.classList.remove(styles.grabbing);
+  };
+
+  const onItemClick = (idx, e) => {
+    if (dragging.current) {
+      e.preventDefault(); // 드래그 중 클릭 무효
+      return;
+    }
+    setActive(idx);
+  };
+
+  return (
+    <div className={styles.container}>
+      <div className={styles.header}>
+        <div className={styles.recentProduct}>
+          <Link to="/" className={styles.recent}>
+            <span>최근 본 상품</span>
+          </Link>
+        </div>
+        <div className={styles.headerbtn}>
+          <Link to=""><img src={Magnifier} alt="" /></Link>
+          <Link to=""><img src={My} alt="" /></Link>
+          <Link to=""><img src={cart} alt="" /></Link>
+        </div>
+      </div>
+
+      <div
+        className={styles.navmenu}
+        ref={navRef}
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={onPointerUp}
+        onPointerCancel={onPointerUp}
+      >
+      {LABELS.map((label, idx) => (
+          <button
+            key={idx}
+            ref={(el) => (btnRefs.current[idx] = el)}
+            className={`${styles.navItem} ${active === idx ? styles.active : ''}`}
+            onClick={(e) => onItemClick(idx, e)}
+            type="button"
+          >
+            {label}
+            </button>
+        ))}
+        <span
+          className={styles.indicator}
+          style={{ left: indicator.left, width: indicator.width }}
+        />
+      </div>
+    </div>
+  );
 }

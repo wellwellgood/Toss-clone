@@ -46,38 +46,46 @@ body{
     height: 24px;
 }
 
-.navmenu {
-    position: relative;          /* 밑줄 포지셔닝 기준 */
+.navSticky {
+    position: sticky;
+    top: 0;                    /* header가 fixed면 높이에 맞춰 조정 */
+    z-index: 30;
+    background: #f6f7fb;       /* 배경 깔아서 밑 내용 가림 */
+  }
+  
+  /* ✅ 가로 스크롤 컨테이너 */
+  .navmenu{
+    position: relative;
     display: flex;
     gap: 12px;
-    overflow-x: auto;            /* 가로 스크롤 */
-    overscroll-behavior-x: contain;
+    overflow-x: auto;
+    /* ✅ 네브바가 포인터 독점: 브라우저 기본 제스처 끄고 우리가 스크롤 */
+    touch-action: none;                 /* ← 핵심 */
     -webkit-overflow-scrolling: touch;
-    padding: 8px 0 10px;         /* 밑줄 공간 */
-    scrollbar-width: none;       /* Firefox */
+    white-space: nowrap;
+    padding: 8px 12px 10px;
+    cursor: grab;
   }
-  .navmenu::-webkit-scrollbar { display: none; } /* WebKit */
+  .navmenu::-webkit-scrollbar{ display:none; }
   
-  /* 탭 버튼이 절대 줄어들지 않도록 고정 */
-  .navItem {
-    flex: 0 0 auto;              /* 핵심: 절대 줄어들지 마 */
-    min-width: max-content;      /* 레이블 길이만큼 */
+  .grabbing{ cursor: grabbing; }
+  
+  .navItem{
+    flex: 0 0 auto;                     /* 줄어들지 않게 */
+    min-width: max-content;
     background: none;
     border: 0;
     font-size: 14px;
     padding: 8px 12px;
     color: #666;
     white-space: nowrap;
-    cursor: pointer;
+    user-select: none;                   /* 드래그 중 텍스트 선택 방지 */
   }
-  .active { color: #1f6fff; font-weight: 700; }
+  .active{ color:#1f6fff; font-weight:700; }
   
-  /* 밑줄 인디케이터 */
-  .indicator {
-    position: absolute;
-    left: 0; bottom: 0;
-    height: 2px;
-    background: #1f6fff;
-    border-radius: 1px;
-    transition: left .25s ease, width .25s ease;
+  .indicator{
+    position:absolute; left:0; bottom:0; height:2px;
+    background:#1f6fff; border-radius:1px;
+    transition:left .25s ease, width .25s ease;
+    pointer-events:none;
   }
