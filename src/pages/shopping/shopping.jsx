@@ -4,6 +4,7 @@ import ProductGrid from "./ProductGrid";
 import { useProductsByLabel } from "../../hooks/useProductsByLabel";
 import { Link } from "react-router-dom";
 import styles from '../../css/shopping/shopping.module.css';
+import TabBar from "../tabbar";
 
 
 
@@ -44,6 +45,7 @@ export default function Shopping() {
       </div>
 
       <ProductGrid items={items} loading={loading} error={error} />
+      <TabBar />
     </div>
   );
 }

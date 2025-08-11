@@ -4,9 +4,6 @@
     box-sizing: border-box;
 }
 
-body{
-    background: #fff;
-}
 
 .container{
     display: flex;
