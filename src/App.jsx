@@ -35,6 +35,7 @@ function LoadingRedirect() {
 // Lazy loading components
 const Home = lazy(() => import('./pages/Home/Home.jsx'));
 const Benefit = lazy(() => import('./pages/benefit/benefit.jsx'));
+const Shopping = lazy(() => import('./pages/shopping/shopping.jsx'));
 
 export default function App() {
   const appLoaded = sessionStorage.getItem('appLoaded') === 'true';
