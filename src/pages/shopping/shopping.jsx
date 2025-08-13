@@ -45,7 +45,6 @@ export default function Shopping() {
       </div>
 
       <ProductGrid items={items} loading={loading} error={error} />
-      <TabBar />
     </div>
   );
 }

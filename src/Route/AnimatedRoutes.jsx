@@ -6,6 +6,7 @@ import Home from "../pages/Home/Home";
 import Benefit from "../pages/benefit/benefit";
 import Loading from "../pages/loading";
 import Shopping from "../pages/shopping/shopping";
+import Securities from "../pages/securities/securities"
 
 function LoadingRedirect() {
   const navigate = useNavigate();
@@ -90,6 +91,7 @@ export default function AnimatedRoutes() {
           <Route path="/Home" element={<Home />} />
           <Route path="/benefit" element={<Benefit />} />
           <Route path="/Shopping" element={<Shopping/>} />
+          <Route path="/Securities" element={<Securities/>} />
         </Routes>
       </motion.div>
     </AnimatePresence>

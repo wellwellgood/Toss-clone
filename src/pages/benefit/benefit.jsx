@@ -9,7 +9,6 @@ import 'react-loading-skeleton/dist/skeleton.css';
 // importing images
 
 // importing components
-import TabBar from '../tabbar';
 import FirstComponent from './1stcomponent';
 import TwoComponent from './2stcomponent';
 
@@ -22,7 +21,6 @@ export default function benefit () {
         <div className={styles.page}>
             <FirstComponent />
             <TwoComponent />
-            <TabBar />
         </div>
     );
 }

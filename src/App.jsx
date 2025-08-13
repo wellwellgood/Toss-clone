@@ -7,6 +7,7 @@ import AnimatedRoutes from './Route/AnimatedRoutes';
 import AppView from './components/AppView';
 import { lazy, Suspense } from 'react';
 import Skeleton from 'react-loading-skeleton';
+import TabBar from './pages/tabbar.jsx';
 
 
 function LoadingRedirect() {
@@ -43,6 +44,7 @@ export default function App() {
   return (
     <BrowserRouter>
           <AnimatedRoutes />
+          <TabBar />
     </BrowserRouter>
   );
 }

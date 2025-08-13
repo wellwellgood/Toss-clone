@@ -20,7 +20,6 @@ import TwoThComponent from './2thcomponent';
 import ThreeThComponent from './3thcomponent';
 import FourthComponent from './4thcomponent';
 import FiveComponent from './5thcomponent';
-import TabBar from '../tabbar';
 
 export default function Home() {
 
@@ -102,7 +101,6 @@ export default function Home() {
 
         <FiveComponent />
       </div>
-        <TabBar />
     </div>
   );
 }

@@ -1,50 +1,145 @@
+@import url('https://cdn.jsdelivr.net/gh/fonts-archive/AppleSDGothicNeo/AppleSDGothicNeo.css');
+
+/* ===== CSS 변수 ===== */
+:root{
+  --tabbar-h: 60px;
+  --raised-offset: 30px;
+  --tab-size: 50px;
+  --icon-size: 22px;
+  --fade-in: .22s;
+  --fade-out: .16s;
+  --flip: 260ms;
+  --blur: 10px;
+}
+
+/* ===== 컨테이너 ===== */
 .btncontainer{
-    position: fixed;
-    bottom: 0;
-    z-index: 999;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: row;
-    width: 100%;
-    height: 60px;
-    background: #fff;
-    border-radius: 24px 24px 0 0;
+  position: fixed;
+  display: flex;
+  align-items: center;
+  bottom: 0;
+  z-index: 999;
+  width: 100%;
+  height: var(--tabbar-h);
+  background: #fff;       /* 메인탭 때 흰 배경 */
+  border-radius: 50px;
 }
-.btncontainer ul{
-    display: flex;
-    width: 100%;
-}
-.btncontainer ul li{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    width: calc(100% / 5);
-    text-align: center;
-    color: #8e9092;
-}
-.btncontainer ul li img{
-    /* width: 26px; */
-    height: 22px;
-}
-.btncontainer a{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-size: 12px;
-    gap: 5px;
-
+.btncontainer nav{ width: 100%; }
+.btncontainer.subMode{     /* 서브탭 진입 시 바 밑 30px이 보여야 하므로 투명 처리 */
+  background: transparent;
 }
 
-.active img {
-    filter: grayscale(100%) opacity(1);
-    transition: filter 0.3s ease;
+/* ===== 바 두 개 겹치고 show/hide ===== */
+.barWrap{
+  position: relative;
+  height: var(--tabbar-h);
+}
+.bar{
+  position: absolute; left: 0; right: 0; bottom: 0;
+  display: flex; justify-content: space-between; align-items: center;
+  gap: 4px; padding: 6px 10px;
+  will-change: transform, opacity, bottom;
+}
+.show{
+  opacity: 1; pointer-events: auto; animation: barIn var(--fade-in) ease both;
+}
+.hide{
+  opacity: 0; pointer-events: none; animation: barOut var(--fade-out) ease both;
+}
+.showRaised{     
+    position: relative;          /* 서브탭은 30px 위로 */
+    bottom: var(--raised-offset);
+    border: 1px solid #000;
+    border-radius: 50px;
+    opacity: 1; pointer-events: auto; animation: barIn var(--fade-in) ease both;
 }
 
-.active {
-    color: #000;
-    font-weight: bold;
-    /* border-top: 2px solid #000; */
+.showRaised li{
+    position: relative;
+}
+
+/* 바 진입/퇴장 모션 */
+@keyframes barIn { from { opacity:0; transform: translateY(8px); } to { opacity:1; transform: translateY(0); } }
+@keyframes barOut{ from { opacity:1; transform: translateY(0); }   to { opacity:0; transform: translateY(-8px);} }
+
+/* ===== 공통 타이포/아이콘 ===== */
+.btncontainer nav ul{
+  display: flex; align-items: center; justify-content: center; width: 100%;
+}
+.btncontainer nav ul li{
+  display: flex; align-items: center; justify-content: center; flex-direction: column;
+  width: calc(100% / 5); text-align: center; color: #8e9092;
+}
+.btncontainer nav a{
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  font-size: 12px; gap: 5px; text-decoration: none;
+}
+.active{ color: #000; font-weight: 700; }
+
+/* 아이콘 크기 고정(모든 컨텍스트) */
+.btncontainer nav ul li img,
+.mainBtn img, .mainSecBtn img,
+.secItem img, .floatingSec img{
+  height: 18px; width: auto; display: block; flex: 0 0 auto;
+}
+
+/* ===== 메인탭 / 증권 버튼 ===== */
+.mainBtn, .mainSecBtn{
+  display: inline-flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 4px;
+  width: var(--tab-size); height: var(--tab-size); box-sizing: border-box;
+}
+
+/* ===== 서브탭 버튼 ===== */
+.secItem{
+  display: inline-flex; flex-direction: column; align-items: center; justify-content: center;
+  font-size: 12px; font-family: 'Apple SD Gothic Neo'; font-weight: 400; gap: 5px;
+  width: var(--tab-size); height: var(--tab-size);
+}
+.secBack{
+    position: absolute;
+    left: 10px;
+    background: #f2f4f6; border-radius: 50%;
+    width: var(--tab-size); height: var(--tab-size);
+    font-size: 12px; 
+}
+.secPrimary{ /* 서브에서 '뒤로' 다음의 "증권" 버튼 */ }
+
+/* 가시성 토글 */
+.invisible{ opacity: 0 !important; }
+
+/* ===== "증권" 이동용 플로팅(FLIP) ===== */
+.floatingSec{
+  position: absolute; left: 0; top: 0; display: none; z-index: 3;
+}
+
+/* ===== 하단 30px blur + mask (서브탭일 때만) ===== */
+.blurUnderlay{
+  position: fixed; left: 0; right: 0; bottom: 0;
+  height: calc(var(--raised-offset) + env(safe-area-inset-bottom, 0px));
+  z-index: 998; pointer-events: none;
+  backdrop-filter: blur(var(--blur));
+  -webkit-backdrop-filter: blur(var(--blur));
+  mask-image: linear-gradient(to top, rgba(0,0,0,.85), rgba(0,0,0,0));
+  -webkit-mask-image: linear-gradient(to top, rgba(0,0,0,.85), rgba(0,0,0,0));
+}
+
+/* ===== 서브탭 내 개별 버튼 순차 페이드 (진입시에만) ===== */
+@keyframes itemFade { from { opacity:0; transform: translateY(8px);} to {opacity:1; transform: translateY(0);} }
+.itemTransition{ animation: itemFade var(--fade-in) ease both; 
+}
+
+/* ===== bump 효과: scale 제거해서 아이콘 크기 고정 ===== */
+@keyframes bump {
+  0% { transform: translateY(0); }
+  30%{ transform: translateY(-6px); }
+  60%{ transform: translateY(0); }
+  100%{ transform: translateY(0); }
+}
+.pulse{ animation: bump .6s ease; }
+
+/* ===== 접근성: 모션 최소화 ===== */
+@media (prefers-reduced-motion: reduce){
+  .show, .hide, .showRaised, .itemTransition, .pulse { animation: none !important; }
+  .floatingSec { transition: none !important; }
 }

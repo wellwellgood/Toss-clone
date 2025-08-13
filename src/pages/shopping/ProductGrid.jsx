@@ -5,8 +5,8 @@ export default function ProductGrid({ items, loading, error }) {
     return (
       <div style={{
         display: "grid",
-        // gridTemplateColumns: "repeat(2, minmax(0,1fr))",
-        gridtemplatecolumns: "epeat(auto-fill, minmax(160px, auto))",
+        gridTemplateColumns: "repeat(2, minmax(0,1fr))",
+        // gridtemplatecolumns: "epeat(auto-fill, minmax(160px, auto))",
         gap: 12, padding: 12
       }}>
         {Array.from({ length: 8 }).map((_, i) => (
@@ -29,7 +29,7 @@ export default function ProductGrid({ items, loading, error }) {
   return (
     <div style={{
       display: "grid",
-      gridTemplateColumns: "repeat(2, minmax(0,1fr))",
+      gridTemplateColumns: "repeat(2, minmax(160px,auto))",
       gap: 12, padding: 12
     }}>
       {items.map(p => <ProductCard key={p.id} product={p} />)}
