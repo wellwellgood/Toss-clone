@@ -143,7 +143,7 @@ async function connectKIS() {
         header: {
           approval_key: approval,
           "content-type": "application/json",
-          tr_id: KIS_TR_ID_INDEX,
+          tr_id: H0UPCNT0,
         },
         body: { input: { tr_id: KIS_TR_ID_INDEX, tr_key: "1001" } }
       }));
