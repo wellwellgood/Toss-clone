@@ -142,9 +142,8 @@ async function connectKIS() {
       ws.send(JSON.stringify({
         header: {
           approval_key: approval,
-          custtype: CUSTTYPE,
-          tr_type: "1",
-          "content-type": "utf-8"
+          "content-type": "application/json",
+          tr_id: KIS_TR_ID_INDEX,
         },
         body: { input: { tr_id: KIS_TR_ID_INDEX, tr_key: "1001" } }
       }));

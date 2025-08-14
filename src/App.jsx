@@ -8,6 +8,7 @@ import AppView from './components/AppView';
 import { lazy, Suspense } from 'react';
 import Skeleton from 'react-loading-skeleton';
 import TabBar from './pages/tabbar.jsx';
+import Securities from "./pages/securities/securities";
 
 
 function LoadingRedirect() {
