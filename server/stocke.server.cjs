@@ -10,6 +10,9 @@ const WebSocket = require("ws");
 const { WebSocketServer } = require("ws");
 const { URL } = require("url");
 
+function uniq(arr){ return Array.from(new Set(arr.filter(Boolean))); }
+
+
 // ---------- ENV (no duplicate declarations) ----------
 const {
   APP_KEY,
@@ -20,6 +23,7 @@ const {
   KIS_WS:   ENV_KIS_WS,
   POLL_SECONDS = "3",
   PORT: ENV_PORT,
+  INDEX_KEYS,
 } = process.env;
 
 const IS_RENDER = !!process.env.RENDER;
@@ -50,12 +54,6 @@ const ORIGIN_HEADER = `https://${__host}`;
 console.log("✅ env ok: APP_KEY=", (APP_KEY||"").slice(0,4)+"…", "| KIS_TR_ID_INDEX=", KIS_TR_ID_INDEX);
 console.log("🔌 local WS will bind on:", `ws://localhost:${PORT}`);
 console.log("[KIS-WS] endpoint =", __SANITIZED_KIS_WS, "| origin =", ORIGIN_HEADER);
-
-// ---------- sanity check for required env ----------
-if (!APP_KEY || !APP_SECRET) {
-  console.error("❌ Missing APP_KEY/APP_SECRET. Check .env or Render env vars.");
-}
-
 
 // ---------- HTTP + WS boot (single listen) ----------
 let __BOOTED = false;
@@ -115,8 +113,8 @@ async function getApprovalKey() {
     const { data } = await axios.post(url, {
       grant_type: "client_credentials",
       appkey: APP_KEY,
-      secretkey: APP_SECRET, // ✅ KIS expects `secretkey`, not `appsecret`
-    }, { headers: { "Content-Type": "application/json; charset=utf-8" } });
+      appsecret: APP_SECRET,
+    }, { headers: { "Content-Type": "application/json; charset=utf-8",'appkey': APP_KEY,'appsecret': APP_SECRET } });
     if (!data?.approval_key) throw new Error("No approval_key in response");
     return data.approval_key;
   } catch (e) {
@@ -137,20 +135,35 @@ async function connectKIS() {
 
     ws.on("open", () => {
       console.log("[KIS-WS] connected");
-      // Send your register/subscription messages here.
-      // Example (adjust to your exact spec):
-      ws.send(JSON.stringify({
+      // Try multiple TR candidates for index streaming. You can pin via .env KIS_TR_ID_INDEX / INDEX_KEYS
+      const trCandidates = uniq([KIS_TR_ID_INDEX, "H0STASP0", "H0STCNT0", "H0STANP0", "H0STASP1"]);
+      const keyCandidates = uniq((INDEX_KEYS || "1001").split(",").map(s=>s.trim()));
+      const packetFor = (tr_id, tr_key) => ({
         header: {
           approval_key: approval,
+          custtype: CUSTTYPE,
+          tr_type: "1",
           "content-type": "application/json",
-          tr_id: H0UPCNT0,
+          tr_id
         },
-        body: { input: { tr_id: KIS_TR_ID_INDEX, tr_key: "1001" } }
-      }));
+        body: { input: { tr_id, tr_key } }
+      });
+      let sent = 0;
+      for (const tr_id of trCandidates) {
+        for (const tr_key of keyCandidates) {
+          try {
+            const pkt = packetFor(tr_id, tr_key);
+            ws.send(JSON.stringify(pkt));
+            sent++;
+          } catch {}
+        }
+      }
+      console.log("[KIS-WS] subscribe packets sent:", sent, "TRs=", trCandidates, "keys=", keyCandidates);
     });
 
     ws.on("message", (buf) => {
       const text = buf.toString();
+      if (text) console.log("[KIS-WS] recv:", text.slice(0,120).replace(/\n/g," "));
       broadcast({ provider: "KIS-WS", raw: text });
     });
 
