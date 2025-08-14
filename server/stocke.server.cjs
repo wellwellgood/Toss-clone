@@ -119,7 +119,7 @@ async function startKisRealtime() {
             tr_type: "1",
             "content-type": "utf-8",
           },
-          body: { input: { tr_id: KIS_TR_ID_INDEX, tr_key } },
+          body: { input: { tr_id: KIS_TR_ID_INDEX, tr_key: "1001" } },
         })
       );
 
@@ -147,10 +147,9 @@ async function startKisRealtime() {
   ws.on("unexpected-response", (req, res) => {
     try {
       res.setEncoding("utf8");
-      let body = "";
-      res.on("data", (c) => (body += c));
+      let body = ""; res.on("data", c => body += c);
       res.on("end", () => console.error("[KIS-WS] unexpected-response", res.statusCode, body));
-    } catch (e) {
+    } catch(e) {
       console.error("[KIS-WS] unexpected-response", res.statusCode);
     }
   });
@@ -212,3 +211,28 @@ wss.on("connection", (socket) => {
   socket.send(JSON.stringify({ hello: "A-plan realtime bridge ready" }));
 });
 
+
+
+
+const isRender = !!process.env.RENDER;   // Render가 환경변수로 넣어줌
+const FIXED_PORT = Number(process.env.PORT || 8080);
+
+function startServer(port) {
+  const server = http.createServer(/* health 핸들 포함 */);
+
+  server.on("error", (err) => {
+    if (!isRender && err.code === "EADDRINUSE") {
+      console.warn(`⚠️ ${port} in use → ${port + 1}`);
+      startServer(port + 1);              // 로컬에서만 자동증가
+    } else {
+      throw err;                          // Render에선 반드시 지정 PORT로만
+    }
+  });
+
+  server.listen(port, () => {
+    console.log(`✅ Local WS listening on ws://localhost:${port}`);
+    wss = new WebSocketServer({ server });
+  });
+}
+
+startServer(FIXED_PORT);
