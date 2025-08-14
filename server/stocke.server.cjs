@@ -1,233 +1,179 @@
-// stocke.server.cjs  ← CommonJS 버전
+// stocke.server.clean.cjs
+// CommonJS only. Single HTTP listen. WS shares HTTP server socket.
+// Render-safe: uses process.env.PORT, no auto-increment on Render.
+// Minimal placeholders for your existing logic (broadcast, KIS connect, etc).
+
 require("dotenv").config();
 const http = require("http");
 const axios = require("axios");
 const WebSocket = require("ws");
 const { WebSocketServer } = require("ws");
-const path = require("path");
+const { URL } = require("url");
 
-
-const must = ["APP_KEY","APP_SECRET","KIS_TR_ID_INDEX"];
-const miss = must.filter(k => !process.env[k] || !String(process.env[k]).trim());
-if (miss.length) {
-  console.error("❌ .env 누락:", miss);
-  console.error("👉 .env 파일에 위 변수 채우고 다시 실행하세요.");
-  process.exit(1);
-} else {
-  const mask = (v)=> v ? v.slice(0,4) + "…(" + v.length + ")" : "NA";
-  console.log("✅ env ok:",
-    "APP_KEY=", mask(process.env.APP_KEY),
-    "| APP_SECRET=", mask(process.env.APP_SECRET),
-    "| KIS_TR_ID_INDEX=", process.env.KIS_TR_ID_INDEX);
-}
-require("dotenv").config({ path: path.resolve(__dirname, ".env") });
-
+// ---------- ENV (no duplicate declarations) ----------
 const {
-  APP_KEY, APP_SECRET,
+  APP_KEY,
+  APP_SECRET,
+  KIS_TR_ID_INDEX,
+  CUSTTYPE = "P",
   KIS_REST: ENV_KIS_REST,
   KIS_WS:   ENV_KIS_WS,
   POLL_SECONDS = "3",
-  CUSTTYPE = "P",
-  KIS_TR_ID_INDEX,   // KIS 문서의 '국내지수 실시간' TR_ID로 설정해야 함
-  PORT = "8080",
+  PORT: ENV_PORT,
 } = process.env;
 
+const IS_RENDER = !!process.env.RENDER;
+const PORT = Number(ENV_PORT || 8080);
 
-
-// 모의키(VT...)면 paper, 아니면 real
+// ---------- Mode & endpoints (no redeclare) ----------
 const KIS_MODE = (APP_KEY || "").startsWith("VT") ? "paper" : "real";
-
 const DEF_REST = KIS_MODE === "paper"
   ? "https://openapivts.koreainvestment.com:29443"
   : "https://openapi.koreainvestment.com:9443";
-
 const DEF_WS = KIS_MODE === "paper"
   ? "wss://ops.koreainvestment.com:31000"
   : "wss://ops.koreainvestment.com:21000";
 
-// 최종 사용값(※ 재선언 말고 새로 결정)
 const KIS_REST = ENV_KIS_REST || DEF_REST;
 const KIS_WS   = ENV_KIS_WS   || DEF_WS;
 
+// Normalize WS url (force wss, remove /tryitout)
 const __RAW_KIS_WS = (process.env.KIS_WS || KIS_WS || "").trim();
 const __SANITIZED_KIS_WS = (__RAW_KIS_WS || KIS_WS)
   .replace(/^ws:\/\//i, "wss://")
-  .replace(/\/+tryitout.*$/i, ""); // remove any test path segments
+  .replace(/\/+tryitout.*$/i, "");
 
-const POLL_MS = Number(POLL_SECONDS) * 1000;
+// Dynamic Origin from KIS_REST
+let __host; try { __host = new URL(KIS_REST).host; } catch { __host = "openapi.koreainvestment.com"; }
+const ORIGIN_HEADER = `https://${__host}`;
 
+console.log("✅ env ok: APP_KEY=", (APP_KEY||"").slice(0,4)+"…", "| KIS_TR_ID_INDEX=", KIS_TR_ID_INDEX);
+console.log("🔌 local WS will bind on:", `ws://localhost:${PORT}`);
+console.log("[KIS-WS] endpoint =", __SANITIZED_KIS_WS, "| origin =", ORIGIN_HEADER);
 
-const url = require("url");
-const restHost = (() => {
-  try { return new url.URL(process.env.KIS_REST).host; } catch { return "openapi.koreainvestment.com"; }
-})();
-const ORIGIN_HEADER = `https://${restHost}`;
+// ---------- HTTP + WS boot (single listen) ----------
+let __BOOTED = false;
+let serverRef = null;
+let wssRef = null;
 
-// --- 인증 ---
-async function getAccessToken() {
-  const url = `${KIS_REST}/oauth2/tokenP`;
-  const { data } = await axios.post(
-    url,
-    { grant_type: "client_credentials", appkey: APP_KEY, appsecret: APP_SECRET },
-    { headers: { "Content-Type": "application/json" } }
-  );
-  return data.access_token;
-}
+function startServerOnce() {
+  if (__BOOTED) return;
+  __BOOTED = true;
 
-async function getApprovalKey() {
-  const url = `${KIS_REST}/oauth2/Approval`;
-  const { data } = await axios.post(
-    url,
-    { grant_type: "client_credentials", appkey: APP_KEY, appsecret: APP_SECRET },
-    { headers: { "Content-Type": "application/json" } }
-  );
-  return data.approval_key;
-}
-
-// --- 로컬 WS 서버 ---
-const server = http.createServer();
-const wss = new WebSocketServer({ server });
-
-function broadcast(obj) {
-  const s = JSON.stringify(obj);
-  for (const c of wss.clients) if (c.readyState === WebSocket.OPEN) c.send(s);
-}
-
-// --- KIS WebSocket (국내: 코스피/코스닥) ---
-async function startKisRealtime() {
-  const approval_key = await getApprovalKey();
-
-  // 1) ws 인스턴스 먼저 생성
-  const ws = new WebSocket(__SANITIZED_KIS_WS, {
-    origin: ORIGIN_HEADER,
-    perMessageDeflate: false,
+  const server = http.createServer((req, res) => {
+    if (req.url === "/health") { res.writeHead(200); res.end("ok"); return; }
+    res.writeHead(200); res.end("KIS WS server up");
   });
-
-  console.log("[KIS-WS] endpoint =", __SANITIZED_KIS_WS);
-
-  // 2) 핸들러들은 'ws' 생성 직후에 붙인다
-  ws.on("open", () => {
-    console.log("[KIS-WS] connected");
-
-    // 승인/등록 + 구독 (네가 쓰던 포맷 유지)
-    const register = (tr_key) =>
-      ws.send(
-        JSON.stringify({
-          header: {
-            approval_key,
-            custtype: CUSTTYPE, // "P" or "B"
-            tr_type: "1",
-            "content-type": "utf-8",
-          },
-          body: { input: { tr_id: KIS_TR_ID_INDEX, tr_key: "1001" } },
-        })
-      );
-
-    register("0001"); // KOSPI
-    register("1001"); // KOSDAQ
-  });
-
-  ws.on("message", (buf) => {
-    const text = buf.toString();
-    if (text.startsWith("0") || text.startsWith("1")) {
-      const [flag, tr_id, count, payload] = text.split("|");
-      broadcast({ provider: "KIS-WS", flag, tr_id, payload, raw: text });
-    } else {
-      let json;
-      try {
-        json = JSON.parse(text);
-      } catch {
-        json = { raw: text };
-      }
-      broadcast({ provider: "KIS-WS", meta: json });
-    }
-  });
-
-  // 응답 본문까지 찍어서 403/401 원인 파악
-  ws.on("unexpected-response", (req, res) => {
-    try {
-      res.setEncoding("utf8");
-      let body = ""; res.on("data", c => body += c);
-      res.on("end", () => console.error("[KIS-WS] unexpected-response", res.statusCode, body));
-    } catch(e) {
-      console.error("[KIS-WS] unexpected-response", res.statusCode);
-    }
-  });
-
-  ws.on("close", (code) => {
-    console.warn("[KIS-WS] closed:", code, "→ reconnecting…");
-    setTimeout(startKisRealtime, 5000);
-  });
-
-  ws.on("error", (e) => {
-    console.error("[KIS-WS] error:", e.message);
-    try {
-      ws.close();
-    } catch {}
-  });
-}
-
-// --- (옵션) 해외지수/환율: REST 폴링 → 우리 WS로 중계 ---
-async function startPolling() {
-  const access = await getAccessToken();
-  const baseHeaders = {
-    "content-type": "application/json; charset=utf-8",
-    authorization: `Bearer ${access}`,
-    appkey: APP_KEY,
-    appsecret: APP_SECRET,
-  };
-  const targets = [
-    // ↓↓↓ 자리표시자 URL (KIS 문서의 실제 엔드포인트/파라미터로 교체)
-    { id: "NASDAQ",  url: `${KIS_REST}/uapi/overseas-stock/v1/quotations/overseas-index-minute?FID_INPUT_ISCD=IXIC&FID_INPUT_HOUR_1=1`, tr_id: "HHDFS00000000" },
-    { id: "S&P500",  url: `${KIS_REST}/uapi/overseas-stock/v1/quotations/overseas-index-minute?FID_INPUT_ISCD=SPX&FID_INPUT_HOUR_1=1`, tr_id: "HHDFS00000000" },
-    { id: "VIX",     url: `${KIS_REST}/uapi/overseas-stock/v1/quotations/overseas-index-minute?FID_INPUT_ISCD=VIX&FID_INPUT_HOUR_1=1`, tr_id: "HHDFS00000000" },
-    { id: "USD/KRW", url: `${KIS_REST}/uapi/overseas-stock/v1/quotations/inquire-exchange?FID_INPUT_ISCD=USDKRW`, tr_id: "HHDFS00000000" },
-  ];
-
-  async function pollOnce() {
-    try {
-      for (const t of targets) {
-        const { data } = await axios.get(t.url, { headers: { ...baseHeaders, tr_id: t.tr_id } });
-        broadcast({ provider: "KIS-REST", id: t.id, data });
-        await new Promise((r) => setTimeout(r, 30));
-      }
-    } catch (e) {
-      broadcast({ provider: "KIS-REST", error: e.message });
-    }
-  }
-
-  pollOnce();
-  setInterval(pollOnce, POLL_MS);
-}
-
-// --- 부팅 ---
-server.listen(Number(PORT), () => {
-  console.log(`🔌 local WS: ws://localhost:${PORT}`);
-});
-startKisRealtime().catch((e) => console.error("KIS WS boot failed:", e.message));
-// startPolling().catch((e) => console.error("Polling boot failed:", e.message));
-
-wss.on("connection", (socket) => {
-  socket.send(JSON.stringify({ hello: "A-plan realtime bridge ready" }));
-});
-
-
-
-
-const isRender = !!process.env.RENDER;   // Render가 환경변수로 넣어줌
-const FIXED_PORT = Number(process.env.PORT || 8080);
-
-function startServer(port) {
-  const server = http.createServer(/* health 핸들 포함 */);
 
   server.on("error", (err) => {
-    if (!isRender && err.code === "EADDRINUSE") {
-      console.warn(`⚠️ ${port} in use → ${port + 1}`);
-      startServer(port + 1);              // 로컬에서만 자동증가
+    if (!IS_RENDER && err && err.code === "EADDRINUSE") {
+      console.error(`EADDRINUSE on :${PORT}. Stop the other process or change PORT.`);
+      process.exit(1);
     } else {
-      throw err;
+      console.error("listen error:", err);
+      process.exit(1);
     }
+  });
+
+  server.listen(PORT, "0.0.0.0", () => {
+    console.log(`✅ Local WS listening on ws://localhost:${PORT}`);
+    const wss = new WebSocketServer({ server }); // share HTTP socket — DO NOT rebind by { port }
+    serverRef = server;
+    wssRef = wss;
+    attachWsHandlers(wss); // your handlers here
+    connectKIS();          // kick off KIS (optional)
   });
 }
 
-startServer(FIXED_PORT);
+startServerOnce();
+
+// ---------- WS handlers (attach on wssRef) ----------
+function broadcast(obj) {
+  const s = typeof obj === "string" ? obj : JSON.stringify(obj);
+  wssRef?.clients?.forEach((c) => {
+    if (c.readyState === WebSocket.OPEN) c.send(s);
+  });
+}
+
+function attachWsHandlers(wss) {
+  wss.on("connection", (sock) => {
+    console.log("📡 WS client connected");
+    sock.on("close", () => console.log("🔌 WS client disconnected"));
+  });
+}
+
+// ---------- KIS connection (minimal, keep your own message format) ----------
+async function getApprovalKey() {
+  try {
+    const url = `${KIS_REST}/oauth2/Approval`;
+    const { data } = await axios.post(url, {
+      grant_type: "client_credentials",
+      appkey: APP_KEY,
+      appsecret: APP_SECRET,
+    }, { headers: { "Content-Type": "application/json; charset=utf-8" } });
+    if (!data?.approval_key) throw new Error("No approval_key in response");
+    return data.approval_key;
+  } catch (e) {
+    console.error("[KIS] approval error:", e?.response?.status, e?.response?.data || e.message);
+    throw e;
+  }
+}
+
+async function connectKIS() {
+  try {
+    const approval = await getApprovalKey();
+    console.log("[KIS] approval_key OK");
+
+    const ws = new WebSocket(__SANITIZED_KIS_WS, {
+      origin: ORIGIN_HEADER,
+      perMessageDeflate: false,
+    });
+
+    ws.on("open", () => {
+      console.log("[KIS-WS] connected");
+      // Send your register/subscription messages here.
+      // Example (adjust to your exact spec):
+      ws.send(JSON.stringify({
+        header: {
+          approval_key: approval,
+          custtype: CUSTTYPE,
+          tr_type: "1",
+          "content-type": "utf-8"
+        },
+        body: { input: { tr_id: KIS_TR_ID_INDEX, tr_key: "1001" } }
+      }));
+    });
+
+    ws.on("message", (buf) => {
+      const text = buf.toString();
+      broadcast({ provider: "KIS-WS", raw: text });
+    });
+
+    ws.on("unexpected-response", (req, res) => {
+      try {
+        res.setEncoding("utf8"); let body = "";
+        res.on("data", (c) => body += c);
+        res.on("end", () => console.error("[KIS-WS] unexpected-response", res.statusCode, body));
+      } catch (e) {
+        console.error("[KIS-WS] unexpected-response", res.statusCode);
+      }
+    });
+
+    ws.on("close", (code) => {
+      console.warn("[KIS-WS] closed:", code, "→ reconnecting in 5s");
+      setTimeout(connectKIS, 5000);
+    });
+
+    ws.on("error", (e) => {
+      console.error("[KIS-WS] error:", e.message);
+      try { ws.close(); } catch {}
+    });
+
+  } catch (e) {
+    console.error("[KIS] connect error:", e.message, "→ retry in 5s");
+    setTimeout(connectKIS, 5000);
+  }
+}
+
+// Export for tests/other modules if needed
+module.exports = { server: () => serverRef, wss: () => wssRef };
