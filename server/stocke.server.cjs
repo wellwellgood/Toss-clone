@@ -20,6 +20,7 @@ const {
   KIS_WS:   ENV_KIS_WS,
   POLL_SECONDS = "3",
   PORT: ENV_PORT,
+  MOCK_ON_FAIL=1
 } = process.env;
 
 // Trim whitespace/newlines in secrets
