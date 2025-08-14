@@ -51,6 +51,12 @@ console.log("✅ env ok: APP_KEY=", (APP_KEY||"").slice(0,4)+"…", "| KIS_TR_ID
 console.log("🔌 local WS will bind on:", `ws://localhost:${PORT}`);
 console.log("[KIS-WS] endpoint =", __SANITIZED_KIS_WS, "| origin =", ORIGIN_HEADER);
 
+// ---------- sanity check for required env ----------
+if (!APP_KEY || !APP_SECRET) {
+  console.error("❌ Missing APP_KEY/APP_SECRET. Check .env or Render env vars.");
+}
+
+
 // ---------- HTTP + WS boot (single listen) ----------
 let __BOOTED = false;
 let serverRef = null;
@@ -109,8 +115,8 @@ async function getApprovalKey() {
     const { data } = await axios.post(url, {
       grant_type: "client_credentials",
       appkey: APP_KEY,
-      appsecret: APP_SECRET,
-    }, { headers: { "Content-Type": "application/json; charset=utf-8",'appkey': APP_KEY,'appsecret': APP_SECRET } });
+      secretkey: APP_SECRET, // ✅ KIS expects `secretkey`, not `appsecret`
+    }, { headers: { "Content-Type": "application/json; charset=utf-8" } });
     if (!data?.approval_key) throw new Error("No approval_key in response");
     return data.approval_key;
   } catch (e) {
