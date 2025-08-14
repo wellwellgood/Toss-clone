@@ -20,7 +20,6 @@ const {
   KIS_WS:   ENV_KIS_WS,
   POLL_SECONDS = "3",
   PORT: ENV_PORT,
-  MOCK_ON_FAIL=1
 } = process.env;
 
 // Trim whitespace/newlines in secrets
@@ -28,6 +27,9 @@ const CLEAN_APP_SECRET = (APP_SECRET || '').replace(/\s+/g, '');
 
 const IS_RENDER = !!process.env.RENDER;
 const PORT = Number(ENV_PORT || 8080);
+const MOCK_ON_FAIL = String(process.env.MOCK_ON_FAIL || '').toLowerCase() === 'true' || process.env.MOCK_ON_FAIL === '1';
+let __MOCK_ACTIVE = false;
+let __MOCK_TIMER = null;
 
 // ---------- Mode & endpoints (no redeclare) ----------
 const KIS_MODE = (APP_KEY || "").startsWith("VT") ? "paper" : "real";
@@ -75,6 +77,18 @@ function startServerOnce() {
   __BOOTED = true;
 
   const server = http.createServer((req, res) => {
+  if (req.url === "/mock/on") {
+    try { startMockIndexStreamer(); } catch {}
+    res.writeHead(200, { "Content-Type": "application/json" });
+    res.end(JSON.stringify({ ok: true, mock: __MOCK_ACTIVE }));
+    return;
+  }
+  if (req.url === "/mock/off") {
+    try { stopMockIndexStreamer(); } catch {}
+    res.writeHead(200, { "Content-Type": "application/json" });
+    res.end(JSON.stringify({ ok: true, mock: __MOCK_ACTIVE }));
+    return;
+  }
   if (req.url === "/debug/env") {
     res.writeHead(200, { "Content-Type": "application/json" });
     res.end(JSON.stringify({
@@ -149,8 +163,36 @@ async function getApprovalKey() {
     return data.approval_key;
   } catch (e) {
     console.error("[KIS] approval error:", e?.response?.status, e?.response?.data || e.message);
+    if (MOCK_ON_FAIL) { try { startMockIndexStreamer(); } catch {}
+      throw new Error("MOCK_STARTED"); }
     throw e;
   }
+}
+
+
+function startMockIndexStreamer() {
+  if (__MOCK_ACTIVE) return;
+  __MOCK_ACTIVE = true;
+  console.warn("[MOCK] Starting mock index streamer (KOSDAQ 1001).");
+  let price = 900.00 + Math.random() * 200; // base
+  let rate = 0.00;
+  clearInterval(__MOCK_TIMER);
+  __MOCK_TIMER = setInterval(() => {
+    // random walk
+    const drift = (Math.random() - 0.5) * 2;
+    price = Math.max(100, price + drift);
+    rate = Math.max(-30, Math.min(30, rate + drift * 0.02));
+    const raw = `1001^${price.toFixed(2)}^${rate.toFixed(2)}`;
+    broadcast({ provider: "KIS-WS", raw });
+  }, 1000);
+}
+
+function stopMockIndexStreamer() {
+  if (!__MOCK_ACTIVE) return;
+  __MOCK_ACTIVE = false;
+  clearInterval(__MOCK_TIMER);
+  __MOCK_TIMER = null;
+  console.warn("[MOCK] Stopped mock index streamer.");
 }
 
 async function connectKIS() {
@@ -205,6 +247,7 @@ async function connectKIS() {
 
   } catch (e) {
     console.error("[KIS] connect error:", e.message, "→ retry in 5s");
+    if (e && String(e.message).includes("MOCK_STARTED")) { console.warn("[KIS] mock active — skip reconnect"); return; }
     setTimeout(connectKIS, 5000);
   }
 }
