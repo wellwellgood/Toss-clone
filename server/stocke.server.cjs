@@ -72,22 +72,32 @@ function broadcast(obj) {
 // --- KIS WebSocket (국내: 코스피/코스닥) ---
 async function startKisRealtime() {
   const approval_key = await getApprovalKey();
+
+  // 1) ws 인스턴스 먼저 생성
   const ws = new WebSocket(__SANITIZED_KIS_WS, {
-      origin: "https://openapi.koreainvestment.com",
-      perMessageDeflate: false
-    });
+    origin: "https://openapi.koreainvestment.com",
+    perMessageDeflate: false,
+  });
 
-    console.log("[KIS-WS] endpoint =", __SANITIZED_KIS_WS);
-}
+  console.log("[KIS-WS] endpoint =", __SANITIZED_KIS_WS);
 
+  // 2) 핸들러들은 'ws' 생성 직후에 붙인다
   ws.on("open", () => {
     console.log("[KIS-WS] connected");
 
+    // 승인/등록 + 구독 (네가 쓰던 포맷 유지)
     const register = (tr_key) =>
-      ws.send(JSON.stringify({
-        header: { approval_key, custtype: CUSTTYPE, tr_type: "1", "content-type": "utf-8" },
-        body: { input: { tr_id: KIS_TR_ID_INDEX, tr_key } },
-      }));
+      ws.send(
+        JSON.stringify({
+          header: {
+            approval_key,
+            custtype: CUSTTYPE, // "P" or "B"
+            tr_type: "1",
+            "content-type": "utf-8",
+          },
+          body: { input: { tr_id: KIS_TR_ID_INDEX, tr_key } },
+        })
+      );
 
     register("0001"); // KOSPI
     register("0002"); // KOSDAQ
@@ -99,26 +109,41 @@ async function startKisRealtime() {
       const [flag, tr_id, count, payload] = text.split("|");
       broadcast({ provider: "KIS-WS", flag, tr_id, payload, raw: text });
     } else {
-      let json; try { json = JSON.parse(text); } catch { json = { raw: text }; }
+      let json;
+      try {
+        json = JSON.parse(text);
+      } catch {
+        json = { raw: text };
+      }
       broadcast({ provider: "KIS-WS", meta: json });
     }
   });
 
-  ws.on("close", (code) => {
-    console.log("[KIS-WS] closed:", code, "→ reconnecting…");
-    setTimeout(startKisRealtime, 5000);
-  });
-  ws.on("error", (e) => console.log("[KIS-WS] error:", e.message));
-
+  // 응답 본문까지 찍어서 403/401 원인 파악
   ws.on("unexpected-response", (req, res) => {
-    console.log("[KIS-WS] unexpected-response:", res.statusCode, res.statusMessage);
-    let body = ""; res.on("data", c => body += c); res.on("end", () => console.log("[KIS-WS] body:", body));
+    try {
+      res.setEncoding("utf8");
+      let body = "";
+      res.on("data", (c) => (body += c));
+      res.on("end", () =>
+        console.error("[KIS-WS] unexpected-response", res.statusCode, body)
+      );
+    } catch (e) {
+      console.error("[KIS-WS] unexpected-response", res.statusCode);
+    }
   });
-  ws.on("close", (code, reason) => {
-    console.log("[KIS-WS] closed:", code, reason?.toString());
+
+  ws.on("close", (code) => {
+    console.warn("[KIS-WS] closed:", code, "→ reconnecting…");
     setTimeout(startKisRealtime, 5000);
   });
-  ws.on("error", (e) => console.log("[KIS-WS] error:", e?.message));
+
+  ws.on("error", (e) => {
+    console.error("[KIS-WS] error:", e.message);
+    try {
+      ws.close();
+    } catch {}
+  });
 }
 
 // --- (옵션) 해외지수/환율: REST 폴링 → 우리 WS로 중계 ---
