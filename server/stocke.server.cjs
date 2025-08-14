@@ -6,6 +6,18 @@ const WebSocket = require("ws");
 const { WebSocketServer } = require("ws");
 const path = require("path");
 
+
+
+const KIS_MODE = (process.env.APP_KEY || "").startsWith("VT") ? "paper" : "real";
+const DEF_REST = KIS_MODE === "paper"
+  ? "https://openapivts.koreainvestment.com:29443"
+  : "https://openapi.koreainvestment.com:9443";
+const DEF_WS = KIS_MODE === "paper"
+  ? "wss://ops.koreainvestment.com:31000"
+  : "wss://ops.koreainvestment.com:21000";
+const KIS_REST = process.env.KIS_REST || DEF_REST;
+const KIS_WS   = process.env.KIS_WS   || DEF_WS;
+
 const must = ["APP_KEY","APP_SECRET","KIS_TR_ID_INDEX"];
 const miss = must.filter(k => !process.env[k] || !String(process.env[k]).trim());
 if (miss.length) {
@@ -38,6 +50,13 @@ const __SANITIZED_KIS_WS = (__RAW_KIS_WS || KIS_WS)
   .replace(/\/+tryitout.*$/i, ""); // remove any test path segments
 
 const POLL_MS = Number(POLL_SECONDS) * 1000;
+
+
+const url = require("url");
+const restHost = (() => {
+  try { return new url.URL(process.env.KIS_REST).host; } catch { return "openapi.koreainvestment.com"; }
+})();
+const ORIGIN_HEADER = `https://${restHost}`;
 
 // --- 인증 ---
 async function getAccessToken() {
@@ -75,7 +94,7 @@ async function startKisRealtime() {
 
   // 1) ws 인스턴스 먼저 생성
   const ws = new WebSocket(__SANITIZED_KIS_WS, {
-    origin: "https://openapi.koreainvestment.com",
+    origin: ORIGIN_HEADER,
     perMessageDeflate: false,
   });
 
@@ -100,7 +119,7 @@ async function startKisRealtime() {
       );
 
     register("0001"); // KOSPI
-    register("0002"); // KOSDAQ
+    register("1001"); // KOSDAQ
   });
 
   ws.on("message", (buf) => {
@@ -125,9 +144,7 @@ async function startKisRealtime() {
       res.setEncoding("utf8");
       let body = "";
       res.on("data", (c) => (body += c));
-      res.on("end", () =>
-        console.error("[KIS-WS] unexpected-response", res.statusCode, body)
-      );
+      res.on("end", () => console.error("[KIS-WS] unexpected-response", res.statusCode, body));
     } catch (e) {
       console.error("[KIS-WS] unexpected-response", res.statusCode);
     }
@@ -189,3 +206,4 @@ startKisRealtime().catch((e) => console.error("KIS WS boot failed:", e.message))
 wss.on("connection", (socket) => {
   socket.send(JSON.stringify({ hello: "A-plan realtime bridge ready" }));
 });
+
