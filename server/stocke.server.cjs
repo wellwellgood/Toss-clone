@@ -229,9 +229,8 @@ function startServer(port) {
     }
   });
 
-  server.listen(port, () => {
-    console.log(`✅ Local WS listening on ws://localhost:${port}`);
-    wss = new WebSocketServer({ server });
+  server.listen(PORT, "0.0.0.0", () => {
+    console.log(`✅ Server running on port ${PORT}`);;
   });
 }
 
