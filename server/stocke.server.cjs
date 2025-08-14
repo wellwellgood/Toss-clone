@@ -114,7 +114,12 @@ async function getApprovalKey() {
       grant_type: "client_credentials",
       appkey: APP_KEY,
       appsecret: APP_SECRET,
-    }, { headers: { "Content-Type": "application/json; charset=utf-8",'appkey': APP_KEY,'appsecret': APP_SECRET } });
+      secretkey: APP_SECRET
+    }, { headers: {
+      "Content-Type": "application/json; charset=utf-8",
+      'appkey': APP_KEY,
+      'appsecret': APP_SECRET
+    } });
     if (!data?.approval_key) throw new Error("No approval_key in response");
     return data.approval_key;
   } catch (e) {
