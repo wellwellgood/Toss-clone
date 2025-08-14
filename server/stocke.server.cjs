@@ -225,12 +225,8 @@ function startServer(port) {
       console.warn(`⚠️ ${port} in use → ${port + 1}`);
       startServer(port + 1);              // 로컬에서만 자동증가
     } else {
-      throw err;                          // Render에선 반드시 지정 PORT로만
+      throw err;
     }
-  });
-
-  server.listen(PORT, "0.0.0.0", () => {
-    console.log(`✅ Server running on port ${PORT}`);;
   });
 }
 
