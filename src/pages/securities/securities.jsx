@@ -37,7 +37,7 @@ export default function Securities() {
   const wsRef = useRef(null);
 
   useEffect(() => {
-    const ws = new WebSocket("wss://https://toss-clone.onrender.com"); // 서버 포트는 .env의 PORT와 일치
+    const ws = new WebSocket("wss://toss-clone.onrender.com"); // 서버 포트는 .env의 PORT와 일치
     wsRef.current = ws;
 
     ws.onmessage = (e) => {
