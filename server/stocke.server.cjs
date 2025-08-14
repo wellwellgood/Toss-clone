@@ -7,17 +7,6 @@ const { WebSocketServer } = require("ws");
 const path = require("path");
 
 
-
-const KIS_MODE = (process.env.APP_KEY || "").startsWith("VT") ? "paper" : "real";
-const DEF_REST = KIS_MODE === "paper"
-  ? "https://openapivts.koreainvestment.com:29443"
-  : "https://openapi.koreainvestment.com:9443";
-const DEF_WS = KIS_MODE === "paper"
-  ? "wss://ops.koreainvestment.com:31000"
-  : "wss://ops.koreainvestment.com:21000";
-const KIS_REST = process.env.KIS_REST || DEF_REST;
-const KIS_WS   = process.env.KIS_WS   || DEF_WS;
-
 const must = ["APP_KEY","APP_SECRET","KIS_TR_ID_INDEX"];
 const miss = must.filter(k => !process.env[k] || !String(process.env[k]).trim());
 if (miss.length) {
@@ -34,15 +23,31 @@ if (miss.length) {
 require("dotenv").config({ path: path.resolve(__dirname, ".env") });
 
 const {
-  APP_KEY,
-  APP_SECRET,
-  KIS_REST = "https://openapi.koreainvestment.com:9443",
-  KIS_WS = "wss://ops.koreainvestment.com:21000",
+  APP_KEY, APP_SECRET,
+  KIS_REST: ENV_KIS_REST,
+  KIS_WS:   ENV_KIS_WS,
+  POLL_SECONDS = "3",
   CUSTTYPE = "P",
   KIS_TR_ID_INDEX,   // KIS 문서의 '국내지수 실시간' TR_ID로 설정해야 함
-  POLL_SECONDS = "3",
   PORT = "8080",
 } = process.env;
+
+
+
+// 모의키(VT...)면 paper, 아니면 real
+const KIS_MODE = (APP_KEY || "").startsWith("VT") ? "paper" : "real";
+
+const DEF_REST = KIS_MODE === "paper"
+  ? "https://openapivts.koreainvestment.com:29443"
+  : "https://openapi.koreainvestment.com:9443";
+
+const DEF_WS = KIS_MODE === "paper"
+  ? "wss://ops.koreainvestment.com:31000"
+  : "wss://ops.koreainvestment.com:21000";
+
+// 최종 사용값(※ 재선언 말고 새로 결정)
+const KIS_REST = ENV_KIS_REST || DEF_REST;
+const KIS_WS   = ENV_KIS_WS   || DEF_WS;
 
 const __RAW_KIS_WS = (process.env.KIS_WS || KIS_WS || "").trim();
 const __SANITIZED_KIS_WS = (__RAW_KIS_WS || KIS_WS)
