@@ -67,7 +67,10 @@ function broadcast(obj) {
 // --- KIS WebSocket (국내: 코스피/코스닥) ---
 async function startKisRealtime() {
   const approval_key = await getApprovalKey();
-  const ws = new WebSocket(KIS_WS, { perMessageDeflate: false });
+  const ws = new WebSocket(KIS_WS, { 
+    perMessageDeflate: false,
+    origin: "https://openapi.koreainvestment.com"
+  });
 
   ws.on("open", () => {
     console.log("[KIS-WS] connected");
@@ -153,5 +156,3 @@ startKisRealtime().catch((e) => console.error("KIS WS boot failed:", e.message))
 wss.on("connection", (socket) => {
   socket.send(JSON.stringify({ hello: "A-plan realtime bridge ready" }));
 });
-
-1
