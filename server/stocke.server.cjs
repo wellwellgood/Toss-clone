@@ -25,12 +25,17 @@ const {
   APP_KEY,
   APP_SECRET,
   KIS_REST = "https://openapi.koreainvestment.com:9443",
-  KIS_WS = "ws://ops.koreainvestment.com:21000",
+  KIS_WS = "wss://ops.koreainvestment.com:21000",
   CUSTTYPE = "P",
   KIS_TR_ID_INDEX,   // KIS 문서의 '국내지수 실시간' TR_ID로 설정해야 함
   POLL_SECONDS = "3",
   PORT = "8080",
 } = process.env;
+
+const __RAW_KIS_WS = (process.env.KIS_WS || KIS_WS || "").trim();
+const __SANITIZED_KIS_WS = (__RAW_KIS_WS || KIS_WS)
+  .replace(/^ws:\/\//i, "wss://")
+  .replace(/\/+tryitout.*$/i, ""); // remove any test path segments
 
 const POLL_MS = Number(POLL_SECONDS) * 1000;
 
@@ -67,10 +72,13 @@ function broadcast(obj) {
 // --- KIS WebSocket (국내: 코스피/코스닥) ---
 async function startKisRealtime() {
   const approval_key = await getApprovalKey();
-  const ws = new WebSocket(KIS_WS, { 
-    perMessageDeflate: false,
-    origin: "https://openapi.koreainvestment.com"
-  });
+  const ws = new WebSocket(__SANITIZED_KIS_WS, {
+      origin: "https://openapi.koreainvestment.com",
+      perMessageDeflate: false
+    });
+
+    console.log("[KIS-WS] endpoint =", __SANITIZED_KIS_WS);
+}
 
   ws.on("open", () => {
     console.log("[KIS-WS] connected");
@@ -98,7 +106,7 @@ async function startKisRealtime() {
 
   ws.on("close", (code) => {
     console.log("[KIS-WS] closed:", code, "→ reconnecting…");
-    setTimeout(startKisRealtime, 1500);
+    setTimeout(startKisRealtime, 5000);
   });
   ws.on("error", (e) => console.log("[KIS-WS] error:", e.message));
 
@@ -108,7 +116,7 @@ async function startKisRealtime() {
   });
   ws.on("close", (code, reason) => {
     console.log("[KIS-WS] closed:", code, reason?.toString());
-    setTimeout(startKisRealtime, 1500);
+    setTimeout(startKisRealtime, 5000);
   });
   ws.on("error", (e) => console.log("[KIS-WS] error:", e?.message));
 }
