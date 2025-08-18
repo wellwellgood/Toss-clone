@@ -1,39 +1,32 @@
-import { useEffect, useState, useRef, useMemo } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import styles from "../../css/securities/securities.module.css";
 
-/** ─────────────────────────────────────────────────────────
- *  KIS 지수 페이로드 휴리스틱 파서 (원본 로직 개선)
- *  - 문자열/JSON 모두 허용
- *  - 코스피(0001), 코스닥(1001), 코스피200(2001), KRX100(4001)
- *  - 가격/등락률 후보를 뒤쪽에서 우선 매칭
- *  ───────────────────────────────────────────────────────── */
+
+import Firstcomponent from './1stcomponent';
+import Secondcomponent from './2thcomponent';
+
+import magnefier from "./img/magnifier.png";
+import hambuger from "./img/hamburger.jpg";
+
+/** ── KIS 원시 프레임 파서 ─────────────────────────────── */
 function parseKisIndexPayload(rawLike) {
-  // JSON이면 그대로 사용, 문자열이면 보강
   let raw = rawLike;
   if (typeof rawLike === "object" && rawLike !== null) {
-    // { raw: "...^..."} 형태일 때 최대한 원문을 꺼내준다
     raw = rawLike.raw ?? rawLike.payload ?? JSON.stringify(rawLike);
   }
   if (typeof raw !== "string") {
     try { raw = String(raw); } catch { raw = ""; }
   }
-
-  // 코드 매칭: 필드 경계(^)를 고려
-  const codeMatch = raw.match(/(?:\^|)(0001|1001|2001|4001)(?:\^|)/); 
+  const codeMatch = raw.match(/(?:\^|)(0001|1001|2001|4001)(?:\^|)/);
   const code = codeMatch ? codeMatch[1] : null;
 
-  // 숫자 토큰 분리
   const parts = raw.split("^").map(s => s.replace(/,/g, "").trim());
-  const nums = parts
-    .filter(s => /^-?\d+(\.\d+)?$/.test(s))
-    .map(Number);
+  const nums = parts.filter(s => /^-?\d+(\.\d+)?$/.test(s)).map(Number);
 
-  // 가격 후보: 0.01 초과 양수 중 "뒤쪽" 값
   let price = null;
   const priceCandidates = nums.filter(n => n > 0.01);
   if (priceCandidates.length) price = priceCandidates[priceCandidates.length - 1];
 
-  // 등락률 후보: 절대값 30% 이하 "뒤쪽" 값
   let rate = null;
   const rateCandidates = nums.filter(n => Math.abs(n) <= 30);
   if (rateCandidates.length) rate = rateCandidates[rateCandidates.length - 1];
@@ -41,106 +34,162 @@ function parseKisIndexPayload(rawLike) {
   return { code, price, rate };
 }
 
-/** 환경/호스트에 맞춰 WS URL 자동 계산 */
+/** ── WS 주소 ─────────────────────────────────────────── */
 function resolveWSUrl() {
-  // 1) .env 프론트 변수 우선 (예: VITE_WS_URL=wss://your-host) 
   const envUrl = (import.meta?.env && import.meta.env.VITE_WS_URL) || "";
   if (envUrl) return envUrl;
-
-  // 2) 현재 페이지 기준 동호스트
   const proto = location.protocol === "https:" ? "wss://" : "ws://";
   return proto + location.host;
 }
 
+/** ── 보여줄 지수 세트(순서 = 슬라이드 순서) ───────────── */
+const INDEX_META = [
+  { code: "1001", label: "코스닥" },
+  { code: "0001", label: "코스피" },
+  { code: "2001", label: "코스피200" },
+  { code: "4001", label: "KRX100" },
+];
+
+const makeEmpty = () =>
+  INDEX_META.reduce((acc, { code, label }) => {
+    acc[code] = { label, price: null, rate: null };
+    return acc;
+  }, {});
+
 export default function Securities() {
-  // 실시간 지수 상태 (코스닥 중심)
-  const [kosdaq, setKosdaq] = useState({ price: null, rate: null });
-  const [logs, setLogs] = useState([]);
-  const wsRef = useRef(null);
-
-  // 관심목록(데모) — 실제로는 서버/로컬스토리지/쿼리로 대체 가능
-  const [watch, setWatch] = useState([
-    { code: "005930", name: "삼성전자", price: 0, rate: 0 },
-    { code: "000660", name: "SK하이닉스", price: 0, rate: 0 },
-    { code: "035420", name: "NAVER", price: 0, rate: 0 },
-  ]);
-
   const WS_URL = useMemo(resolveWSUrl, []);
+  const [idxData, setIdxData] = useState(makeEmpty());
+  const [status, setStatus] = useState("idle"); // idle | live | mock
+  const [current, setCurrent] = useState(0);    // 현재 보여줄 1개(한 줄)
+  const wsRef = useRef(null);
+  const lastLiveAtRef = useRef(0);
+  const mockTimerRef = useRef(null);
+  const autoTimerRef = useRef(null);
 
+  // ── 숫자 포맷
+  const fmt = (n, d = 2) => (n == null || Number.isNaN(+n)) ? "—" : (+n).toFixed(d);
+
+  // ── 로컬 모의(서버가 안 줄 때 3초 후 자동 가동)
+  const startLocalMock = () => {
+    if (mockTimerRef.current) return;
+    setStatus("mock");
+    const base = Object.fromEntries(INDEX_META.map(m => [m.code, { p: 900 + Math.random()*200, r: 0 }]));
+    mockTimerRef.current = setInterval(() => {
+      const updates = {};
+      for (const { code } of INDEX_META) {
+        const drift = (Math.random() - 0.5) * 2;
+        base[code].p = Math.max(100, base[code].p + drift);
+        base[code].r = Math.max(-30, Math.min(30, base[code].r + drift*0.02));
+        updates[code] = {
+          ...idxData[code],
+          price: +base[code].p.toFixed(2),
+          rate:  +base[code].r.toFixed(2),
+        };
+      }
+      setIdxData(prev => ({ ...prev, ...updates }));
+    }, 3000);
+  };
+  const stopLocalMock = () => {
+    if (!mockTimerRef.current) return;
+    clearInterval(mockTimerRef.current);
+    mockTimerRef.current = null;
+  };
+
+  // ── WS 연결
   useEffect(() => {
     const ws = new WebSocket(WS_URL);
     wsRef.current = ws;
 
-    ws.onopen = () => {
-      // 서버가 구독메시지를 요구한다면 이곳에서 전송
-      // 예) 지수 스트림: ws.send(JSON.stringify({ type: "subscribe", tr_id: "H0UPCNT0" }));
-      // 예) 관심목록: watch.forEach(w => ws.send(JSON.stringify({ type:"subscribeCode", code: w.code })));
-    };
-
     ws.onmessage = (e) => {
       let msg = e.data;
-      try { msg = JSON.parse(e.data); } catch { /* raw string */ }
+      try { msg = JSON.parse(e.data); } catch {}
+      const payload = typeof msg === "string" ? msg : (msg.raw ?? msg.payload ?? "");
+      const { code, price, rate } = parseKisIndexPayload(payload);
 
-      // KIS 원시 메시지/래핑메시지 모두 커버
-      if (typeof msg === "string") {
-        const { code, price, rate } = parseKisIndexPayload(msg);
-        if (code === "1001") {
-          setKosdaq(prev => ({
-            price: price ?? prev.price,
-            rate: rate ?? prev.rate,
-          }));
-        }
-      } else if (msg?.provider === "KIS-WS") {
-        const { code, price, rate } = parseKisIndexPayload(msg.raw || msg.payload || msg);
-        if (code === "1001") {
-          setKosdaq(prev => ({
-            price: price ?? prev.price,
-            rate: rate ?? prev.rate,
-          }));
-        }
-        // (선택) 종목 틱 반영 예시: msg.code, msg.price, msg.rate에 맞게 반영
-        // if (msg.code && typeof msg.price === "number") {
-        //   setWatch((prev) => prev.map(it => it.code === msg.code ? { ...it, price: msg.price, rate: msg.rate ?? it.rate } : it));
-        // }
+      if (code && idxData[code]) {
+        setIdxData(prev => ({
+          ...prev,
+          [code]: {
+            ...prev[code],
+            price: price ?? prev[code].price,
+            rate:  rate  ?? prev[code].rate
+          }
+        }));
       }
-
-      setLogs(prev => [msg, ...prev].slice(0, 120));
+      lastLiveAtRef.current = Date.now();
+      setStatus("live");
+      stopLocalMock();
     };
 
-    ws.onerror = () => { /* 브라우저는 error 후 close가 이어짐 */ };
-    ws.onclose = () => { /* 자동 재연결은 서버 or 여기서 setTimeout 으로 처리 가능 */ };
+    ws.onclose = () => {};
+    ws.onerror = () => {};
 
     return () => {
       try { ws.close(); } catch {}
       wsRef.current = null;
+      stopLocalMock();
     };
-  }, [WS_URL]);
+  }, [WS_URL]); // eslint-disable-line
 
-  // 표시용 포맷터
-  const fmt = (n, digits = 2) =>
-    n === null || n === undefined || Number.isNaN(Number(n))
-      ? "—"
-      : Number(n).toFixed(digits);
+  // ── 3초 무소식이면 모의 시작
+  useEffect(() => {
+    const t = setInterval(() => {
+      const silent = Date.now() - (lastLiveAtRef.current || 0);
+      if (silent > 3000 && status !== "mock") startLocalMock();
+    }, 1000);
+    return () => clearInterval(t);
+  }, [status]); // eslint-disable-line
 
-  const isUp = typeof kosdaq.rate === "number" ? kosdaq.rate > 0 : null;
+  // ── 자동 슬라이드: 1개만, 아래→위로 전환
+  useEffect(() => {
+    clearInterval(autoTimerRef.current);
+    autoTimerRef.current = setInterval(() => {
+      setCurrent(i => (i + 1) % INDEX_META.length);
+    }, 2500);
+    return () => clearInterval(autoTimerRef.current);
+  }, []);
+
+  // ── 현재 보여줄 라인
+  const { code, label } = INDEX_META[current];
+  const price = idxData[code]?.price;
+  const rate  = idxData[code]?.rate;
+  const tone =
+    typeof rate === "number"
+      ? rate > 0 ? styles.up : rate < 0 ? styles.down : styles.neutral
+      : styles.neutral;
 
   return (
     <div className={styles.container}>
-      {/* ───────── 헤더 (토스증권 무드) ───────── */}
+      <div className={styles.btn}>
+        <button>
+          <link
+            to=""
+            className={styles.search}
+          />
+          <img src={magnefier} alt="" />
+          </button>
+          <button>
+          <link
+            to=""
+            className={styles.setting}
+          />
+          <img src={hambuger} alt="" />
+          </button>
+      </div>
       <header className={styles.header}>
-        <div className={styles.brandRow}>
-          <span className={styles.brand}>토스증권</span>
-        </div>
-        <div className={styles.indexRow}>
-          <span className={styles.indexName}>코스닥</span>
-          <span className={`${styles.indexValue} ${isUp === null ? "" : (isUp ? styles.up : styles.down)}`}>
-            {fmt(kosdaq.price, 2)}
-          </span>
-          <span className={`${styles.indexRate} ${isUp === null ? "" : (isUp ? styles.up : styles.down)}`}>
-            {isUp ? "+" : ""}{fmt(kosdaq.rate, 2)}%
-          </span>
+        <div className={styles.brandContainer}>
+            <span className={styles.brand}>토스증권</span>
+          <div className={styles.vticker}>
+            <div key={`${code}-in-${current}`} className={`${styles.vrow} ${styles.in}`}>
+              <span className={`${styles.indexName} ${tone}`}>{label}</span>
+              <span className={`${styles.indexValue} ${tone}`}>{fmt(price, 2)}</span>
+              <span className={`${styles.indexRate} ${tone}`}>{rate > 0 ? "+" : ""}{fmt(rate, 2)}%</span>
+            </div>
+          </div>
         </div>
       </header>
+      <Firstcomponent />
+      <Secondcomponent />
     </div>
   );
 }
