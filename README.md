@@ -25,6 +25,7 @@
 ## 🛠 기술 스택
 
 ### Frontend
+
 - **React** 18
 - **React Router DOM** (페이지 네비게이션)
 - **Zustand** (전역 상태 관리)
@@ -33,6 +34,7 @@
 - **react-loading-skeleton** (스켈레톤 UI)
 
 ### Backend
+
 - **Node.js / Express**
 - **PostgreSQL (Neon)** - 거래 내역, 사용자 정보 저장
 - **Firebase Admin SDK** - 서버 인증 및 파일 메타데이터 관리
@@ -45,6 +47,7 @@
 ## 📡 API 연동 ###(chat GPT의 도움을 받음)
 
 ### KIS (한국투자증권 API)
+
 - **사용 목적**: 실시간 주가 조회, 종목 정보 가져오기
 - **필요 ENV**
   ```env
@@ -53,24 +56,28 @@
   KIS_TR_ID_INDEX=H0UPCNT0  # API별 식별자
   KIS_REST=https://openapi.koreainvestment.com:9443
   KIS_WS=ws://ops.koreainvestment.com:21000
-
-
-
+  ```
 
 # 1. 레포 클론
+
 git clone https://github.com/your-repo/toss-clone.git
 cd toss-clone
 
 # 2. 패키지 설치
+
 npm install
 
 # 3. 환경 변수 설정
+
 cp .env.example .env
+
 # .env 파일에 KIS, Firebase, DB 정보 입력
 
 # 4. 개발 서버 실행
+
 npm run dev
 
 # 5. 백엔드 서버 실행
+
 cd server
 node stocke.server.cjs

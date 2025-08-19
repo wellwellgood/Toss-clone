@@ -1,12 +1,12 @@
 @import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css);
 
-*{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-.container{
+.container {
     display: flex;
     align-items: flex-start;
     justify-content: center;
@@ -15,31 +15,37 @@
     padding: 10px 0;
     gap: 10px;
 }
-.mystock{
+
+.mystock {
     display: flex;
     flex-direction: row;
     width: 100%;
 }
-.stock{
+
+.stock {
     display: flex;
     align-items: center;
     flex-direction: row;
     gap: 10px;
 }
-.stock span{
+
+.stock span {
     font-size: 14px;
     font-weight: 600;
     font-family: 'Spoqa Han Sans Neo', 'sans-serif';
 }
-.stock img{
+
+.stock img {
     width: 6px;
     height: 10px;
 }
-.Account{
+
+.Account {
     font-size: 24px;
     font-weight: 600;
     font-family: 'Spoqa Han Sans Neo', 'sans-serif';
 }
-.toneCls{
+
+.toneCls {
     font-size: 12px;
 }

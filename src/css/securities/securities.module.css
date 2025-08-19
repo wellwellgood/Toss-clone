@@ -1,10 +1,11 @@
-.btn{
+.btn {
   display: flex;
   align-items: center;
   justify-content: flex-end;
   width: 100%;
   gap: 20px;
 }
+
 .btn button {
   display: flex;
   align-items: center;
@@ -15,129 +16,178 @@
 
 
 .brandContainer {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    flex-direction: row;
-    width: 90%;
-    gap: 15px;
-  }
-  
-  .brandRow {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: row;
+  width: 90%;
+  gap: 15px;
+}
 
-    font-weight: 700;
-    color: var(--blue);
-    display: flex;
-    align-items: center;
-  }
-  
-  .brand { font-size: 20px; }
-  
-  .indexRow {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-  
-  .indexName {
-    font-size: 12px;
-    color: var(--muted);
-  }
-  
-  .indexValue.up, .indexRate.up { color: #e62e2e !important; }
-  .indexValue.down, .indexRate.down { color: #1c7dff !important; }
+.brandRow {
 
-  .indexValue {
-    font-size: 12px;
-    font-weight: 700;
-  }
-  
-  .indexRate {
-    font-size: 12px;
-    font-weight: 600;
-  }
-  
-  .up { color: var(--up); }
-  .down { color: var(--down); }
-  
-  .quickActions {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 8px;
-    padding: 12px 16px 4px;
-  }
-  
-  .actionBtn {
-    background: var(--card);
-    border: 1px solid var(--divider);
-    color: var(--ink);
-    border-radius: 12px;
-    padding: 12px 8px;
-    font-weight: 600;
-  }
-  
-  .watchlist {
-    padding: 8px 16px;
-    display: grid;
-    gap: 8px;
-  }
-  
-  .card {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: var(--card);
-    border: 1px solid var(--divider);
-    border-radius: 14px;
-    padding: 12px 14px;
-  }
-  
-  .cardLeft { display: grid; gap: 2px; }
-  .code { font-size: 12px; color: var(--muted); }
-  .name { font-size: 15px; font-weight: 600; }
-  
-  .cardRight { text-align: right; }
-  .px { font-size: 16px; font-weight: 700; }
-  .rx { font-size: 13px; color: var(--muted); }
-  
-  .debugBox { padding: 10px 16px 80px; }
-  .debugTitle { font-size: 13px; color: var(--muted); margin-bottom: 6px; }
-  .log {
-    background: #0a0d11;
-    border: 1px solid var(--divider);
-    border-radius: 10px;
-    padding: 10px;
-    max-height: 240px;
-    overflow: auto;
-    font-size: 12px;
-    line-height: 1.4;
-  }
-  
-  .tabbar {
-    position: fixed;
-    left: 0; right: 0; bottom: 0;
-    height: 56px;
-    background: rgba(8, 11, 16, 0.86);
-    backdrop-filter: blur(6px);
-    border-top: 1px solid var(--divider);
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-  }
-  
-  .tab {
-    background: transparent;
-    color: var(--muted);
-    font-weight: 700;
-  }
-  .tab.active { color: var(--ink); }
-  
+  font-weight: 700;
+  color: var(--blue);
+  display: flex;
+  align-items: center;
+}
 
-  .vticker{
-    display: flex;
-    flex-direction: row;
-  }
-  .vrow {
-    display: flex;
-    flex-direction: row;
-    gap: 5px;
-  }
+.brand {
+  font-size: 20px;
+}
+
+.indexRow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.indexName {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.indexValue.up,
+.indexRate.up {
+  color: #e62e2e !important;
+}
+
+.indexValue.down,
+.indexRate.down {
+  color: #1c7dff !important;
+}
+
+.indexValue {
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.indexRate {
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.up {
+  color: var(--up);
+}
+
+.down {
+  color: var(--down);
+}
+
+.quickActions {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  padding: 12px 16px 4px;
+}
+
+.actionBtn {
+  background: var(--card);
+  border: 1px solid var(--divider);
+  color: var(--ink);
+  border-radius: 12px;
+  padding: 12px 8px;
+  font-weight: 600;
+}
+
+.watchlist {
+  padding: 8px 16px;
+  display: grid;
+  gap: 8px;
+}
+
+.card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--card);
+  border: 1px solid var(--divider);
+  border-radius: 14px;
+  padding: 12px 14px;
+}
+
+.cardLeft {
+  display: grid;
+  gap: 2px;
+}
+
+.code {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.name {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.cardRight {
+  text-align: right;
+}
+
+.px {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.rx {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.debugBox {
+  padding: 10px 16px 80px;
+}
+
+.debugTitle {
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+
+.log {
+  background: #0a0d11;
+  border: 1px solid var(--divider);
+  border-radius: 10px;
+  padding: 10px;
+  max-height: 240px;
+  overflow: auto;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.tabbar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 56px;
+  background: rgba(8, 11, 16, 0.86);
+  backdrop-filter: blur(6px);
+  border-top: 1px solid var(--divider);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.tab {
+  background: transparent;
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.tab.active {
+  color: var(--ink);
+}
+
+
+.vticker {
+  display: flex;
+  flex-direction: row;
+}
+
+.vrow {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+}

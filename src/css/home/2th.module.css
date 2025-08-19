@@ -1,13 +1,13 @@
 @import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css);
 
-*{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
 
-.container{
+.container {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -21,7 +21,8 @@
     padding: 20px;
     gap: 20px;
 }
-.secondComponent{
+
+.secondComponent {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -29,17 +30,20 @@
     font-size: 12px;
     font-family: 'Spoqa Han Sans Neo', 'sans-serif';
 }
-.secondComponent svg{
+
+.secondComponent svg {
     color: #A0A7B0;
 }
-.card{
+
+.card {
     position: relative;
     width: 40px;
     height: 40px;
     border-radius: 30%;
     background: rgba(0, 100, 255, 0.1);
 }
-.cardaccount{
+
+.cardaccount {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -49,7 +53,8 @@
     font-family: 'Spoqa Han Sans Neo', 'sans-serif';
     font-weight: 500;
 }
-.card svg{
+
+.card svg {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -57,7 +62,8 @@
     color: #367CCB;
     width: 24px;
 }
-.card img{
+
+.card img {
     position: absolute;
     top: 50%;
     left: 50%;

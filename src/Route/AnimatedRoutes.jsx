@@ -1,12 +1,18 @@
 // Route/AnimatedRoutes.jsx — 최종본 (현재 화면 기준 좌/우 분리)
-import { Routes, Route, useLocation, Navigate, useNavigate } from "react-router-dom";
+import {
+  Routes,
+  Route,
+  useLocation,
+  Navigate,
+  useNavigate,
+} from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useMemo, useRef } from "react";
 import Home from "../pages/Home/Home";
 import Benefit from "../pages/benefit/benefit";
 import Loading from "../pages/loading";
 import Shopping from "../pages/shopping/shopping";
-import Securities from "../pages/securities/securities"
+import Securities from "../pages/securities/securities";
 
 function LoadingRedirect() {
   const navigate = useNavigate();
@@ -84,14 +90,18 @@ export default function AnimatedRoutes() {
           <Route
             path="/"
             element={
-              appLoaded ? <Navigate to="/Home" replace /> : <Navigate to="/loading" replace />
+              appLoaded ? (
+                <Navigate to="/Home" replace />
+              ) : (
+                <Navigate to="/loading" replace />
+              )
             }
           />
           <Route path="/loading" element={<LoadingRedirect />} />
           <Route path="/Home" element={<Home />} />
           <Route path="/benefit" element={<Benefit />} />
-          <Route path="/Shopping" element={<Shopping/>} />
-          <Route path="/Securities" element={<Securities/>} />
+          <Route path="/Shopping" element={<Shopping />} />
+          <Route path="/Securities" element={<Securities />} />
         </Routes>
       </motion.div>
     </AnimatePresence>

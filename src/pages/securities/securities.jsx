@@ -1,9 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import styles from "../../css/securities/securities.module.css";
 
-
-import Firstcomponent from './1stcomponent';
-import Secondcomponent from './2thcomponent';
+import Firstcomponent from "./1stcomponent";
+import Secondcomponent from "./2thcomponent";
 
 import magnefier from "./img/Magnifier.png";
 import hambuger from "./img/hamburger.jpg";
@@ -15,20 +14,25 @@ function parseKisIndexPayload(rawLike) {
     raw = rawLike.raw ?? rawLike.payload ?? JSON.stringify(rawLike);
   }
   if (typeof raw !== "string") {
-    try { raw = String(raw); } catch { raw = ""; }
+    try {
+      raw = String(raw);
+    } catch {
+      raw = "";
+    }
   }
   const codeMatch = raw.match(/(?:\^|)(0001|1001|2001|4001)(?:\^|)/);
   const code = codeMatch ? codeMatch[1] : null;
 
-  const parts = raw.split("^").map(s => s.replace(/,/g, "").trim());
-  const nums = parts.filter(s => /^-?\d+(\.\d+)?$/.test(s)).map(Number);
+  const parts = raw.split("^").map((s) => s.replace(/,/g, "").trim());
+  const nums = parts.filter((s) => /^-?\d+(\.\d+)?$/.test(s)).map(Number);
 
   let price = null;
-  const priceCandidates = nums.filter(n => n > 0.01);
-  if (priceCandidates.length) price = priceCandidates[priceCandidates.length - 1];
+  const priceCandidates = nums.filter((n) => n > 0.01);
+  if (priceCandidates.length)
+    price = priceCandidates[priceCandidates.length - 1];
 
   let rate = null;
-  const rateCandidates = nums.filter(n => Math.abs(n) <= 30);
+  const rateCandidates = nums.filter((n) => Math.abs(n) <= 30);
   if (rateCandidates.length) rate = rateCandidates[rateCandidates.length - 1];
 
   return { code, price, rate };
@@ -60,33 +64,36 @@ export default function Securities() {
   const WS_URL = useMemo(resolveWSUrl, []);
   const [idxData, setIdxData] = useState(makeEmpty());
   const [status, setStatus] = useState("idle"); // idle | live | mock
-  const [current, setCurrent] = useState(0);    // 현재 보여줄 1개(한 줄)
+  const [current, setCurrent] = useState(0); // 현재 보여줄 1개(한 줄)
   const wsRef = useRef(null);
   const lastLiveAtRef = useRef(0);
   const mockTimerRef = useRef(null);
   const autoTimerRef = useRef(null);
 
   // ── 숫자 포맷
-  const fmt = (n, d = 2) => (n == null || Number.isNaN(+n)) ? "—" : (+n).toFixed(d);
+  const fmt = (n, d = 2) =>
+    n == null || Number.isNaN(+n) ? "—" : (+n).toFixed(d);
 
   // ── 로컬 모의(서버가 안 줄 때 3초 후 자동 가동)
   const startLocalMock = () => {
     if (mockTimerRef.current) return;
     setStatus("mock");
-    const base = Object.fromEntries(INDEX_META.map(m => [m.code, { p: 900 + Math.random()*200, r: 0 }]));
+    const base = Object.fromEntries(
+      INDEX_META.map((m) => [m.code, { p: 900 + Math.random() * 200, r: 0 }])
+    );
     mockTimerRef.current = setInterval(() => {
       const updates = {};
       for (const { code } of INDEX_META) {
         const drift = (Math.random() - 0.5) * 2;
         base[code].p = Math.max(100, base[code].p + drift);
-        base[code].r = Math.max(-30, Math.min(30, base[code].r + drift*0.02));
+        base[code].r = Math.max(-30, Math.min(30, base[code].r + drift * 0.02));
         updates[code] = {
           ...idxData[code],
           price: +base[code].p.toFixed(2),
-          rate:  +base[code].r.toFixed(2),
+          rate: +base[code].r.toFixed(2),
         };
       }
-      setIdxData(prev => ({ ...prev, ...updates }));
+      setIdxData((prev) => ({ ...prev, ...updates }));
     }, 3000);
   };
   const stopLocalMock = () => {
@@ -102,18 +109,21 @@ export default function Securities() {
 
     ws.onmessage = (e) => {
       let msg = e.data;
-      try { msg = JSON.parse(e.data); } catch {}
-      const payload = typeof msg === "string" ? msg : (msg.raw ?? msg.payload ?? "");
+      try {
+        msg = JSON.parse(e.data);
+      } catch {}
+      const payload =
+        typeof msg === "string" ? msg : msg.raw ?? msg.payload ?? "";
       const { code, price, rate } = parseKisIndexPayload(payload);
 
       if (code && idxData[code]) {
-        setIdxData(prev => ({
+        setIdxData((prev) => ({
           ...prev,
           [code]: {
             ...prev[code],
             price: price ?? prev[code].price,
-            rate:  rate  ?? prev[code].rate
-          }
+            rate: rate ?? prev[code].rate,
+          },
         }));
       }
       lastLiveAtRef.current = Date.now();
@@ -125,7 +135,9 @@ export default function Securities() {
     ws.onerror = () => {};
 
     return () => {
-      try { ws.close(); } catch {}
+      try {
+        ws.close();
+      } catch {}
       wsRef.current = null;
       stopLocalMock();
     };
@@ -144,7 +156,7 @@ export default function Securities() {
   useEffect(() => {
     clearInterval(autoTimerRef.current);
     autoTimerRef.current = setInterval(() => {
-      setCurrent(i => (i + 1) % INDEX_META.length);
+      setCurrent((i) => (i + 1) % INDEX_META.length);
     }, 2500);
     return () => clearInterval(autoTimerRef.current);
   }, []);
@@ -152,38 +164,44 @@ export default function Securities() {
   // ── 현재 보여줄 라인
   const { code, label } = INDEX_META[current];
   const price = idxData[code]?.price;
-  const rate  = idxData[code]?.rate;
+  const rate = idxData[code]?.rate;
   const tone =
     typeof rate === "number"
-      ? rate > 0 ? styles.up : rate < 0 ? styles.down : styles.neutral
+      ? rate > 0
+        ? styles.up
+        : rate < 0
+        ? styles.down
+        : styles.neutral
       : styles.neutral;
 
   return (
     <div className={styles.container}>
       <div className={styles.btn}>
         <button>
-          <link
-            to=""
-            className={styles.search}
-          />
+          <link to="" className={styles.search} />
           <img src={magnefier} alt="" />
-          </button>
-          <button>
-          <link
-            to=""
-            className={styles.setting}
-          />
+        </button>
+        <button>
+          <link to="" className={styles.setting} />
           <img src={hambuger} alt="" />
-          </button>
+        </button>
       </div>
       <header className={styles.header}>
         <div className={styles.brandContainer}>
-            <span className={styles.brand}>토스증권</span>
+          <span className={styles.brand}>토스증권</span>
           <div className={styles.vticker}>
-            <div key={`${code}-in-${current}`} className={`${styles.vrow} ${styles.in}`}>
+            <div
+              key={`${code}-in-${current}`}
+              className={`${styles.vrow} ${styles.in}`}
+            >
               <span className={`${styles.indexName} ${tone}`}>{label}</span>
-              <span className={`${styles.indexValue} ${tone}`}>{fmt(price, 2)}</span>
-              <span className={`${styles.indexRate} ${tone}`}>{rate > 0 ? "+" : ""}{fmt(rate, 2)}%</span>
+              <span className={`${styles.indexValue} ${tone}`}>
+                {fmt(price, 2)}
+              </span>
+              <span className={`${styles.indexRate} ${tone}`}>
+                {rate > 0 ? "+" : ""}
+                {fmt(rate, 2)}%
+              </span>
             </div>
           </div>
         </div>

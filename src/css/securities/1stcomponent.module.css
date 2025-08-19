@@ -1,24 +1,27 @@
 @import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css);
 
-*{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
-.conainer{
+
+.conainer {
     display: flex;
     align-items: center;
     justify-content: flex-start;
     flex-direction: row;
     width: 100%;
-    padding: 10px 0 ;
+    padding: 10px 0;
 }
-.main{
+
+.main {
     display: flex;
     flex-direction: column;
     width: 100%;
 }
-.span{
+
+.span {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -26,25 +29,30 @@
     gap: 5px;
     margin: 10px 0;
 }
-.myaccunt{
+
+.myaccunt {
     display: flex;
     align-items: center;
     flex-direction: row;
     gap: 10px;
 }
-.Time{
+
+.Time {
     font-size: 10px;
     font-family: 'Spoqa Han Sans Neo', 'sans-serif';
 }
-.span a{
+
+.span a {
     font-size: 14px;
     font-weight: 600;
 }
-.span img{
+
+.span img {
     width: 6px;
     height: 10px;
 }
-.price{
+
+.price {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -53,7 +61,8 @@
 }
 
 
-.woncontainer , .dolcontainer{
+.woncontainer,
+.dolcontainer {
     display: flex;
     align-items: flex-start;
     justify-content: center;
@@ -67,6 +76,7 @@
     z-index: 1;
 }
 
-.woncontainer span ,.dolcontainer span{
+.woncontainer span,
+.dolcontainer span {
     font-size: 14px;
 }

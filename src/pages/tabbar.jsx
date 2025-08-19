@@ -1,5 +1,10 @@
 // tabbar.jsx
-import { NavLink, useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import {
+  NavLink,
+  useLocation,
+  useNavigate,
+  useSearchParams,
+} from "react-router-dom";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import styles from "../css/tebbar.module.css";
 
@@ -30,19 +35,39 @@ export default function TabBar() {
 
   // 메인탭 목록 (증권 포함)
   const tabItems = [
-    { to: "/Home",       defaultImg: main,       activeImg: mainBlack,       label: "홈" },
-    { to: "/benefit",    defaultImg: benefit,    activeImg: benefitBlack,    label: "혜택" },
-    { to: "/shopping",   defaultImg: shopping,   activeImg: shoppingBlack,   label: "토스쇼핑" },
+    { to: "/Home", defaultImg: main, activeImg: mainBlack, label: "홈" },
+    {
+      to: "/benefit",
+      defaultImg: benefit,
+      activeImg: benefitBlack,
+      label: "혜택",
+    },
+    {
+      to: "/shopping",
+      defaultImg: shopping,
+      activeImg: shoppingBlack,
+      label: "토스쇼핑",
+    },
     // 증권은 쿼리까지 포함해 고정 이동
-    { to: "/securities?stab=securities", defaultImg: securities, activeImg: securitiesBlack, label: "증권" },
-    { to: "/all",        defaultImg: hamburger,  activeImg: hamburgerBlack,  label: "전체" },
+    {
+      to: "/securities?stab=securities",
+      defaultImg: securities,
+      activeImg: securitiesBlack,
+      label: "증권",
+    },
+    {
+      to: "/all",
+      defaultImg: hamburger,
+      activeImg: hamburgerBlack,
+      label: "전체",
+    },
   ];
 
   // 증권 서브탭 (증권 본체 제외)
   const secTabs = [
-    { id: "watch",    label: "관심",  img: heart },
-    { id: "discover", label: "발견",  img: earth },
-    { id: "feed",     label: "피드",  img: chat },
+    { id: "watch", label: "관심", img: heart },
+    { id: "discover", label: "발견", img: earth },
+    { id: "feed", label: "피드", img: chat },
   ];
 
   // ---------------- 뒤로가기: 마지막 메인탭으로 ----------------
@@ -50,7 +75,9 @@ export default function TabBar() {
     try {
       const saved = localStorage.getItem("mainTabHistory");
       return saved ? JSON.parse(saved) : [];
-    } catch { return []; }
+    } catch {
+      return [];
+    }
   });
 
   useEffect(() => {
@@ -60,7 +87,7 @@ export default function TabBar() {
       location.pathname === "/shopping" ||
       location.pathname === "/all";
     if (isMain) {
-      setMainTabHistory(prev => {
+      setMainTabHistory((prev) => {
         if (prev[prev.length - 1] !== location.pathname) {
           const updated = [...prev, location.pathname].slice(-10);
           localStorage.setItem("mainTabHistory", JSON.stringify(updated));
@@ -99,8 +126,8 @@ export default function TabBar() {
   // ---------------- "증권" 버튼 위치 이동(FLIP) ----------------
   const wrapRef = useRef(null);
   const mainSecRef = useRef(null); // 메인바의 "증권"
-  const subSecRef  = useRef(null); // 서브바의 "증권"(뒤로 다음)
-  const floatRef   = useRef(null); // 이동용 플로팅
+  const subSecRef = useRef(null); // 서브바의 "증권"(뒤로 다음)
+  const floatRef = useRef(null); // 이동용 플로팅
 
   const [moving, setMoving] = useState(false);
   const [hideMainSec, setHideMainSec] = useState(false);
@@ -110,18 +137,28 @@ export default function TabBar() {
     const wrap = wrapRef.current;
     const floatEl = floatRef.current;
     const mainEl = mainSecRef.current;
-    const subEl  = subSecRef.current;
+    const subEl = subSecRef.current;
     if (!wrap || !floatEl || !mainEl || !subEl) return;
 
     const fromEl = isSecurities ? mainEl : subEl;
-    const toEl   = isSecurities ? subEl  : mainEl;
+    const toEl = isSecurities ? subEl : mainEl;
 
     const wrapRect = wrap.getBoundingClientRect();
     const fr = fromEl.getBoundingClientRect();
     const tr = toEl.getBoundingClientRect();
 
-    const from = { x: fr.left - wrapRect.left, y: fr.top - wrapRect.top, w: fr.width, h: fr.height };
-    const to   = { x: tr.left - wrapRect.left, y: tr.top - wrapRect.top, w: tr.width, h: tr.height };
+    const from = {
+      x: fr.left - wrapRect.left,
+      y: fr.top - wrapRect.top,
+      w: fr.width,
+      h: fr.height,
+    };
+    const to = {
+      x: tr.left - wrapRect.left,
+      y: tr.top - wrapRect.top,
+      w: tr.width,
+      h: tr.height,
+    };
 
     // 세팅
     floatEl.style.display = "block";
@@ -160,11 +197,21 @@ export default function TabBar() {
   }, [isSecurities]);
 
   return (
-    <div className={`${styles.btncontainer} ${isSecurities ? styles.subMode : ""}`}>
-      <nav role="tablist" aria-label="Bottom Tabs" className={styles.barWrap} ref={wrapRef}>
-
+    <div
+      className={`${styles.btncontainer} ${isSecurities ? styles.subMode : ""}`}
+    >
+      <nav
+        role="tablist"
+        aria-label="Bottom Tabs"
+        className={styles.barWrap}
+        ref={wrapRef}
+      >
         {/* 메인탭 바 (서브 모드에선 숨김) */}
-        <ul className={`${styles.bar} ${!isSecurities ? styles.show : styles.hide}`}>
+        <ul
+          className={`${styles.bar} ${
+            !isSecurities ? styles.show : styles.hide
+          }`}
+        >
           {tabItems.map(({ to, defaultImg, activeImg, label }) => {
             const isSec = label === "증권";
             return (
@@ -178,11 +225,18 @@ export default function TabBar() {
                   {({ isActive }) => (
                     <span
                       ref={isSec ? mainSecRef : null}
-                      className={isSec
-                        ? `${styles.mainSecBtn} ${hideMainSec ? styles.invisible : ""}`
-                        : styles.mainBtn}
+                      className={
+                        isSec
+                          ? `${styles.mainSecBtn} ${
+                              hideMainSec ? styles.invisible : ""
+                            }`
+                          : styles.mainBtn
+                      }
                     >
-                      <img src={isActive ? activeImg : defaultImg} alt={label} />
+                      <img
+                        src={isActive ? activeImg : defaultImg}
+                        alt={label}
+                      />
                       {label}
                     </span>
                   )}
@@ -195,7 +249,9 @@ export default function TabBar() {
         {/* 서브탭 바 (30px 위로) */}
         <ul
           ref={listRef}
-          className={`${styles.bar} ${isSecurities ? styles.showRaised : styles.hide}`}
+          className={`${styles.bar} ${
+            isSecurities ? styles.showRaised : styles.hide
+          }`}
           data-enter={enterStamp}
         >
           {/* 뒤로가기: 마지막 메인탭으로 */}
@@ -213,7 +269,9 @@ export default function TabBar() {
           <li>
             <button
               type="button"
-              className={`${styles.secItem} ${styles.secPrimary} ${hideSubSec ? styles.invisible : ""}`}
+              className={`${styles.secItem} ${styles.secPrimary} ${
+                hideSubSec ? styles.invisible : ""
+              }`}
               ref={subSecRef}
               onClick={() => navigate(`/securities?stab=securities`)}
             >
@@ -229,7 +287,11 @@ export default function TabBar() {
               <li
                 key={t.id}
                 className={styles.itemTransition}
-                style={isSecurities ? { animationDelay: `${(index + 1) * 0.15}s` } : { animation: "none" }}
+                style={
+                  isSecurities
+                    ? { animationDelay: `${(index + 1) * 0.15}s` }
+                    : { animation: "none" }
+                }
               >
                 <button
                   type="button"
@@ -248,11 +310,19 @@ export default function TabBar() {
         </ul>
 
         {/* 하단 30px blur/mask (서브탭일 때만) */}
-        {isSecurities && <div className={styles.blurUnderlay} aria-hidden="true" />}
+        {isSecurities && (
+          <div className={styles.blurUnderlay} aria-hidden="true" />
+        )}
 
         {/* "증권" 이동용 플로팅(FLIP) */}
-        <div ref={floatRef} className={`${styles.floatingSec} ${moving ? styles.floatingOn : ""}`}>
-          <button type="button" className={`${styles.secItem} ${styles.secPrimary}`}>
+        <div
+          ref={floatRef}
+          className={`${styles.floatingSec} ${moving ? styles.floatingOn : ""}`}
+        >
+          <button
+            type="button"
+            className={`${styles.secItem} ${styles.secPrimary}`}
+          >
             <img src={securitiesBlack} alt="증권" />
             증권
           </button>

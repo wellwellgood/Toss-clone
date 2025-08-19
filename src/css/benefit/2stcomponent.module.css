@@ -1,10 +1,10 @@
-*{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-.container1st{
+.container1st {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -19,7 +19,7 @@
     margin-bottom: 40px;
 }
 
-.userbenefit{
+.userbenefit {
     display: flex;
     width: 100%;
     align-items: flex-start;
@@ -29,7 +29,7 @@
     font-family: 'Spoqa Han Sans Neo', 'sans-serif';
 }
 
-.main1{
+.main1 {
     position: relative;
     display: flex;
     align-items: center;
@@ -38,7 +38,8 @@
     width: 100%;
     gap: 10px;
 }
-.container1st a{
+
+.container1st a {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -47,13 +48,15 @@
     height: 50px;
     padding: 0 10px;
 }
-.text{
+
+.text {
     display: flex;
     align-items: flex-start;
     justify-content: center;
     flex-direction: column;
 }
-.imgContainer{
+
+.imgContainer {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -65,7 +68,7 @@
 
 }
 
-.img{
+.img {
     display: block;
     width: 30px;
     height: 30px;

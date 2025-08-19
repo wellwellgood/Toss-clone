@@ -1,12 +1,12 @@
 @import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css);
 
-*{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-.container1st{
+.container1st {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -21,24 +21,27 @@
     margin-bottom: 40px;
 }
 
-.text{
+.text {
     display: flex;
     align-items: center;
     justify-content: space-between;
     width: 90%;
 }
-.textspan{
+
+.textspan {
     display: flex;
     align-items: flex-start;
     flex-direction: column;
     gap: 10px;
 }
-.text img{
+
+.text img {
     width: 50px;
     height: 50px;
     border-radius: 50%;
 }
-.link{
+
+.link {
     width: 80%;
     text-align: center;
     background-color: #3182F7;
@@ -49,7 +52,8 @@
     font-weight: 300;
     margin-bottom: 10px;
 }
-.link2{
+
+.link2 {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -57,18 +61,21 @@
     width: 90%;
     gap: 20px;
 }
-.linkspan{
+
+.linkspan {
     display: flex;
     align-items: center;
     justify-content: space-between;
     flex-direction: row;
     width: 100%;
 }
-.linkspan span{
+
+.linkspan span {
     font-family: 'Spoqa Han Sans Neo', 'sans-serif';
     font-weight: 500;
 }
-.point{
+
+.point {
     position: relative;
     display: flex;
     align-items: center;
@@ -76,12 +83,14 @@
     gap: 10px;
     font-size: 18px;
 }
-.point span{
+
+.point span {
     font-family: 'Spoqa Han Sans Neo', 'sans-serif';
     font-weight: 300;
     font-size: 15px;
 }
-.point img{
+
+.point img {
     width: 10px;
     height: 10px;
 }
