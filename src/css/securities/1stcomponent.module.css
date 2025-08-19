@@ -68,15 +68,15 @@
     justify-content: center;
     flex-direction: column;
     width: 48%;
-    height: 60px;
+    height: 80px;
     background: #e2e4e6;
     padding: 10px;
     border-radius: 15px;
-    font-size: 10px;
+    font-size: 12px;
     z-index: 1;
 }
 
 .woncontainer span,
 .dolcontainer span {
-    font-size: 14px;
+    font-size: 15px;
 }
