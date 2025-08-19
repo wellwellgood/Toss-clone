@@ -1,3 +1,5 @@
+@import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css);
+
 .btn {
   display: flex;
   align-items: center;
@@ -17,11 +19,11 @@
 
 .brandContainer {
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: flex-start;
   flex-direction: row;
   width: 90%;
-  gap: 15px;
+  gap: 5px;
 }
 
 .brandRow {
@@ -33,7 +35,8 @@
 }
 
 .brand {
-  font-size: 20px;
+  font-size: 24px;
+  font-family: 'Spoqa Han Sans Neo', 'sans-serif';
 }
 
 .indexRow {
@@ -184,6 +187,7 @@
 .vticker {
   display: flex;
   flex-direction: row;
+  margin-bottom: 5px;
 }
 
 .vrow {
