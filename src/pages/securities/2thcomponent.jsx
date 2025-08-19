@@ -1,14 +1,19 @@
 // src/pages/.../2thcomponent.jsx
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import styles from "../../css/securities/2thcomponent.module.css";
-import useKRW from "../../hooks/securitiesPoFol"; // 기본 export 훅을 이름 그대로 가져오기
+import useKRW from "../../hooks/securitiesPoFol";
 import right from "./img/right.jpg";
+import useLiveTicks from "../../hooks/useLiveTicks";
+
+import PortfolioToolbar from "./PortfolioToolbar.jsx";
+import HoldingsTable from "./HoldingsTable.jsx";
+import ActionList from "./ActionList.jsx";
 
 export default function TwoThComponent({ holdings, liveTicks }) {
-  // 통화 포맷 훅
   const krw = useKRW({ suffix: "원", showSign: true, digits: 0 });
 
-  // 데이터 소스: props 우선, 없으면 localStorage('holdings') 시도, 최악엔 빈 배열
+  // props 우선, 없으면 localStorage 보조
   const H =
     holdings ??
     (() => {
@@ -18,9 +23,15 @@ export default function TwoThComponent({ holdings, liveTicks }) {
         return [];
       }
     })();
-  const T = liveTicks ?? {};
+    const T0 = liveTicks ?? {};
+    const codes = (H || []).map(h => h.code).filter(Boolean);
+    const live = useLiveTicks(
+      import.meta.env.VITE_WS_URL || "ws://localhost:10000",
+      { codes }
+    );
+    const T = { ...T0, ...live };
 
-  // 포트폴리오 1줄 계산
+  // 상단 요약 계산
   let cost = 0,
     mv = 0;
   for (const h of H) {
@@ -34,18 +45,21 @@ export default function TwoThComponent({ holdings, liveTicks }) {
         ? h.prev_close
         : avg) || 0
     );
-    cost += qty * avg; // 매수원가 합
-    mv += qty * px; // 평가금액 합
+    cost += qty * avg;
+    mv += qty * px;
   }
-  const pnlAbs = mv - cost; // 총손익(원)
-  const pnlRate = cost ? (pnlAbs / cost) * 100 : 0; // 총손익(%)
-  const toneCls = pnlAbs > 0 ? styles.up : pnlAbs < 0 ? styles.down : "";
+  const pnlAbs = mv - cost;
+  const pnlRate = cost ? (pnlAbs / cost) * 100 : 0;
+
+  // ▼ 새로 추가: 툴바 상태
+  const [metric, setMetric] = useState("price"); // "price" | "value"(평가금)
+  const [currency, setCurrency] = useState("KRW"); // "KRW" | "USD"
 
   return (
     <div className={styles.container}>
       <Link to="/" className={styles.mystock}>
         <div className={styles.stock}>
-          <span>내 종목 보기</span>
+          <span>내 종목보기</span>
           <img src={right} alt="" />
         </div>
       </Link>
@@ -53,11 +67,28 @@ export default function TwoThComponent({ holdings, liveTicks }) {
       {/* 평가금액 */}
       <div className={styles.Account}>{krw.raw(mv)}원</div>
 
-      {/* 포트폴리오 1줄: 총손익/수익률 */}
-      <div className={styles.toneCls}>
+      {/* 총손익/수익률 */}
+      <div className={pnlAbs > 0 ? styles.up : pnlAbs < 0 ? styles.down : ""}>
         {krw(pnlAbs)} ({pnlRate >= 0 ? "+" : ""}
         {pnlRate.toFixed(2)}%)
       </div>
+
+      {/* 정렬/지표/통화 툴바 */}
+      <PortfolioToolbar
+        metric={metric}
+        currency={currency}
+        onChangeMetric={setMetric}
+        onChangeCurrency={setCurrency}
+      />
+
+      {/* 아래 표 + 액션 리스트 */}
+      <HoldingsTable
+        holdings={H}
+        liveTicks={T}
+        metric={metric}
+        currency={currency}
+      />
+      <ActionList dividendThisMonth={13} />
     </div>
   );
 }
