@@ -5,7 +5,7 @@ import styles from "../../css/securities/securities.module.css";
 import Firstcomponent from './1stcomponent';
 import Secondcomponent from './2thcomponent';
 
-import magnefier from "./img/magnifier.png";
+import magnefier from "./img/Magnifier.png";
 import hambuger from "./img/hamburger.jpg";
 
 /** ── KIS 원시 프레임 파서 ─────────────────────────────── */
