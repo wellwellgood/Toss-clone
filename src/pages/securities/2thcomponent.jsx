@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import styles from '../../css/securities/2thcomponent.module.css';
+import styles from '../../css/securities/securities.module.css';
 import  Pofol  from '../../hooks/securitiesPoFol'
 
 
