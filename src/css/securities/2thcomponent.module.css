@@ -1,0 +1,45 @@
+@import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css);
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.container{
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+    padding: 10px 0;
+    gap: 10px;
+}
+.mystock{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+.stock{
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    gap: 10px;
+}
+.stock span{
+    font-size: 14px;
+    font-weight: 600;
+    font-family: 'Spoqa Han Sans Neo', 'sans-serif';
+}
+.stock img{
+    width: 6px;
+    height: 10px;
+}
+.Account{
+    font-size: 24px;
+    font-weight: 600;
+    font-family: 'Spoqa Han Sans Neo', 'sans-serif';
+}
+.toneCls{
+    font-size: 12px;
+}
