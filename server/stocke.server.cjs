@@ -1,256 +1,100 @@
-// stocke.server.clean.cjs
-// CommonJS only. Single HTTP listen. WS shares HTTP server socket.
-// Render-safe: uses process.env.PORT, no auto-increment on Render.
-// Minimal placeholders for your existing logic (broadcast, KIS connect, etc).
+// stocke.server.cjs
+// CommonJS. HTTP + WS on the same port. /ws로 실시간 시세 푸시.
+// KIS 연동은 placeholder(브로드캐스트만 호출하면 됨). 없으면 MOCK 틱이 돌아감.
 
 require("dotenv").config();
+
+const express = require("express");
+const app = express();
+app.use(express.json());
+
+// --- 기본 헬스체크/디버그 ---
+app.get("/health", (_req, res) => res.type("text/plain").send("ok"));
+app.get("/debug/snapshot", (_req, res) => res.json(quotes));
+
+// --- HTTP 서버 + WS 서버 구성 ---
 const http = require("http");
-const axios = require("axios");
-const WebSocket = require("ws");
+const server = http.createServer(app);
+
 const { WebSocketServer } = require("ws");
-const { URL } = require("url");
+const wss = new WebSocketServer({ server, path: "/ws" });
 
-// ---------- ENV (no duplicate declarations) ----------
-const {
-  APP_KEY,
-  APP_SECRET,
-  KIS_TR_ID_INDEX,
-  CUSTTYPE = "P",
-  KIS_REST: ENV_KIS_REST,
-  KIS_WS:   ENV_KIS_WS,
-  POLL_SECONDS = "3",
-  PORT: ENV_PORT,
-} = process.env;
+// --- 연결된 클라이언트 관리 ---
+const clients = new Set();
 
-// Trim whitespace/newlines in secrets
-const CLEAN_APP_SECRET = (APP_SECRET || '').replace(/\s+/g, '');
-
-const IS_RENDER = !!process.env.RENDER;
-const PORT = Number(ENV_PORT || 8080);
-const MOCK_ON_FAIL = String(process.env.MOCK_ON_FAIL || '').toLowerCase() === 'true' || process.env.MOCK_ON_FAIL === '1';
-let __MOCK_ACTIVE = false;
-let __MOCK_TIMER = null;
-
-// ---------- Mode & endpoints (no redeclare) ----------
-const KIS_MODE = (APP_KEY || "").startsWith("VT") ? "paper" : "real";
-const DEF_REST = KIS_MODE === "paper"
-  ? "https://openapivts.koreainvestment.com:29443"
-  : "https://openapi.koreainvestment.com:9443";
-const DEF_WS = KIS_MODE === "paper"
-  ? "wss://ops.koreainvestment.com:31000"
-  : "wss://ops.koreainvestment.com:21000";
-
-const KIS_REST = ENV_KIS_REST || DEF_REST;
-const KIS_WS   = ENV_KIS_WS   || DEF_WS;
-
-// Normalize WS url (force wss, remove /tryitout)
-const __RAW_KIS_WS = (process.env.KIS_WS || KIS_WS || "").trim();
-const __SANITIZED_KIS_WS = (__RAW_KIS_WS || KIS_WS)
-  .replace(/^ws:\/\//i, "wss://")
-  .replace(/\/+tryitout.*$/i, "");
-
-// Dynamic Origin from KIS_REST
-let __host; try { __host = new URL(KIS_REST).host; } catch { __host = "openapi.koreainvestment.com"; }
-const ORIGIN_HEADER = `https://${__host}`;
-
-console.log("✅ env ok: APP_KEY=", (APP_KEY||"").slice(0,4)+"…", "| KIS_TR_ID_INDEX=", KIS_TR_ID_INDEX);
-console.log("🔌 local WS will bind on:", `ws://localhost:${PORT}`);
-console.log("[KIS-WS] endpoint =", __SANITIZED_KIS_WS, "| origin =", ORIGIN_HEADER);
-// ---------- sanity check for required env ----------
-console.log(`[env] APP_SECRET.len=${CLEAN_APP_SECRET.length}`);
-if (!APP_KEY || !CLEAN_APP_SECRET) {
-  console.error("❌ Missing APP_KEY or APP_SECRET(after trim). Check Render → Environment.");
-  process.exit(1);
+// 초기 스냅샷(필터 지원)
+function pickSnapshot(filter) {
+  if (!filter || filter.length === 0) return quotes;
+  const out = {};
+  for (const c of filter) if (quotes[c]) out[c] = quotes[c];
+  return out;
 }
 
+// 클라이언트 접속
+wss.on("connection", (ws, req) => {
+  clients.add(ws);
+  try {
+    const url = new URL(req.url, `http://${req.headers.host}`);
+    const codes = (url.searchParams.get("codes") || "")
+      .split(",")
+      .map((s) => s.trim())
+      .filter(Boolean);
+    ws.send(JSON.stringify(pickSnapshot(codes)));
+  } catch (_) {}
 
-// ---------- HTTP + WS boot (single listen) ----------
-let __LAST_KIS_MSG_TIME = 0;
-let __SUB_SENT = 0;
+  ws.on("close", () => clients.delete(ws));
+});
 
-let __BOOTED = false;
-let serverRef = null;
-let wssRef = null;
-
-function startServerOnce() {
-  if (__BOOTED) return;
-  __BOOTED = true;
-
-  const server = http.createServer((req, res) => {
-  if (req.url === "/mock/on") {
-    try { startMockIndexStreamer(); } catch {}
-    res.writeHead(200, { "Content-Type": "application/json" });
-    res.end(JSON.stringify({ ok: true, mock: __MOCK_ACTIVE }));
-    return;
-  }
-  if (req.url === "/mock/off") {
-    try { stopMockIndexStreamer(); } catch {}
-    res.writeHead(200, { "Content-Type": "application/json" });
-    res.end(JSON.stringify({ ok: true, mock: __MOCK_ACTIVE }));
-    return;
-  }
-  if (req.url === "/debug/env") {
-    res.writeHead(200, { "Content-Type": "application/json" });
-    res.end(JSON.stringify({
-      APP_KEY_len: (APP_KEY||"").length,
-      APP_SECRET_len: CLEAN_APP_SECRET.length,
-      IS_RENDER,
-      PORT,
-      KIS_REST, KIS_WS, CUSTTYPE, KIS_TR_ID_INDEX
-    }));
-    return;
-  }
-  if (req.url === "/debug/kis") {
-    res.writeHead(200, { "Content-Type": "application/json" });
-    res.end(JSON.stringify({
-      connected_clients: (wssRef && wssRef.clients) ? [...wssRef.clients].filter(c => c.readyState===1).length : 0,
-      last_msg_age_s: __LAST_KIS_MSG_TIME ? Math.round((Date.now() - __LAST_KIS_MSG_TIME)/1000) : null,
-      subs_sent: __SUB_SENT
-    }));
-    return;
-  }
-    if (req.url === "/health") { res.writeHead(200); res.end("ok"); return; }
-    res.writeHead(200); res.end("KIS WS server up");
-  });
-
-  server.on("error", (err) => {
-    if (!IS_RENDER && err && err.code === "EADDRINUSE") {
-      console.error(`EADDRINUSE on :${PORT}. Stop the other process or change PORT.`);
-      process.exit(1);
-    } else {
-      console.error("listen error:", err);
-      process.exit(1);
-    }
-  });
-
-  server.listen(PORT, "0.0.0.0", () => {
-    console.log(`✅ Local WS listening on ws://localhost:${PORT}`);
-    const wss = new WebSocketServer({ server }); // share HTTP socket — DO NOT rebind by { port }
-    serverRef = server;
-    wssRef = wss;
-    attachWsHandlers(wss); // your handlers here
-    connectKIS();          // kick off KIS (optional)
-  });
-}
-
-startServerOnce();
-
-// ---------- WS handlers (attach on wssRef) ----------
+// 모든 클라이언트에 브로드캐스트
 function broadcast(obj) {
-  const s = typeof obj === "string" ? obj : JSON.stringify(obj);
-  wssRef?.clients?.forEach((c) => {
-    if (c.readyState === WebSocket.OPEN) c.send(s);
-  });
-}
-
-function attachWsHandlers(wss) {
-  wss.on("connection", (sock) => {
-    console.log("📡 WS client connected");
-    sock.on("close", () => console.log("🔌 WS client disconnected"));
-  });
-}
-
-// ---------- KIS connection (minimal, keep your own message format) ----------
-async function getApprovalKey() {
-  try {
-    const url = `${KIS_REST}/oauth2/Approval`;
-    const { data } = await axios.post(url, {
-      grant_type: "client_credentials",
-      appkey: APP_KEY,
-      appsecret: CLEAN_APP_SECRET,
-    }, { headers: { "Content-Type": "application/json; charset=utf-8" } });
-    if (!data?.approval_key) throw new Error("No approval_key in response");
-    return data.approval_key;
-  } catch (e) {
-    console.error("[KIS] approval error:", e?.response?.status, e?.response?.data || e.message);
-    if (MOCK_ON_FAIL) { try { startMockIndexStreamer(); } catch {}
-      throw new Error("MOCK_STARTED"); }
-    throw e;
+  const msg = JSON.stringify(obj);
+  for (const ws of clients) {
+    if (ws.readyState === 1) ws.send(msg);
   }
 }
 
+// --- 시세 메모리(데모용 기본값) ---
+let quotes = {
+  AAPL: { code: "AAPL", name: "애플", price: 319436, prevClose: 319800 },
+  TSLA: { code: "TSLA", name: "테슬라", price: 465003, prevClose: 464500 },
+};
 
-function startMockIndexStreamer() {
-  if (__MOCK_ACTIVE) return;
-  __MOCK_ACTIVE = true;
-  console.warn("[MOCK] Starting mock index streamer (KOSDAQ 1001).");
-  let price = 900.00 + Math.random() * 200; // base
-  let rate = 0.00;
-  clearInterval(__MOCK_TIMER);
-  __MOCK_TIMER = setInterval(() => {
-    // random walk
-    const drift = (Math.random() - 0.5) * 2;
-    price = Math.max(100, price + drift);
-    rate = Math.max(-30, Math.min(30, rate + drift * 0.02));
-    const raw = `1001^${price.toFixed(2)}^${rate.toFixed(2)}`;
-    broadcast({ provider: "KIS-WS", raw });
-  }, 1000);
-}
-
-function stopMockIndexStreamer() {
-  if (!__MOCK_ACTIVE) return;
-  __MOCK_ACTIVE = false;
-  clearInterval(__MOCK_TIMER);
-  __MOCK_TIMER = null;
-  console.warn("[MOCK] Stopped mock index streamer.");
-}
-
-async function connectKIS() {
-  try {
-    const approval = await getApprovalKey();
-    console.log("[KIS] approval_key OK");
-
-    const ws = new WebSocket(__SANITIZED_KIS_WS, {
-      origin: ORIGIN_HEADER,
-      perMessageDeflate: false,
-    });
-
-    ws.on("open", () => {
-      console.log("[KIS-WS] connected");
-      // Send your register/subscription messages here.
-      // Example (adjust to your exact spec):
-      ws.send(JSON.stringify({
-        header: {
-          approval_key: approval,
-          custtype: CUSTTYPE,
-          tr_type: "1",
-          "content-type": "utf-8"
-        },
-        body: { input: { tr_id: KIS_TR_ID_INDEX, tr_key: "1001" } }
-      }));
-    });
-
-    ws.on("message", (buf) => {
-      const text = buf.toString();
-      broadcast({ provider: "KIS-WS", raw: text });
-    });
-
-    ws.on("unexpected-response", (req, res) => {
-      try {
-        res.setEncoding("utf8"); let body = "";
-        res.on("data", (c) => body += c);
-        res.on("end", () => console.error("[KIS-WS] unexpected-response", res.statusCode, body));
-      } catch (e) {
-        console.error("[KIS-WS] unexpected-response", res.statusCode);
-      }
-    });
-
-    ws.on("close", (code) => {
-      console.warn("[KIS-WS] closed:", code, "→ reconnecting in 5s");
-      setTimeout(connectKIS, 5000);
-    });
-
-    ws.on("error", (e) => {
-      console.error("[KIS-WS] error:", e.message);
-      try { ws.close(); } catch {}
-    });
-
-  } catch (e) {
-    console.error("[KIS] connect error:", e.message, "→ retry in 5s");
-    if (e && String(e.message).includes("MOCK_STARTED")) { console.warn("[KIS] mock active — skip reconnect"); return; }
-    setTimeout(connectKIS, 5000);
+// --- MOCK 틱(기본 ON: MOCK_TICKS=0 으로 끄기) ---
+let mockTimer = null;
+function randomWalk() {
+  for (const k of Object.keys(quotes)) {
+    const q = quotes[k];
+    const delta = Math.round((Math.random() - 0.5) * 1200);
+    q.price = Math.max(1, q.price + delta);
   }
+  broadcast(quotes);
+}
+if (process.env.MOCK_TICKS !== "0") {
+  mockTimer = setInterval(randomWalk, 1500);
+  console.log("[MOCK] random ticks enabled (set MOCK_TICKS=0 to disable)");
 }
 
-// Export for tests/other modules if needed
-module.exports = { server: () => serverRef, wss: () => wssRef };
+// --- KIS 연동(필요 시 구현) ---
+async function startKIS() {
+  const { APP_KEY, APP_SECRET, KIS_REST, KIS_WS } = process.env;
+  if (!APP_KEY || !APP_SECRET) {
+    console.log("[KIS] credentials missing — mock only");
+    return;
+  }
+  // TODO: KIS WS/REST 연결 후 수신 시
+  // 1) quotes[code] = { ...prev, price, prevClose, name }
+  // 2) broadcast(quotes)
+  console.log("[KIS] placeholder: connect provider and call broadcast() on ticks");
+}
+startKIS().catch((e) => console.error("[KIS] start error:", e.message));
+
+// --- 서버 시작 ---
+const PORT = Number(process.env.PORT) || 10000;
+server.listen(PORT, "0.0.0.0", () => {
+  console.log(`HTTP/WS on :${PORT}  path=/ws`);
+});
+
+
+server.on("upgrade", (req) => console.log("[UPGRADE]", req.url));
+wss.on("connection", (_ws, req) => console.log("[WS CONNECT]", req.url));
+wss.on("error", (e) => console.log("[WSS ERROR]", e.message));

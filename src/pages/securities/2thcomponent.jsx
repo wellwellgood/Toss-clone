@@ -1,11 +1,12 @@
 // src/pages/.../2thcomponent.jsx
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useMemo } from "react";
 import styles from "../../css/securities/2thcomponent.module.css";
 import useKRW from "../../hooks/securitiesPoFol";
 import right from "./img/right.jpg";
-import useLiveTicks from "../../hooks/useLiveTicks";
 
+import useLiveTicks from "../../hooks/useLiveTicks";
 import PortfolioToolbar from "./PortfolioToolbar.jsx";
 import HoldingsTable from "./HoldingsTable.jsx";
 import ActionList from "./ActionList.jsx";
@@ -23,13 +24,13 @@ export default function TwoThComponent({ holdings, liveTicks }) {
         return [];
       }
     })();
-    const T0 = liveTicks ?? {};
-    const codes = (H || []).map(h => h.code).filter(Boolean);
-    const live = useLiveTicks(
-      import.meta.env.VITE_WS_URL || "ws://localhost:10000",
-      { codes }
-    );
-    const T = { ...T0, ...live };
+  const T0 = liveTicks ?? {};
+  const codes = useMemo(
+    () => (H || []).map((h) => h.code).filter(Boolean),
+    [H]
+  );
+  const live = useLiveTicks(import.meta.env.VITE_WS_URL, { codes });
+  const T = { ...T0, ...live };
 
   // 상단 요약 계산
   let cost = 0,
@@ -82,12 +83,7 @@ export default function TwoThComponent({ holdings, liveTicks }) {
       />
 
       {/* 아래 표 + 액션 리스트 */}
-      <HoldingsTable
-        holdings={H}
-        liveTicks={T}
-        metric={metric}
-        currency={currency}
-      />
+      <HoldingsTable holdings={H} liveTicks={T} />
       <ActionList dividendThisMonth={13} />
     </div>
   );

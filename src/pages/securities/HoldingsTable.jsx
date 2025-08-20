@@ -19,13 +19,13 @@ export default function HoldingsTable({
   return (
     <div className={styles.table}>
       {holdings.map((h) => {
-        const tick = liveTicks[h.code] || {};
-        const price =
-          typeof tick.price === "number"
-            ? tick.price
-            : typeof h?.prev_close === "number"
-            ? h.prev_close
-            : h?.avg || 0;
+        const code = h.code || h.symbol || h.ticker || h.isin || h.cd;
+        const tick = code ? liveTicks[code] || {} : {};
+        const price = Number.isFinite(tick.price)
+          ? Number(tick.price)
+          : typeof h?.prev_close === "number"
+          ? h.prev_close
+          : h?.avg || 0;
 
         const qty = Number(h?.qty ?? 0) || 0;
         const value = price * qty;
