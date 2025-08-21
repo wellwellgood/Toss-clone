@@ -1,54 +1,179 @@
-@import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css);
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-.container {
+.mystock{
     display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    flex-direction: column;
-    width: 100%;
     padding: 10px 0;
-    gap: 10px;
 }
-
-.mystock {
+.stock{
     display: flex;
     flex-direction: row;
-    width: 100%;
-}
-
-.stock {
-    display: flex;
     align-items: center;
-    flex-direction: row;
     gap: 10px;
-}
-
-.stock span {
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 500;
-    font-family: 'Spoqa Han Sans Neo', 'sans-serif';
 }
 
-.stock img {
+.stock img{
     width: 6px;
     height: 10px;
 }
 
-.Account {
+.totalValue {
     font-size: 24px;
-    font-weight: 600;
-    font-family: 'Spoqa Han Sans Neo', 'sans-serif';
+    font-weight: 800;
+    line-height: 1.15;
 }
 
-.toneCls {
-    font-size: 12px;
+.pnl {
+    font-size: 14px;
+    margin-top: 6px;
+    font-weight: 600;
 }
-.table{
-    width: 100%;
+
+.pnlUp {
+    color: #e11d48;
+}
+
+.pnlDown {
+    color: #2563eb;
+}
+
+.controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin: 14px 0 10px;
+    flex-wrap: wrap;
+}
+
+.sortBtn {
+    font-size: 12px;
+    color: #6b7280;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    width: auto;
+}
+.segCurrency{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+.segGroup {
+    width: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #f3f4f6;
+    border-radius: 12px;
+}
+
+.segBtn {
+    height: 32px;
+    padding: 6px 10px;
+    font-size: 10px;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.1s var(--fade-out);
+}
+
+.segBtnActive {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 24px;
+    background: #fff;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, .06);
+    font-weight: 700;
+    transition: all 0.1s var(--fade-in);
+}
+
+.currencyGroup {
+    width: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #f3f4f6;
+    border-radius: 12px;
+    /* padding: 4px; */
+    height: 32px;
+}
+
+.currencyBtn {
+    padding: 6px 0;
+    font-size: 10px;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.1s var(--fade-out);
+}
+
+.currencyBtnActive {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 24px;
+    background: #fff;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, .06);
+    font-weight: 700;
+    transition: all 0.1s var(--fade-in);
+}
+
+.list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.listItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #f3f4f6;
+}
+
+.left {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.right {
+    text-align: right;
+}
+
+.spark {
+    width: 52px;
+    height: 28px;
+}
+
+.itemTitle {
+    font-weight: 700;
+}
+
+.itemSub {
+    font-size: 12px;
+    color: #9ca3af;
+}
+
+.value {
+    font-weight: 700;
+}
+
+.change {
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.changeUp {
+    color: #ef4444;
+}
+
+.changeDown {
+    color: #2563eb;
 }

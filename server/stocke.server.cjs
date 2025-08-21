@@ -4,6 +4,114 @@
 
 require("dotenv").config();
 
+// --- 시장 감지 + TR/WS 선택 ---
+function detectMarket(code = "") {
+  if (/^\d{6}$/.test(code)) return "KR";         // 005930
+  if (/^[A-Z]{1,5}(\.[A-Z]{1,2})?$/.test(code)) return "US"; // AAPL, BRK.B
+  return "KR";
+}
+
+const CONF = {
+  KR: {
+    WS: process.env.KIS_WS_KR || process.env.KIS_WS,
+    TR: {
+      tick: process.env.KIS_TR_ID_TICK_KR,
+      ob: process.env.KIS_TR_ID_OB_KR,
+    },
+  },
+  US: {
+    WS: process.env.KIS_WS_OVS || process.env.KIS_WS,
+    TR: {
+      tick: process.env.KIS_TR_ID_TICK_OVS,
+      ob: process.env.KIS_TR_ID_OB_OVS,
+    },
+  },
+};
+
+// approval_key 캐시(24h 유효)
+let APPROVAL_KEY = null;
+async function getApprovalKey(fetchImpl = global.fetch) {
+  if (APPROVAL_KEY) return APPROVAL_KEY;
+  const r = await fetchImpl(`${process.env.KIS_REST}/oauth2/Approval`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json; charset=UTF-8" },
+    body: JSON.stringify({
+      grant_type: "client_credentials",
+      appkey: process.env.APP_KEY,
+      secretkey: process.env.APP_SECRET,
+    }),
+  });
+  const j = await r.json();
+  if (!j.approval_key) throw new Error("approval_key 실패");
+  APPROVAL_KEY = j.approval_key;
+  return APPROVAL_KEY;
+}
+
+// KIS WS 커넥션을 시장별로 하나씩 유지
+const WebSocket = require("ws");
+const kisConn = { KR: null, US: null };
+const kisReady = { KR: false, US: false };
+const pendingSubs = { KR: new Set(), US: new Set() };
+
+async function ensureKIS(market) {
+  if (kisConn[market] && kisConn[market].readyState === WebSocket.OPEN) return kisConn[market];
+
+  const key = await getApprovalKey();
+  const url = CONF[market].WS;
+  if (!url) throw new Error(`WS URL 없음: ${market}`);
+
+  const ws = new WebSocket(url);
+  kisConn[market] = ws;
+  kisReady[market] = false;
+
+  ws.on("open", () => {
+    kisReady[market] = true;
+    // 재접속 시 보류된 종목 재구독
+    for (const code of pendingSubs[market]) {
+      try { subscribeTick(market, code, key); } catch { }
+    }
+  });
+
+  ws.on("message", (buf) => {
+    // TODO: KIS 포맷에 맞게 파싱 후 quotes 갱신 → broadcast(quotes)
+    // 예시:
+    // const msg = JSON.parse(buf.toString());
+    // const { code, price, prevClose, name } = mapFromKIS(msg);
+    // quotes[code] = { ...(quotes[code]||{}), price, prevClose, name };
+    // broadcast(quotes);
+  });
+
+  ws.on("close", () => { kisReady[market] = false; setTimeout(() => ensureKIS(market).catch(() => { }), 1000); });
+  ws.on("error", () => { /* 로그만 */ });
+
+  return ws;
+}
+
+function buildSubMsg({ approval_key, tr_id, tr_key, custtype = process.env.CUSTTYPE || "P" }) {
+  return JSON.stringify({
+    header: { approval_key, custtype, tr_type: "1" }, // 1:등록, 2:해제
+    body: { input: { tr_id, tr_key } },
+  });
+}
+
+async function subscribeTick(market, code, approvalKey) {
+  const ws = await ensureKIS(market);
+  const tr_id = CONF[market].TR.tick;
+  if (!tr_id) throw new Error(`TR_ID 없음: ${market}.tick`);
+  ws.send(buildSubMsg({ approval_key: approvalKey, tr_id, tr_key: code }));
+  pendingSubs[market].add(code);
+}
+
+// 외부에서 호출: 배열 codes를 시장별로 나눠 구독
+async function subscribeCodes(codes = []) {
+  const key = await getApprovalKey();
+  const byMkt = { KR: [], US: [] };
+  for (const c of codes) byMkt[detectMarket(c)].push(c);
+  for (const c of byMkt.KR) await subscribeTick("KR", c, key);
+  for (const c of byMkt.US) await subscribeTick("US", c, key);
+}
+
+
 const express = require("express");
 const app = express();
 app.use(express.json());
@@ -40,7 +148,7 @@ wss.on("connection", (ws, req) => {
       .map((s) => s.trim())
       .filter(Boolean);
     ws.send(JSON.stringify(pickSnapshot(codes)));
-  } catch (_) {}
+  } catch (_) { }
 
   ws.on("close", () => clients.delete(ws));
 });
@@ -95,6 +203,6 @@ server.listen(PORT, "0.0.0.0", () => {
 });
 
 
-server.on("upgrade", (req) => console.log("[UPGRADE]", req.url));
-wss.on("connection", (_ws, req) => console.log("[WS CONNECT]", req.url));
-wss.on("error", (e) => console.log("[WSS ERROR]", e.message));
+// server.on("upgrade", (req) => console.log("[UPGRADE]", req.url));
+// wss.on("connection", (_ws, req) => console.log("[WS CONNECT]", req.url));
+// wss.on("error", (e) => console.log("[WSS ERROR]", e.message));
