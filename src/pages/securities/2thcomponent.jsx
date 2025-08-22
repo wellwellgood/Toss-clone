@@ -3,81 +3,86 @@ import { Link } from "react-router-dom";
 import styles from "../../css/securities/2thcomponent.module.css";
 import useKRW from "../../hooks/securitiesPoFol";
 import right from "./img/right.jpg";
-
 import useLiveTicks from "../../hooks/useLiveTicks";
 import useLiveSeriesMap from "../../hooks/useLiveSeriesMap";
-import { ResponsiveContainer, AreaChart, Area } from "recharts";
+import { AreaChart, Area } from "recharts";
 
 function Spark({ id, data = [], up }) {
   const gid = `grad-${id.replace(/[^a-zA-Z0-9_-]/g, "")}`;
-  const safe = data.length
+  const safe = data?.length
     ? data
     : [
         { t: 0, price: 0 },
         { t: 1, price: 0 },
       ];
   const stroke = up ? "#ef4444" : "#2563eb";
-  const top = up ? "#fecaca" : "#bfdbfe";
-  const bottom = up ? "#ef4444" : "#2563eb";
+
   return (
-    <div className={styles.spark}>
-      <ResponsiveContainer>
-        <AreaChart
-          data={safe}
-          margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
-        >
-          <defs>
-            <linearGradient id={gid} x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor={top} stopOpacity={0.9} />
-              <stop offset="100%" stopColor={bottom} stopOpacity={0.15} />
-            </linearGradient>
-          </defs>
-          <Area
-            type="monotone"
-            dataKey="price"
-            stroke={stroke}
-            fill={`url(#${gid})`}
-            strokeWidth={1.5}
-            dot={false}
-            isAnimationActive={false}
-          />
-        </AreaChart>
-      </ResponsiveContainer>
-    </div>
+    <AreaChart width={120} height={36} data={safe}>
+      <defs>
+        <linearGradient id={gid} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor={stroke} stopOpacity={0.35} />
+          <stop offset="100%" stopColor={stroke} stopOpacity={0.05} />
+        </linearGradient>
+      </defs>
+      <Area
+        type="monotone"
+        dataKey="price"
+        stroke={stroke}
+        strokeWidth={2}
+        fill={`url(#${gid})`}
+        isAnimationActive={false}
+      />
+    </AreaChart>
   );
 }
 
-export default function TwoThComponent({ holdings, liveTicks }) {
+export default function TwoThComponent({ holdings }) {
   const krw = useKRW({ suffix: "원", showSign: true, digits: 0 });
 
-  const H =
-    holdings ??
-    (() => {
-      try {
-        return JSON.parse(localStorage.getItem("holdings") || "[]");
-      } catch {
-        return [];
-      }
-    })();
+  const H = holdings ?? [];
+  const HH =
+    H && H.length
+      ? H
+      : [
+          {
+            code: "AAPL",
+            name: "애플",
+            qty: 0.016873,
+            avg: 314462,
+            prev_close: 350737,
+          },
+          {
+            code: "TSLA",
+            name: "테슬라",
+            qty: 0.000163,
+            avg: 446706,
+            prev_close: 668711,
+          },
+          {
+            code: "PSTV",
+            name: "플러스 테라퓨틱스",
+            qty: 12,
+            avg: 675,
+            prev_close: 781,
+          },
+        ];
 
-  const T0 = liveTicks ?? {};
   const codes = useMemo(
-    () =>
-      (Array.isArray(H) ? H : [])
-        .map((h) => h && h.code)
-        .filter(Boolean)
-        .filter((v, i, a) => a.indexOf(v) === i),
-    [H]
+    () => [...new Set(HH.map((x) => x.code).filter(Boolean))],
+    [HH]
   );
+  const T = useLiveTicks(import.meta.env.VITE_WS_URL, { codes, minGapMs: 3000 });
+  const seriesMap = useLiveSeriesMap(T, codes, { max: 600, stepMs: 3000 });
 
-  const live = useLiveTicks(import.meta.env.VITE_WS_URL, { codes });
-  const T = { ...T0, ...live };
+  const fmtTS = (ts) =>
+    ts
+      ? new Date(Number(ts)).toLocaleTimeString("ko-KR", { hour12: false })
+      : "-";
 
-  const seriesMap = useLiveSeriesMap(T, codes, { max: 60 });
-
-  let cost = 0;
-  let mv = 0;
-  for (const h of H) {
+  let cost = 0,
+    mv = 0;
+  for (const h of HH) {
     const qty = Number(h?.qty || 0);
     const avg = Number(h?.avg || 0);
     const tick = T[h?.code] || {};
@@ -106,9 +111,12 @@ export default function TwoThComponent({ holdings, liveTicks }) {
 
   const changeRate = (tick, h) => {
     const p = Number(tick?.price ?? h?.prev_close ?? h?.avg ?? 0);
-    const y = Number(tick?.prevClose ?? h?.prev_close ?? p);
-    if (!p || !y) return 0;
-    return ((p - y) / y) * 100;
+    const base = Number.isFinite(tick?.prevClose)
+      ? tick.prevClose
+      : typeof h?.prev_close === "number"
+      ? h.prev_close
+      : Number(h?.avg) || null;
+    return p && base ? ((p - base) / base) * 100 : 0;
   };
 
   return (
@@ -166,16 +174,29 @@ export default function TwoThComponent({ holdings, liveTicks }) {
       </div>
 
       <ul className={styles.list}>
-        {H.map((h) => {
-          const tick = T[h.code] || {};
-          const price = Number(tick?.price ?? h?.prev_close ?? h?.avg ?? 0);
+        {HH.map((h) => {
+          const series = seriesMap.get(h.code) || [];
+          const last = series.length ? series[series.length - 1] : null;
+          const price = Number(
+            series.at(-1)?.price ??
+              T[h.code]?.price ??
+              h.prev_close ??
+              h.avg ??
+              0
+          );
+          const ts = Number(series.at(-1)?.t ?? T[h.code]?.ts ?? 0);
+          const rate = changeRate(
+            { price, prevClose: T[h.code]?.prevClose },
+            h
+          );
           const value = price * Number(h.qty || 0);
           const display = metric === "price" ? price : value;
-          const chg = changeRate(tick, h);
+          const chg = rate;
+
           return (
-            <li key={h.code} className={styles.listItem}>
+            <li key={h.code} className={styles.Row}>
               <div className={styles.left}>
-                <Spark id={h.code} data={seriesMap.get(h.code)} up={chg >= 0} />
+                <Spark id={h.code} data={series} up={chg >= 0} />
                 <div>
                   <div className={styles.itemTitle}>{h.name || h.code}</div>
                   <div className={styles.itemSub}>

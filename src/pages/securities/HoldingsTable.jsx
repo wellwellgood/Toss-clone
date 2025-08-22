@@ -30,9 +30,13 @@ export default function HoldingsTable({
         const qty = Number(h?.qty ?? 0) || 0;
         const value = price * qty;
 
-        const prevClose =
-          typeof h?.prev_close === "number" ? h.prev_close : price;
-        const rate = prevClose ? ((price - prevClose) / prevClose) * 100 : 0;
+        const prevClose = Number.isFinite(tick?.prevClose)
+        ? tick.prevClose
+        : (typeof h?.prev_close === "number" ? h.prev_close : null);
+        
+        const rate = prevClose != null
+        ? ((price - prevClose) / prevClose) * 100
+        : (Number(h?.avg) ? ((price - h.avg) / h.avg) * 100 : 0);
 
         const tone =
           rate > 0 ? styles.up : rate < 0 ? styles.down : styles.flat;
