@@ -19,7 +19,11 @@ export default function useLiveTicks(wsUrl, { codes = [], reconnect = true, ping
             return;
         }
         if (!codes?.length) return;
-        const url = withCodes(wsUrl, codes);
+        const u = new URL(import.meta.env.VITE_WS_URL, window.location.href);
+        if (u.protocol === "http:")  u.protocol = "ws:";
+        if (u.protocol === "https:") u.protocol = "wss:";
+        u.searchParams.set("codes", codes.join(","));
+        const url = u.toString();
         
         console.log("[WS URL]", url, { codes });
 
