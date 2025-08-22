@@ -28,5 +28,7 @@ export default function useLiveSeries({ ticks, code, max = 300 }) {
     });
   }, [price]);
 
+  const last = (series.at(-1)?.t)||0; const stale = Date.now()-last > 5*60*1000; 
+  
   return series;
 }
