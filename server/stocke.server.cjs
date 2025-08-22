@@ -12,6 +12,7 @@ app.get("/", (_, res) => res.status(200).send("ok"));
 let quotes = {
   AAPL: { code: "AAPL", name: "애플",   price: 319436, prevClose: 319800 },
   TSLA: { code: "TSLA", name: "테슬라", price: 465003, prevClose: 464500 },
+  PSTV: { code: "PSTV", name: "플러스 테라퓨틱스", price: 675, prevclose: 781},
 };
 
 // 옵션
