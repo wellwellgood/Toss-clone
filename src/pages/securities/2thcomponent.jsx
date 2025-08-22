@@ -72,8 +72,8 @@ export default function TwoThComponent({ holdings }) {
     () => [...new Set(HH.map((x) => x.code).filter(Boolean))],
     [HH]
   );
-  const T = useLiveTicks(import.meta.env.VITE_WS_URL, { codes, minGapMs: 3000 });
-  const seriesMap = useLiveSeriesMap(T, codes, { max: 600, stepMs: 3000 });
+  const T = useLiveTicks(import.meta.env.VITE_WS_URL, { codes, minGapMs: 0 })
+  const seriesMap = useLiveSeriesMap(T, codes, { max: 600, stepMs: 0 });
 
   const fmtTS = (ts) =>
     ts

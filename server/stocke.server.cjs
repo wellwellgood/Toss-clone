@@ -6,6 +6,8 @@ const { WebSocketServer } = require("ws");
 const app = express();
 const server = http.createServer(app);
 
+app.get("/", (_, res) => res.status(200).send("ok"));
+
 // 데모 시세
 let quotes = {
   AAPL: { code: "AAPL", name: "애플",   price: 319436, prevClose: 319800 },
