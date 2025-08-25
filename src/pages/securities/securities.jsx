@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import styles from "../../css/securities/securities.module.css";
 
-
 //import components
 import Firstcomponent from "./1stcomponent";
 import Secondcomponent from "./2thcomponent";
@@ -180,36 +179,38 @@ export default function Securities() {
 
   return (
     <div className={styles.container}>
-      <div className={styles.btn}>
-        <button>
-          <link to="" className={styles.search} />
-          <img src={magnefier} alt="" />
-        </button>
-        <button>
-          <link to="" className={styles.setting} />
-          <img src={hambuger} alt="" />
-        </button>
-      </div>
-      <header className={styles.header}>
-        <div className={styles.brandContainer}>
-          <span className={styles.brand}>토스증권</span>
-          <div className={styles.vticker}>
-            <div
-              key={`${code}-in-${current}`}
-              className={`${styles.vrow} ${styles.in}`}
-            >
-              <span className={`${styles.indexName} ${tone}`}>{label}</span>
-              <span className={`${styles.indexValue} ${tone}`}>
-                {fmt(price, 2)}
-              </span>
-              <span className={`${styles.indexRate} ${tone}`}>
-                {rate > 0 ? "+" : ""}
-                {fmt(rate, 2)}%
-              </span>
+      <div className={styles.top}>
+        <header className={styles.header}>
+          <div className={styles.brandContainer}>
+            <span className={styles.brand}>토스증권</span>
+            <div className={styles.vticker}>
+              <div
+                key={`${code}-in-${current}`}
+                className={`${styles.vrow} ${styles.in}`}
+              >
+                <span className={`${styles.indexName} ${tone}`}>{label}</span>
+                <span className={`${styles.indexValue} ${tone}`}>
+                  {fmt(price, 2)}
+                </span>
+                <span className={`${styles.indexRate} ${tone}`}>
+                  {rate > 0 ? "+" : ""}
+                  {fmt(rate, 2)}%
+                </span>
+              </div>
             </div>
           </div>
+        </header>
+        <div className={styles.btn}>
+          <button>
+            <link to="" className={styles.search} />
+            <img src={magnefier} alt="" />
+          </button>
+          <button>
+            <link to="" className={styles.setting} />
+            <img src={hambuger} alt="" />
+          </button>
         </div>
-      </header>
+      </div>
       <Firstcomponent />
       <Secondcomponent />
       <ThreeThComponent />

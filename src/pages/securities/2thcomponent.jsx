@@ -145,22 +145,24 @@ export default function TwoThComponent({ holdings }) {
 
   return (
     <div className={styles.container}>
-      <Link to="/" className={styles.mystock}>
-        <div className={styles.stock}>
-          <span>내 종목보기</span>
-          <img src={right} alt="" />
+      <div className={styles.header}>
+        <Link to="/" className={styles.mystock}>
+          <div className={styles.stock}>
+            <span>내 종목보기</span>
+            <img src={right} alt="" />
+          </div>
+        </Link>
+        <div className={styles.pricestock}>
+          <div className={styles.totalValue}>{money(mv)}</div>
+          <div
+            className={`${styles.pnl} ${
+              pnlAbs >= 0 ? styles.pnlUp : styles.pnlDown
+            }`}
+          >
+            {pnlAbs >= 0 ? "" : "-"}
+            {money(Math.abs(pnlAbs))} ({pnlRate.toFixed(1)}%)
+          </div>
         </div>
-      </Link>
-
-      <div className={styles.totalValue}>{money(mv)}</div>
-
-      <div
-        className={`${styles.pnl} ${
-          pnlAbs >= 0 ? styles.pnlUp : styles.pnlDown
-        }`}
-      >
-        {pnlAbs >= 0 ? "" : "-"}
-        {money(Math.abs(pnlAbs))} ({pnlRate.toFixed(1)}%)
       </div>
 
       <div className={styles.controls}>
@@ -210,40 +212,41 @@ export default function TwoThComponent({ holdings }) {
         const chg = rate;
 
         return (
-          <li key={h.code} className={styles.Row}>
-            <div className={styles.left}>
-              {metric === "price" ? (
-                <Spark id={h.code} data={series} up={chg >= 0} />
-              ) : (
-                logoFor(h.code) && (
-                  <img
-                    className={styles.chartIcon}
-                    src={logoFor(h.code)}
-                    alt=""
-                  />
-                )
-              )}
-              <div>
-                <div className={styles.itemTitle}>
-                  {/* {renderLogo(h.code)} */}
-                  {h.name || h.code}
+            <li key={h.code} className={styles.Row}>
+              <div className={styles.left}>
+                {metric === "price" ? (
+                  <Spark id={h.code} data={series} up={chg >= 0} />
+                ) : (
+                  logoFor(h.code) && (
+                    <img
+                      className={styles.chartIcon}
+                      src={logoFor(h.code)}
+                      alt=""
+                    />
+                  )
+                )}
+                <div>
+                  <div className={styles.itemTitle}>
+                    {/* {renderLogo(h.code)} */}
+                    {h.name || h.code}
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className={styles.right}>
-              <div className={styles.value}>{money(display)}</div>
-              <div
-                className={`${styles.change} ${
-                  chg >= 0 ? styles.changeUp : styles.changeDown
-                }`}
-              >
-                {chg >= 0 ? "+" : ""}
-                {chg.toFixed(1)}%
+              <div className={styles.right}>
+                <div className={styles.value}>{money(display)}</div>
+                <div
+                  className={`${styles.change} ${
+                    chg >= 0 ? styles.changeUp : styles.changeDown
+                  }`}
+                >
+                  {chg >= 0 ? "+" : ""}
+                  {chg.toFixed(1)}%
+                </div>
               </div>
-            </div>
-          </li>
+            </li>
         );
       })}
+      <div className={styles.line}></div>
       <div className={styles.btncontainer}>
         <ul className={styles.btntable}>
           <Link to="/">

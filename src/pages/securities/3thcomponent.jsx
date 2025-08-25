@@ -6,12 +6,14 @@ import ticket from "./img/5.png";
 import fire from "./img/6.png";
 import circle from "./img/7.png";
 import right from "./img/right.jpg";
+import re from "./img/8.png"
 
 export default function ThreeThComponent() {
   return (
     <div className={styles.container}>
       <div className={styles.main}>
         <ul className={styles.list}>
+            <span>김기윤님을 위한 맞춤형 서비스</span>
           <Link to="" className={styles.Link}>
             <li className={styles.listitem}>
               <div className={styles.leftitem}>
@@ -48,13 +50,13 @@ export default function ThreeThComponent() {
               <img src={right} alt="" />
             </li>
           </Link>
-          <Link to="/">
-            <li>
-              <img src="" alt="" />
+        </ul>
+        <Link to="/" className={styles.more}>
+            <li className={styles.moreitem}>
+              <img src={re} alt="" />
               <span>다른 서비스 더 보기</span>
             </li>
           </Link>
-        </ul>
       </div>
     </div>
   );

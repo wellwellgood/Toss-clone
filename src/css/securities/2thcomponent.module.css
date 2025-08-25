@@ -1,9 +1,38 @@
-.container {
-    margin-bottom: 48px solid #f2f4f6;
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
+
+body{
+    background: #f2f4f6;
+}
+
+.container{
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    flex-direction: column;
+    background: #ffffff;
+    width: 100%;
+    overflow: hidden;
+    padding: 10px 5px; 
+}
+.header{
+    display: flex;
+    flex-direction: column;
+}
+
+.pricestock{
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    padding: 0px 10px;
+}
+
 .mystock {
     display: flex;
-    padding: 10px 0;
+    padding: 10px;
 }
 
 .stock {
@@ -44,8 +73,9 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    width: 100%;
     gap: 12px;
-    margin: 14px 0 10px;
+    padding: 0px 10px;
     flex-wrap: wrap;
 }
 
@@ -162,12 +192,21 @@
     border-bottom: 1px solid #f3f4f6;
 }
 
+
 .Row {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 12px 0;
+    width: 100%;
+    padding: 10px;
     /* border-bottom: 1px solid #f3f4f6; */
+}
+
+.line{
+    width: 100%;
+    height: 1px;
+    background-color: #f3f4f6;
+    margin: 30px 0;
 }
 
 .left {
@@ -211,36 +250,54 @@
     color: #2563eb;
 }
 
-.btncontainer{
-display: flex;
-align-items: center;
-justify-content: center;
+.btncontainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 0px 10px;
 }
-.btntable{
+
+.btntable {
     display: flex;
     flex-direction: column;
     width: 100%;
     gap: 10px;
 }
-.btn{
+
+.btn {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     width: 100%;
     margin: 5px;
 }
-.btn span{
+
+.btn span {
     font-size: 16px;
 }
-.rightarea{
+
+.rightarea {
     display: flex;
     align-items: center;
     gap: 10px;
 }
-.rightarea span{
+
+.rightarea span {
     font-size: 12px;
 }
-.rightarea img{
+
+.rightarea img {
     width: 6px;
     height: 10px;
+}
+
+.bottom{
+    /* position: absolute; */
+    left: 0;
+    bottom: 0;
+    transform: translate(0, 100%);
+    width: 100%;
+    height: 48px;
+    background-color: #f2f4f6;
 }
