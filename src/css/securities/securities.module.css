@@ -1,4 +1,5 @@
 @import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css);
+
 body{
   background-color: #f2f4f6;
 }
@@ -16,6 +17,8 @@ body{
   align-items: center;
   justify-content: flex-end;
   gap: 20px;
+  background-color: #ffffff;
+  padding: 10px;
 }
 
 .btn button {
@@ -26,6 +29,10 @@ body{
   height: 20px;
 }
 
+.header{
+  background: #ffffff;
+  padding:  10px 0;
+}
 
 .brandContainer {
   display: flex;
