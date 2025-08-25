@@ -2,10 +2,15 @@ import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import styles from "../../css/securities/2thcomponent.module.css";
 import useKRW from "../../hooks/securitiesPoFol";
-import right from "./img/right.jpg";
 import useLiveTicks from "../../hooks/useLiveTicks";
 import useLiveSeriesMap from "../../hooks/useLiveSeriesMap";
 import { AreaChart, Area } from "recharts";
+
+//import image
+import right from "./img/right.jpg";
+import apple from "./img/1.png";
+import tesla from "./img/2.png";
+import pstv from "./img/3.png";
 
 function Spark({ id, data = [], up }) {
   const gid = `grad-${id.replace(/[^a-zA-Z0-9_-]/g, "")}`;
@@ -38,7 +43,25 @@ function Spark({ id, data = [], up }) {
 }
 
 export default function TwoThComponent({ holdings }) {
+  const logoMap = { AAPL: apple, TSLA: tesla, PSTV: pstv };
+  const logoFor = (code) => logoMap[String(code || "").toUpperCase()] || "";
   const krw = useKRW({ suffix: "원", showSign: true, digits: 0 });
+
+  function pickLogo(symbol) {
+    const up = String(symbol || "").toUpperCase();
+    const key = `./img/logo-${up}.png`;
+    const mod = logoMods[key];
+    return (
+      (mod && "default" in mod ? mod.default : logoMap[up]) ||
+      logoMods["./img/logo-default.png"]?.default ||
+      ""
+    );
+  }
+
+  function renderLogo(symbol) {
+    const src = pickLogo(symbol);
+    return src ? <img className={styles.logo} src={src} alt="" /> : null;
+  }
 
   const H = holdings ?? [];
   const HH =
@@ -72,7 +95,7 @@ export default function TwoThComponent({ holdings }) {
     () => [...new Set(HH.map((x) => x.code).filter(Boolean))],
     [HH]
   );
-  const T = useLiveTicks(import.meta.env.VITE_WS_URL, { codes, minGapMs: 0 })
+  const T = useLiveTicks(import.meta.env.VITE_WS_URL, { codes, minGapMs: 0 });
   const seriesMap = useLiveSeriesMap(T, codes, { max: 600, stepMs: 0 });
 
   const fmtTS = (ts) =>
@@ -102,6 +125,7 @@ export default function TwoThComponent({ holdings }) {
   const [metric, setMetric] = useState("price");
   const [currency, setCurrency] = useState("KRW");
   const usdRate = Number(import.meta.env.VITE_USD_KRW || 1350);
+  const logoMods = import.meta.glob("./img/logo-*.png", { eager: true });
 
   const toCur = (v) => (currency === "USD" ? v / usdRate : v);
   const money = (v) =>
@@ -172,53 +196,85 @@ export default function TwoThComponent({ holdings }) {
           </div>
         </div>
       </div>
+      <ul className={styles.list}></ul>
+      {HH.map((h) => {
+        const series = seriesMap.get(h.code) || [];
+        const last = series.length ? series[series.length - 1] : null;
+        const price = Number(
+          series.at(-1)?.price ?? T[h.code]?.price ?? h.prev_close ?? h.avg ?? 0
+        );
+        const ts = Number(series.at(-1)?.t ?? T[h.code]?.ts ?? 0);
+        const rate = changeRate({ price, prevClose: T[h.code]?.prevClose }, h);
+        const value = price * Number(h.qty || 0);
+        const display = metric === "price" ? price : value;
+        const chg = rate;
 
-      <ul className={styles.list}>
-        {HH.map((h) => {
-          const series = seriesMap.get(h.code) || [];
-          const last = series.length ? series[series.length - 1] : null;
-          const price = Number(
-            series.at(-1)?.price ??
-              T[h.code]?.price ??
-              h.prev_close ??
-              h.avg ??
-              0
-          );
-          const ts = Number(series.at(-1)?.t ?? T[h.code]?.ts ?? 0);
-          const rate = changeRate(
-            { price, prevClose: T[h.code]?.prevClose },
-            h
-          );
-          const value = price * Number(h.qty || 0);
-          const display = metric === "price" ? price : value;
-          const chg = rate;
-
-          return (
-            <li key={h.code} className={styles.Row}>
-              <div className={styles.left}>
+        return (
+          <li key={h.code} className={styles.Row}>
+            <div className={styles.left}>
+              {metric === "price" ? (
                 <Spark id={h.code} data={series} up={chg >= 0} />
-                <div>
-                  <div className={styles.itemTitle}>{h.name || h.code}</div>
-                  <div className={styles.itemSub}>
-                    내 평균 {krw.raw(Number(h.avg || 0))}원
-                  </div>
+              ) : (
+                logoFor(h.code) && (
+                  <img
+                    className={styles.chartIcon}
+                    src={logoFor(h.code)}
+                    alt=""
+                  />
+                )
+              )}
+              <div>
+                <div className={styles.itemTitle}>
+                  {/* {renderLogo(h.code)} */}
+                  {h.name || h.code}
                 </div>
               </div>
-              <div className={styles.right}>
-                <div className={styles.value}>{money(display)}</div>
-                <div
-                  className={`${styles.change} ${
-                    chg >= 0 ? styles.changeUp : styles.changeDown
-                  }`}
-                >
-                  {chg >= 0 ? "+" : ""}
-                  {chg.toFixed(1)}%
-                </div>
+            </div>
+            <div className={styles.right}>
+              <div className={styles.value}>{money(display)}</div>
+              <div
+                className={`${styles.change} ${
+                  chg >= 0 ? styles.changeUp : styles.changeDown
+                }`}
+              >
+                {chg >= 0 ? "+" : ""}
+                {chg.toFixed(1)}%
+              </div>
+            </div>
+          </li>
+        );
+      })}
+      <div className={styles.btncontainer}>
+        <ul className={styles.btntable}>
+          <Link to="/">
+            <li className={styles.btn}>
+              <span>주문내역</span>
+              <div className={styles.rightarea}>
+                <span>이번달{}건</span>
+                <img src={right} alt="" />
               </div>
             </li>
-          );
-        })}
-      </ul>
+          </Link>
+          <Link to="/">
+            <li className={styles.btn}>
+              <span>판매수익</span>
+              <div className={styles.rightarea}>
+                <span></span>
+                <img src={right} alt="" />
+              </div>
+            </li>
+          </Link>
+          <Link to="/">
+            <li className={styles.btn}>
+              <span>배당금</span>
+              <div className={styles.rightarea}>
+                <span>이번달{}원</span>
+                <img src={right} alt="" />
+              </div>
+            </li>
+          </Link>
+        </ul>
+      </div>
     </div>
   );
 }

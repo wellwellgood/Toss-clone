@@ -1,9 +1,13 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import styles from "../../css/securities/securities.module.css";
 
+
+//import components
 import Firstcomponent from "./1stcomponent";
 import Secondcomponent from "./2thcomponent";
+import ThreeThComponent from "./3thcomponent";
 
+//import image
 import magnefier from "./img/Magnifier.png";
 import hambuger from "./img/hamburger.jpg";
 
@@ -208,6 +212,7 @@ export default function Securities() {
       </header>
       <Firstcomponent />
       <Secondcomponent />
+      <ThreeThComponent />
     </div>
   );
 }

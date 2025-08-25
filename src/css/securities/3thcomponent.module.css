@@ -1,0 +1,41 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.container{
+    width: 100%;
+    padding: 10px 0;
+}
+.main{
+    width: 100%;
+}
+.listitem{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+.listitem img{
+    width: 6px;
+    height: 10px;
+}
+.Link{
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+}
+
+.leftitem{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.leftitem img{
+    width: 24px;
+    height: 24px;
+}
+.leftitem span{
+    font-size: 14px;
+}
