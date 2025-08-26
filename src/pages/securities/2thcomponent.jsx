@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import styles from "../../css/securities/2thcomponent.module.css";
 import useKRW from "../../hooks/securitiesPoFol";
@@ -43,26 +43,6 @@ function Spark({ id, data = [], up }) {
 }
 
 export default function TwoThComponent({ holdings }) {
-  const logoMap = { AAPL: apple, TSLA: tesla, PSTV: pstv };
-  const logoFor = (code) => logoMap[String(code || "").toUpperCase()] || "";
-  const krw = useKRW({ suffix: "원", showSign: true, digits: 0 });
-
-  function pickLogo(symbol) {
-    const up = String(symbol || "").toUpperCase();
-    const key = `./img/logo-${up}.png`;
-    const mod = logoMods[key];
-    return (
-      (mod && "default" in mod ? mod.default : logoMap[up]) ||
-      logoMods["./img/logo-default.png"]?.default ||
-      ""
-    );
-  }
-
-  function renderLogo(symbol) {
-    const src = pickLogo(symbol);
-    return src ? <img className={styles.logo} src={src} alt="" /> : null;
-  }
-
   const H = holdings ?? [];
   const HH =
     H && H.length
@@ -91,12 +71,96 @@ export default function TwoThComponent({ holdings }) {
           },
         ];
 
-  const codes = useMemo(
-    () => [...new Set(HH.map((x) => x.code).filter(Boolean))],
-    [HH]
-  );
-  const T = useLiveTicks(import.meta.env.VITE_WS_URL, { codes, minGapMs: 0 });
-  const seriesMap = useLiveSeriesMap(T, codes, { max: 600, stepMs: 0 });
+        const codes = useMemo(
+          () => [...new Set(HH.map((x) => x.code).filter(Boolean))],
+          [HH]
+        );
+
+        
+        const T = useLiveTicks(import.meta.env.VITE_WS_URL, { codes, minGapMs: 0 });
+        const seriesMap = useLiveSeriesMap(T, codes, { max: 600, stepMs: 0 });
+  const logoMap = { AAPL: apple, TSLA: tesla, PSTV: pstv };
+  const logoFor = (code) => logoMap[String(code || "").toUpperCase()] || "";
+  const krw = useKRW({ suffix: "원", showSign: true, digits: 0 });
+
+  const [sortOpen, setSortOpen] = useState(false);
+  const [sortKey, setSortKey] = useState("user");
+  const dropRef = useRef(null);
+
+  const SORTS = [
+    {key: "nameAsc", label: "가나다순" },
+    { key: "gainAsc", label: "총 수익 낮은 순" },
+    { key: "gainDesc", label: "총 수익 높은 순" },
+    { key: "valAsc", label: "평가금액 낮은 순" },
+    { key: "valDesc", label: "평가금액 높은 순" },
+    { key: "priceAsc", label: "일간 수익률 낮은 순" },
+    { key: "priceDesc", label: "일간 수익률 높은 순" },
+    { key: "user", label: "직접 설정한 순" },
+  ];
+  const labelOf = Object.fromEntries(SORTS.map((s) => [s.key, s.label]));
+
+  const curPrice = (h) =>
+    Number(T[h.code]?.price ?? h.prev_close ?? h.avg ?? 0);
+  const gainRate = (h) => {
+    const p = curPrice(h);
+    const base = Number(T[h.code]?.prevClose ?? h.prev_close ?? h.avg ?? 0);
+    return base ? ((p - base) / base) * 100 : 0;
+  };
+
+  const valuation = (h) => {
+    const qty = Number(h.qty ?? h.quantity ?? h.shares ?? 0);
+    if (qty) return qty * curPrice(h);
+    return Number(h.eval ?? h.valuation ?? 0); // 대체 필드가 있으면 사용
+  };
+
+  useEffect(() => {
+    const onDoc = (e) => {
+      if (dropRef.current && !dropRef.current.contains(e.target))
+        setSortOpen(false);
+    };
+    const onEsc = (e) => {
+      if (e.key === "Escape") setSortOpen(false);
+    };
+    document.addEventListener("mousedown", onDoc);
+    document.addEventListener("keydown", onEsc);
+    return () => {
+      document.removeEventListener("mousedown", onDoc);
+      document.removeEventListener("keydown", onEsc);
+    };
+  }, []);
+
+  const list = useMemo(() => {
+    const arr = [...HH];
+    switch (sortKey) {
+      case "nameAsc":   arr.sort((a,b)=>
+        (a.name||a.code||"").localeCompare(b.name||b.code||"", "ko")); break;
+      case "priceAsc":  arr.sort((a,b)=>curPrice(a)-curPrice(b)); break;
+      case "priceDesc": arr.sort((a,b)=>curPrice(b)-curPrice(a)); break;
+      case "gainAsc":   arr.sort((a,b)=>gainRate(a)-gainRate(b)); break;
+      case "gainDesc":  arr.sort((a,b)=>gainRate(b)-gainRate(a)); break;
+      case "valAsc":    arr.sort((a,b)=>valuation(a)-valuation(b)); break;
+      case "valDesc":   arr.sort((a,b)=>valuation(b)-valuation(a)); break;
+      default: break;
+    }
+    return arr;
+  }, [HH, sortKey, T]);
+
+  function pickLogo(symbol) {
+    const up = String(symbol || "").toUpperCase();
+    const key = `./img/logo-${up}.png`;
+    const mod = logoMods[key];
+    return (
+      (mod && "default" in mod ? mod.default : logoMap[up]) ||
+      logoMods["./img/logo-default.png"]?.default ||
+      ""
+    );
+  }
+
+  function renderLogo(symbol) {
+    const src = pickLogo(symbol);
+    return src ? <img className={styles.logo} src={src} alt="" /> : null;
+  }
+
 
   const fmtTS = (ts) =>
     ts
@@ -166,7 +230,37 @@ export default function TwoThComponent({ holdings }) {
       </div>
 
       <div className={styles.controls}>
-        <button className={styles.sortBtn}>직접 설정한 순 ↑↓</button>
+        {/* <button className={styles.sortBtn}>직접 설정한 순 ↑↓</button> */}
+        <div className={styles.dropdown} ref={dropRef}>
+          <button
+            className={styles.sortBtn}
+            onClick={() => setSortOpen((v) => !v)}
+            aria-haspopup="listbox"
+            aria-expanded={sortOpen}
+          >
+            {labelOf[sortKey]}{" "}
+            <span className={styles.caret}>{sortOpen}⇅</span>
+          </button>
+          {sortOpen && (
+            <ul className={styles.menu} role="listbox">
+              {SORTS.map((s) => (
+                <li key={s.key}>
+                  <button
+                    className={styles.menuItem}
+                    role="option"
+                    aria-selected={sortKey === s.key}
+                    onClick={() => {            // ← 여기
+                      setSortKey(s.key);        // 정렬 기준 변경
+                      setSortOpen(false);       // 드롭다운 닫기
+                    }}
+                  >
+                    {s.label}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
 
         <div className={styles.segCurrency}>
           <div className={styles.segGroup}>
@@ -198,20 +292,27 @@ export default function TwoThComponent({ holdings }) {
           </div>
         </div>
       </div>
-      <ul className={styles.list}></ul>
-      {HH.map((h) => {
-        const series = seriesMap.get(h.code) || [];
-        const last = series.length ? series[series.length - 1] : null;
-        const price = Number(
-          series.at(-1)?.price ?? T[h.code]?.price ?? h.prev_close ?? h.avg ?? 0
-        );
-        const ts = Number(series.at(-1)?.t ?? T[h.code]?.ts ?? 0);
-        const rate = changeRate({ price, prevClose: T[h.code]?.prevClose }, h);
-        const value = price * Number(h.qty || 0);
-        const display = metric === "price" ? price : value;
-        const chg = rate;
+      <ul className={styles.list}>
+        {list.map((h) => {
+          const series = seriesMap.get(h.code) || [];
+          const last = series.length ? series[series.length - 1] : null;
+          const price = Number(
+            series.at(-1)?.price ??
+              T[h.code]?.price ??
+              h.prev_close ??
+              h.avg ??
+              0
+          );
+          const ts = Number(series.at(-1)?.t ?? T[h.code]?.ts ?? 0);
+          const rate = changeRate(
+            { price, prevClose: T[h.code]?.prevClose },
+            h
+          );
+          const value = price * Number(h.qty || 0);
+          const display = metric === "price" ? price : value;
+          const chg = rate;
 
-        return (
+          return (
             <li key={h.code} className={styles.Row}>
               <div className={styles.left}>
                 {metric === "price" ? (
@@ -244,8 +345,9 @@ export default function TwoThComponent({ holdings }) {
                 </div>
               </div>
             </li>
-        );
-      })}
+          );
+        })}
+      </ul>
       <div className={styles.line}></div>
       <div className={styles.btncontainer}>
         <ul className={styles.btntable}>
