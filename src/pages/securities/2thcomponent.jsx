@@ -378,6 +378,12 @@ export default function TwoThComponent({ holdings }) {
               </div>
             </li>
           </Link>
+          <Link to="/" className={styles.btn4}>
+            <li>
+              <span>수익분석</span>
+              <img src={right} alt="" />
+            </li>
+          </Link>
         </ul>
       </div>
     </div>
