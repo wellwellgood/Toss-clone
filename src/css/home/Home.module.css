@@ -10,7 +10,7 @@ body {
     display: flex;
     flex-direction: column;
     background: rgba(242, 243, 245, 0.507);
-    padding: 30px 10px;
+    padding: 30px 0px;
     width: 100%;
 }
 

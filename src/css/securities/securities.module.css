@@ -1,9 +1,10 @@
 @import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css);
 
-body{
-  background-color: #f2f4f6;
+body {
+  /* background-color: #f2f4f6; */
 }
-.top{
+
+.top {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -13,10 +14,16 @@ body{
 }
 
 .btn {
+  position: fixed;
+  top: 0;
+  right: 0;
   display: flex;
   align-items: center;
   justify-content: flex-end;
+  width: 100%;
+  /* height: 80px; */
   gap: 20px;
+  z-index: 99;
   background-color: #ffffff;
   padding: 10px;
 }
@@ -29,9 +36,9 @@ body{
   height: 20px;
 }
 
-.header{
+.header {
   background: #ffffff;
-  padding:  10px 0;
+  padding: 10px 0;
 }
 
 .brandContainer {
@@ -213,4 +220,15 @@ body{
   display: flex;
   flex-direction: row;
   gap: 5px;
+}
+
+:global(.vticker.docked) {
+  order: -1;
+  margin-right: 8px;
+}
+.vtDockedLeft {
+  order: -1;            /* flex 컨테이너에서도 항상 왼쪽 */
+  margin-right: 8px;
+  transform: scale(.9);
+  transform-origin: left center;
 }

@@ -1,6 +1,5 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, useLayoutEffect } from "react";
 import styles from "../../css/securities/securities.module.css";
-
 
 //import components
 import Firstcomponent from "./1stcomponent";
@@ -73,7 +72,47 @@ export default function Securities() {
   const lastLiveAtRef = useRef(0);
   const mockTimerRef = useRef(null);
   const autoTimerRef = useRef(null);
+  const [dockTicker, setDockTicker] = useState(false);
+  const vtRef = useRef(null);
+  const firstBtnRef = useRef(null);
+  const vtOriginal = useRef(null);
+  const vtPlaceholder = useRef(null);
 
+  // scroll Event
+  useEffect(() => {
+    const THRESHOLD = 50; // 임계값(px) 필요시 조정
+    const onScroll = () => {
+      const y = window.pageYOffset || document.documentElement.scrollTop || 0;
+      setDockTicker(y >= THRESHOLD);
+    };
+    onScroll(); // 초기 반영
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useLayoutEffect(() => {
+    const vt = vtRef.current;
+    if (!vt || vtOriginal.current) return;
+    vtOriginal.current = vt.parentElement || null;
+    vtPlaceholder.current = document.createElement("div");
+    vtPlaceholder.current.setAttribute("data-vticker-placeholder", "1");
+    vtOriginal.current?.insertBefore(vtPlaceholder.current, vt);
+  }, []);
+
+  // 2) 도킹/복귀 (ref 준비 이후에만 실행)
+  useEffect(() => {
+    const vt = vtRef.current;
+    const target = firstBtnRef.current;
+    if (!vt || !target || !vtOriginal.current || !vtPlaceholder.current) return;
+    if (dockTicker) {
+      target.insertBefore(vt, target.firstChild || null); // 왼쪽으로
+      vt.classList.add(styles.vtDockedLeft);
+    } else {
+      vtOriginal.current.insertBefore(vt, vtPlaceholder.current);
+      vt.classList.remove(styles.vtDockedLeft);
+    }
+  }, [dockTicker]);
+  
   // ── 숫자 포맷
   const fmt = (n, d = 2) =>
     n == null || Number.isNaN(+n) ? "—" : (+n).toFixed(d);
@@ -181,36 +220,36 @@ export default function Securities() {
   return (
     <div className={styles.container}>
       <div>
-      <div className={styles.btn}>
-        <button>
-          <link to="" className={styles.search} />
-          <img src={magnefier} alt="" />
-        </button>
-        <button>
-          <link to="" className={styles.setting} />
-          <img src={hambuger} alt="" />
-        </button>
-      </div>
-      <header className={styles.header}>
-        <div className={styles.brandContainer}>
-          <span className={styles.brand}>토스증권</span>
-          <div className={styles.vticker}>
-            <div
-              key={`${code}-in-${current}`}
-              className={`${styles.vrow} ${styles.in}`}
-            >
-              <span className={`${styles.indexName} ${tone}`}>{label}</span>
-              <span className={`${styles.indexValue} ${tone}`}>
-                {fmt(price, 2)}
-              </span>
-              <span className={`${styles.indexRate} ${tone}`}>
-                {rate > 0 ? "+" : ""}
-                {fmt(rate, 2)}%
-              </span>
+        <div className={styles.btn} ref={firstBtnRef}>
+          <button>
+            <link to="" className={styles.search} />
+            <img src={magnefier} alt="" />
+          </button>
+          <button>
+            <link to="" className={styles.setting} />
+            <img src={hambuger} alt="" />
+          </button>
+        </div>
+        <header className={styles.header}>
+          <div className={styles.brandContainer}>
+            <span className={styles.brand}>토스증권</span>
+            <div className={styles.vticker} ref={vtRef}>
+              <div
+                key={`${code}-in-${current}`}
+                className={`${styles.vrow} ${styles.in}`}
+              >
+                <span className={`${styles.indexName} ${tone}`}>{label}</span>
+                <span className={`${styles.indexValue} ${tone}`}>
+                  {fmt(price, 2)}
+                </span>
+                <span className={`${styles.indexRate} ${tone}`}>
+                  {rate > 0 ? "+" : ""}
+                  {fmt(rate, 2)}%
+                </span>
+              </div>
             </div>
           </div>
-        </div>
-      </header>
+        </header>
       </div>
       <Firstcomponent />
       <Secondcomponent />

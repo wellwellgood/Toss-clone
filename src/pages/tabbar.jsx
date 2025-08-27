@@ -56,7 +56,7 @@ export default function TabBar() {
       label: "증권",
     },
     {
-      to: "/all",
+      to: "/allmenu",
       defaultImg: hamburger,
       activeImg: hamburgerBlack,
       label: "전체",
@@ -85,7 +85,7 @@ export default function TabBar() {
       location.pathname === "/Home" ||
       location.pathname === "/benefit" ||
       location.pathname === "/shopping" ||
-      location.pathname === "/all";
+      location.pathname === "/allmenu";
     if (isMain) {
       setMainTabHistory((prev) => {
         if (prev[prev.length - 1] !== location.pathname) {

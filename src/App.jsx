@@ -1,10 +1,4 @@
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-  Navigate,
-  useNavigate,
-} from "react-router-dom";
+import {  BrowserRouter,  Routes,  Route,  Navigate,  useNavigate,} from "react-router-dom";
 import { useEffect, useState } from "react";
 import SendMoney from "./pages/SendMoney";
 import Transaction from "./pages/Transaction";
@@ -42,6 +36,8 @@ function LoadingRedirect() {
 const Home = lazy(() => import("./pages/Home/Home.jsx"));
 const Benefit = lazy(() => import("./pages/benefit/benefit.jsx"));
 const Shopping = lazy(() => import("./pages/shopping/shopping.jsx"));
+const securities = lazy(() => import("./pages/securities/securities.jsx"));
+const allmenu = lazy(() => import("./pages/allmenu/allmenu.jsx"));
 
 export default function App() {
   const appLoaded = sessionStorage.getItem("appLoaded") === "true";

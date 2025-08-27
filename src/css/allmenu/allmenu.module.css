@@ -1,0 +1,148 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.container{
+    background: #f2f4f6;
+}
+.allmenu{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-decoration: none;
+    list-style: none;
+    background: #fff;
+    margin-bottom: 20px;
+}
+.topbtn{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 20px;
+    width: 100%;
+    padding: 10px;
+}
+.topbtn img{
+    width: 20px;
+    height: 20px;
+}
+.mainbtn{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 80%;
+    gap: 10px;
+    background: rgb(240, 241, 244);
+    border-radius: 15px;
+    color: #000;
+    margin: 10px;
+}
+.mainbtn a{
+    margin: 15px 20px;
+    font-size: 12px;
+}
+.mainbtn span{
+    width: 1px;
+    height: 30px;
+    margin-top: 6px;
+    border: 1px solid rgb(210, 214, 218);
+    /* background: #000; */
+}
+
+.area1{
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    padding:10px;
+}
+
+.area1 span{
+    font-size: 14px;
+}
+.area1btn{
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+}
+.area1btn li{
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    gap: 10px;
+}
+.area1btn li span{
+    font-size: 16px;
+}
+.area1btn .back{
+    position: relative;
+    width: 40px;
+    height: 40px;
+    border-radius: 15px;
+    background: rgb(240, 241, 244);
+}
+
+.area1btn .back img{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60%;
+    height: 60%;
+}
+
+.area2{
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    padding:10px;
+}
+.area2 span{
+    font-size: 14px;
+}
+
+.area2btn{
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+}
+
+.area2btn li{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+.area2btn .back{
+    position: relative;
+    width: 40px;
+    height: 40px;
+    border-radius: 15px;
+    background: rgb(240, 241, 244);
+}
+
+.area2btn .back img{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60%;
+    height: 60%;
+}
