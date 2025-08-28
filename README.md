@@ -1,9 +1,9 @@
 # Toss Clone Project
 
 토스(Toss) 앱의 주요 UI/UX와 기능을 React 기반으로 구현한 클론 프로젝트입니다.  
-실제 금융 API(KIS) 및 WebSocket을 이용하여 **실시간 주가 조회**, **계좌 내역**, **송금 기능** 등을 구현했습니다.
+**⚠️ 본 프로젝트는 학습/연습용으로 제작되었으며 상업적 목적이 없습니다.**
 
-(UX/UI는 25.07.31 프로젝트 시작일 기준입니다!!)
+배포 URL: [https://tossclone.netlify.app](https://tossclone.netlify.app)
 
 ---
 
@@ -13,7 +13,7 @@
 - **주요 기능**
   - 메인 홈 화면 및 하단 탭바 네비게이션
   - 송금 화면 UI 및 금액 입력 애니메이션
-  - 거래 내역 페이지 (mock 데이터 및 API 데이터 지원)
+  - 거래 내역 페이지 (Mock 데이터 및 API 데이터 지원)
   - 증권 탭 (실시간 주가 조회, WebSocket 기반)
   - Firebase Storage 기반 파일 업로드
   - Cloudflare R2 연동 파일 다운로드
@@ -26,58 +26,34 @@
 
 ### Frontend
 
-- **React** 18
-- **React Router DOM** (페이지 네비게이션)
-- **Zustand** (전역 상태 관리)
-- **Tailwind CSS** (UI 스타일링)
-- **Framer Motion** (애니메이션)
-- **react-loading-skeleton** (스켈레톤 UI)
+- **React 18** – UI 컴포넌트 구조
+- **React Router DOM** – 페이지 네비게이션
+- **Zustand** – 전역 상태 관리 (탭 상태/사용자 데이터)
+- **Tailwind CSS** – 유틸리티 기반 스타일링
+- **Framer Motion** – 애니메이션 및 전환 효과
+- **react-loading-skeleton** – 로딩 스켈레톤 UI
 
 ### Backend
 
-- **Node.js / Express**
-- **PostgreSQL (Neon)** - 거래 내역, 사용자 정보 저장
-- **Firebase Admin SDK** - 서버 인증 및 파일 메타데이터 관리
-- **Cloudflare R2** - 파일 저장소
-- **WebSocket (ws)** - 실시간 주가 데이터 수신
-- **dotenv** - 환경 변수 관리
+- **Node.js / Express** – API 서버
+- **PostgreSQL (Neon)** – 거래 내역 및 사용자 정보 저장
+- **Firebase Admin SDK** – 서버 인증 및 파일 메타데이터 관리
+- **Cloudflare R2** – 파일 저장소
+- **WebSocket (ws)** – 실시간 주가 데이터 수신
+- **dotenv** – 환경 변수 관리
 
 ---
 
-## 📡 API 연동 ###(chat GPT의 도움을 받음)
+## 📡 API 연동
 
 ### KIS (한국투자증권 API)
 
 - **사용 목적**: 실시간 주가 조회, 종목 정보 가져오기
-- **필요 ENV**
-  ```env
-  APP_KEY=발급받은_API_KEY
-  APP_SECRET=발급받은_SECRET
-  KIS_TR_ID_INDEX=H0UPCNT0  # API별 식별자
-  KIS_REST=https://openapi.koreainvestment.com:9443
-  KIS_WS=ws://ops.koreainvestment.com:21000
-  ```
+- **환경 변수 (.env) 예시**
 
-# 1. 레포 클론
-
-git clone https://github.com/your-repo/toss-clone.git
-cd toss-clone
-
-# 2. 패키지 설치
-
-npm install
-
-# 3. 환경 변수 설정
-
-cp .env.example .env
-
-# .env 파일에 KIS, Firebase, DB 정보 입력
-
-# 4. 개발 서버 실행
-
-npm run dev
-
-# 5. 백엔드 서버 실행
-
-cd server
-node stocke.server.cjs
+```env
+APP_KEY=발급받은_API_KEY
+APP_SECRET=발급받은_SECRET
+KIS_TR_ID_INDEX=H0UPCNT0  # API별 식별자
+KIS_REST=https://openapi.koreainvestment.com:9443
+KIS_WS=ws://ops.koreainvestment.com:21000
