@@ -8,7 +8,9 @@ import Untitled3 from "./img/Untitled3.png";
 import Untitled2 from "./img/Untitled2.png";
 import Untitled5 from "./img/Untitled5.png";
 import Untitled4 from "./img/Untitled4.png";
-export default function allmenu() {
+
+import FirstComponent from "./1thcomponent";
+export default function Allmenu() {
   return (
     <div className={styles.container}>
       <div className={styles.allmenu}>
@@ -64,6 +66,7 @@ export default function allmenu() {
           </div>
         </div>
       </div>
+      <FirstComponent />
     </div>
   );
 }

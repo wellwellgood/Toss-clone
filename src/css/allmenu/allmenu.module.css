@@ -15,6 +15,7 @@
     list-style: none;
     background: #fff;
     margin-bottom: 20px;
+    padding-bottom: 20px;
 }
 .topbtn{
     display: flex;
@@ -48,8 +49,8 @@
     width: 1px;
     height: 30px;
     margin-top: 6px;
-    border: 1px solid rgb(210, 214, 218);
-    /* background: #000; */
+    /* border: 1px solid rgb(210, 214, 218); */
+    background: rgb(215,218,221);
 }
 
 .area1{
