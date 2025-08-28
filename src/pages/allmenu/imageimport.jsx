@@ -32,7 +32,6 @@ import Untitled33 from "./img/Untitled33.png";
 import Untitled34 from "./img/Untitled34.png";
 import Untitled36 from "./img/Untitled36.png";
 import Untitled35 from "./img/Untitled35.png";
-import Untitled36 from "./img/Untitled36.png";
 import Untitled40 from "./img/Untitled40.png";
 import Untitled42 from "./img/Untitled42.png";
 
