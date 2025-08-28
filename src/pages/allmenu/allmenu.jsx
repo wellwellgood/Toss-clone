@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import styles from "../../css/allmenu/allmenu.module.css";
 
 import Magnifier from "./img/Magnifier.png";
+import Setting from "./img/Setting.png";
 
 import Untitled1 from "./img/Untitled1.png";
 import Untitled3 from "./img/Untitled3.png";
@@ -10,13 +11,14 @@ import Untitled5 from "./img/Untitled5.png";
 import Untitled4 from "./img/Untitled4.png";
 
 import FirstComponent from "./1thcomponent";
+import SecondComponent from "./2thcomponent";
 export default function Allmenu() {
   return (
     <div className={styles.container}>
       <div className={styles.allmenu}>
         <div className={styles.topbtn}>
           <img src={Magnifier} alt="" />
-          <img src="" alt="" />
+          <img src={Setting} alt="" />
         </div>
         <div className={styles.mainbtn}>
           <Link to="">고객센터</Link>
@@ -67,6 +69,7 @@ export default function Allmenu() {
         </div>
       </div>
       <FirstComponent />
+      <SecondComponent />
     </div>
   );
 }

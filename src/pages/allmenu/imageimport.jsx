@@ -13,6 +13,7 @@ import Untitled14 from "./img/Untitled14.png";
 import Untitled15 from "./img/Untitled15.png";
 import Untitled16 from "./img/Untitled16.png";
 import Untitled17 from "./img/Untitled17.png";
+import Untitled18 from "./img/Untitled19.png";
 import Untitled19 from "./img/Untitled18.png";
 import Untitled20 from "./img/Untitled20.png";
 import Untitled21 from "./img/Untitled21.png";
@@ -29,13 +30,11 @@ import Untitled31 from "./img/Untitled31.png";
 import Untitled32 from "./img/Untitled32.png";
 import Untitled33 from "./img/Untitled33.png";
 import Untitled34 from "./img/Untitled34.png";
+import Untitled36 from "./img/Untitled36.png";
 import Untitled35 from "./img/Untitled35.png";
 import Untitled36 from "./img/Untitled36.png";
-import Untitled37 from "./img/Untitled37.png";
-import Untitled38 from "./img/Untitled38.png";
-import Untitled39 from "./img/Untitled39.png";
 import Untitled40 from "./img/Untitled40.png";
-import Untitled41 from "./img/Untitled19.png";
+import Untitled42 from "./img/Untitled42.png";
 
 export const image = {
     Untitled1,
@@ -53,6 +52,7 @@ export const image = {
     Untitled15,
     Untitled16,
     Untitled17,
+    Untitled18,
     Untitled19,
     Untitled20,
     Untitled21,
@@ -71,9 +71,6 @@ export const image = {
     Untitled34,
     Untitled35,
     Untitled36,
-    Untitled37,
-    Untitled38,
-    Untitled39,
     Untitled40,
-    Untitled41
+    Untitled42
 }

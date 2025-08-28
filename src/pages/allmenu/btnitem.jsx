@@ -30,7 +30,7 @@ export const btnItems = [
         key: "Untitled11",
     },
     {
-        title: "내 자산산",
+        title: "내 자산",
         reward: "계좌 · 대출 · 증권 · 포인트 · 분석 ",
         to: "/",
         key: "Untitled12",
@@ -51,13 +51,13 @@ export const btnItems = [
         title: "머니라운지",
         reward: "커뮤니티티 ",
         to: "/",
-        key: "Untitled29",// 이미지 변경 필요요
+        key: "Untitled42",
     },
     {
         title: "멤버십 포인트",
         reward: "멤버십 조회 · 적립 ",
         to: "/",
-        key: "Untitled11", // 이미지 변경 필요
+        key: "Untitled15",
     },
     {
         title: "모바일 · 인터넷",
@@ -67,7 +67,7 @@ export const btnItems = [
     },
     {
         title: "미니앱",
-        reward: "설치없이 쓸 수 있는 앱 156개개 ",
+        reward: "설치없이 쓸 수 있는 앱 156개 ",
         to: "/",
         key: "Untitled17",
     },
@@ -81,7 +81,7 @@ export const btnItems = [
         title: "부동산",
         reward: "주택담보대출 · 내 집 사기 · 청약 ",
         to: "/",
-        key: "Untitled41",
+        key: "Untitled18",
     },
     {
         title: "브랜드콘",
@@ -139,7 +139,7 @@ export const btnItems = [
     },
     {
         title: "토스뱅크 상품",
-        reward: "계좌 · 대출 · 카드드",
+        reward: "계좌 · 대출 · 카드",
         to: "/",
         key: "Untitled28",
     },
