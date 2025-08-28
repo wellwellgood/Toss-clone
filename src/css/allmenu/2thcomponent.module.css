@@ -28,6 +28,8 @@
 .area1 span,
 .area2 span {
     padding: 10px;
+    font-size: 14px;
+    line-height: 20px;
 }
 
 .item {
@@ -37,14 +39,13 @@
     flex-direction: column;
     margin: 10px 0;
     width: 100%;
-    gap: 20px;
 }
 
 .item a {
     display: flex;
-    gap: 20px;
+    gap: 12px;
     width: 100%;
-    padding: 0 10px;
+    padding: 6px 16px;
     border-radius: 12px;
     -webkit-tap-highlight-color: transparent;
     touch-action: manipulation;
@@ -70,7 +71,7 @@
     position: relative;
     width: 40px;
     height: 40px;
-    border-radius: 15px;
+    border-radius: 12px;
     background: rgb(240, 241, 244);
 }
 
@@ -79,8 +80,9 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 60%;
-    height: 60%;
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
 }
 
 .area2 {

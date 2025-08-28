@@ -39,7 +39,6 @@
     align-items: center;
     justify-content: center;
     width: 80%;
-    gap: 10px;
     background: rgb(240, 241, 244);
     border-radius: 15px;
     color: #000;
@@ -47,7 +46,8 @@
 }
 .mainbtn a{
     margin: 15px 14px;
-    font-size: 16px;
+    font-size: 14px;
+    line-height: 20px;
 }
 .mainbtn span{
     width: 1px;
@@ -62,13 +62,13 @@
     align-items: flex-start;
     justify-content: center;
     flex-direction: column;
-    gap: 10px;
     width: 100%;
-    padding:10px;
 }
 
 .area1 span{
     font-size: 14px;
+    padding: 10px;
+    line-height: 20px;
 }
 .area1btn{
     position: relative;
@@ -76,25 +76,27 @@
     align-items: flex-start;
     justify-content: center;
     flex-direction: column;
-    gap: 20px;
     width: 100%;
 }
 .area1btn li{
     position: relative;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     flex-direction: row;
-    gap: 10px;
+    gap: 12px;
+    width: 100%;
+    padding: 6px 16px;
 }
 .area1btn li span{
-    font-size: 16px;
+    font-size: 14px;
+    line-height: 20px;
 }
 .area1btn .back{
     position: relative;
     width: 40px;
     height: 40px;
-    border-radius: 15px;
+    border-radius: 12px;
     background: rgb(240, 241, 244);
 }
 
@@ -103,8 +105,9 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 60%;
-    height: 60%;
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
 }
 
 .area2{
@@ -112,12 +115,12 @@
     align-items: flex-start;
     justify-content: center;
     flex-direction: column;
-    gap: 10px;
     width: 100%;
-    padding:10px;
 }
 .area2 span{
     font-size: 14px;
+    padding: 10px;
+    line-height: 24px;
 }
 
 .area2btn{
@@ -126,20 +129,21 @@
     align-items: flex-start;
     justify-content: center;
     flex-direction: column;
-    gap: 20px;
     width: 100%;
 }
 
 .area2btn li{
     display: flex;
     flex-direction: row;
-    gap: 10px;
+    gap: 12px;
+    width: 100%;
+    padding: 6px 16px;
 }
 .area2btn .back{
     position: relative;
     width: 40px;
     height: 40px;
-    border-radius: 15px;
+    border-radius: 12px;
     background: rgb(240, 241, 244);
 }
 
@@ -148,6 +152,7 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 60%;
-    height: 60%;
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
 }

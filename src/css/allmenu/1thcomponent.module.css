@@ -9,7 +9,8 @@
     align-items: center;
     justify-content: center;
     width: 100%;
-    gap: 10px;
+    /* gap: 10px; */
+    line-height: 18px;
 }
 .main{
     display: flex;
@@ -18,10 +19,11 @@
     width: 100%;
     flex-direction: column;
     background: #fff;
-    margin-bottom: 50px;
 }
 .main span{
     padding: 10px;
+    line-height: 20px;
+    font-size: 14px;
 }
 .main a{
     width: 100%;
@@ -32,19 +34,19 @@
     width: 100%;
     flex-direction: row;
     justify-content: space-between;
-    padding: 10px;
+    padding: 6px 16px;
 }
 .main .main1 .imgContainer{
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
 }
 .main .main1 .imgContainer .back{
     position: relative;
     width: 40px;
     height: 40px;
-    border-radius: 15px;
+    border-radius: 12px;
     background: rgb(240, 241, 244);
 }
 .main .main1 .imgContainer img{
@@ -52,8 +54,9 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 50%;
-    height: 50%;
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
 }
 .main .main1 .text{
     display: flex;

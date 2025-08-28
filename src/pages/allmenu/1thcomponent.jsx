@@ -19,7 +19,7 @@ export default function FirstComponent() {
                     className={styles.img}
                   />
                 </div>
-                <span className="text-base font-light text-black font-Spoqa Han Sans Neo">
+                <span className="font-Spoqa Han Sans Neo">
                   {item.title}
                 </span>
               </div>
