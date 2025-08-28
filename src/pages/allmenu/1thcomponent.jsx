@@ -25,7 +25,7 @@ export default function FirstComponent() {
               </div>
 
               <div className={styles.text}>
-                <span className="text-xs text-gray-400 font-Spoqa Han Sans Neo">
+                <span className="text-gray-400 font-Spoqa Han Sans Neo">
                   {item.reward}
                 </span>
               </div>

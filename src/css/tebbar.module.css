@@ -160,7 +160,7 @@
   align-items: center;
   justify-content: center;
   gap: 4px;
-  width: var(--tab-size);
+  /* width: var(--tab-size); */
   height: var(--tab-size);
   box-sizing: border-box;
 }

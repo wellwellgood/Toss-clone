@@ -27,8 +27,8 @@ export default function TwoComponent() {
             </div>
   
             <div className={styles.text}>
-              <span className="text-sm font-medium text-gray-800">{item.title}</span>
-              <span className="text-xs text-blue-500 font-semibold">{item.reward}</span>
+              <span className={styles.title}>{item.title}</span>
+              <span className={styles.reward}>{item.reward}</span>
             </div>
           </div>
         </Link>

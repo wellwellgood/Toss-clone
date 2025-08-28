@@ -58,8 +58,9 @@
     height: 24px;
     object-fit: contain;
 }
-.main .main1 .text{
+.main1 .text span{
     display: flex;
     flex-direction: row;
     font-weight: 500;
+    font-size: 12px;
 }
