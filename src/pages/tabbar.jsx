@@ -46,7 +46,7 @@ export default function TabBar() {
       to: "/shopping",
       defaultImg: shopping,
       activeImg: shoppingBlack,
-      label: "토스쇼핑",
+      label: "쇼핑",
     },
     // 증권은 쿼리까지 포함해 고정 이동
     {
