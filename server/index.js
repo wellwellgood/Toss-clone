@@ -1,54 +1,62 @@
-// server/index.js
-import express from "express";
-import cors from "cors";
-import fs from "fs";
-import path from "path";
-import { fileURLToPath } from "url";
-
-const app = express();
-const PORT = 4000;
-
-// __dirname 대체
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-app.use(cors());
-app.use(express.json());
+'use strict';
+/**
+ * server/payments.routes.cjs
+ * 결제 Mock API 라우트 모듈
+ */
+const fs = require('fs');
+const path = require('path');
 
 function loadPayments() {
-    const filePath = path.join(__dirname, "seed", "payments.json"); // 경로 맞추면 OK
-    const raw = fs.readFileSync(filePath, "utf-8");
-    return JSON.parse(raw);
+    const filePath = path.join(__dirname, 'seed', 'payments.json'); // server/seed/payments.json
+    if (!fs.existsSync(filePath)) {
+        throw new Error(`payments.json not found at ${filePath}. 먼저 seed-generator.js를 실행하세요.`);
+    }
+    return JSON.parse(fs.readFileSync(filePath, 'utf-8'));
 }
 
-// 전체
-app.get("/api/payments", (req, res) => {
-    res.json(loadPayments());
-});
+module.exports = function mountPayments(app) {
+    // 전체
+    app.get('/api/payments', (req, res) => {
+        try {
+            res.json(loadPayments());
+        } catch (e) {
+            res.status(500).json({ error: String(e) });
+        }
+    });
 
-// ✅ method별 라우트: 반드시 :id 보다 위
-app.get("/api/payments/card", (req, res) => {
-    const data = loadPayments().filter(p => p.method === "card");
-    res.json(data);
-});
+    // method별
+    app.get('/api/payments/card', (req, res) => {
+        try {
+            res.json(loadPayments().filter(p => p.method === 'card'));
+        } catch (e) {
+            res.status(500).json({ error: String(e) });
+        }
+    });
 
-app.get("/api/payments/account", (req, res) => {
-    const data = loadPayments().filter(p => p.method === "account");
-    res.json(data);
-});
+    app.get('/api/payments/account', (req, res) => {
+        try {
+            res.json(loadPayments().filter(p => p.method === 'account'));
+        } catch (e) {
+            res.status(500).json({ error: String(e) });
+        }
+    });
 
-app.get("/api/payments/point", (req, res) => {
-    const data = loadPayments().filter(p => p.method === "point");
-    res.json(data);
-});
+    app.get('/api/payments/point', (req, res) => {
+        try {
+            res.json(loadPayments().filter(p => p.method === 'point'));
+        } catch (e) {
+            res.status(500).json({ error: String(e) });
+        }
+    });
 
-// id 단건
-app.get("/api/payments/id/:id", (req, res) => {
-    const hit = loadPayments().find(p => p.id === req.params.id);
-    if (!hit) return res.status(404).json({ error: "Payment not found" });
-    res.json(hit);
-});
-
-app.listen(PORT, () => {
-    console.log(`✅ Mock API: http://localhost:${PORT}`);
-});
+    // 단건
+    app.get('/api/payments/id/:id', (req, res) => {
+        try {
+            const hit = loadPayments().find(p => p.id === req.params.id);
+            if (!hit) return res.status(404).json({ error: 'Payment not found' });
+            res.json(hit);
+        } catch (e) {
+            res.status(500).json({ error: String(e) });
+        }
+    });
+};
