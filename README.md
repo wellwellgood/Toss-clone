@@ -1,4 +1,6 @@
 # Toss Clone Project
+## 해당 ux/ui는 2025/07/31 기준으로 제작되었습니다.
+
 
 토스(Toss) 앱의 주요 UI/UX와 기능을 React 기반으로 구현한 클론 프로젝트입니다.  
 **⚠️ 본 프로젝트는 학습/연습용으로 제작되었으며 상업적 목적이 없습니다.**
@@ -19,8 +21,18 @@
   - Cloudflare R2 연동 파일 다운로드
   - 로딩 화면 → 페이지 전환 스켈레톤 UI
   - 뒤로가기 시 마지막 탭 상태 복원
-
 ---
+## Features
+
+| 영역 | 내용 | 상태 |
+|---|---|---|
+| 네비게이션 | 하단 탭, 뒤로가기 상태 복원 | ✅ |
+| 송금 | 금액 입력, 애니메이션 | ✅ |
+| 거래내역 | Mock + REST API, Skeleton 로딩 | ✅ |
+| 증권 | WS 실시간 시세, 스파크라인 | ✅ |
+| 파일 | Firebase Storage 업로드, R2 다운로드 | ✅ |
+| 접근성 | ARIA·키보드 포커스 | ⏳ |
+| 테스트 | Vitest/RTL, MSW | ⏳ |
 
 ## 🛠 기술 스택
 
@@ -44,16 +56,19 @@
 
 ---
 
+## Architecture
+
+- **Front**: React 18, Router, Zustand, Framer Motion, Vite  
+- **Back**: Node/Express, `ws`, PostgreSQL(Neon), Firebase Admin, Cloudflare R2  
+- **Flow**: REST(거래/파일 메타) + WS(`/ws`) → Zustand → 미니 차트 렌더
+
 ## 📡 API 연동
 
 ### KIS (한국투자증권 API)
 
 - **사용 목적**: 실시간 주가 조회, 종목 정보 가져오기
-- **환경 변수 (.env) 예시**
+- **환경 변수 (.env)**
 
-```env
-APP_KEY=발급받은_API_KEY
-APP_SECRET=발급받은_SECRET
-KIS_TR_ID_INDEX=H0UPCNT0  # API별 식별자
-KIS_REST=https://openapi.koreainvestment.com:9443
-KIS_WS=ws://ops.koreainvestment.com:21000
+
+#### 홈 페이지의 결제금액은 MOCk데이터를 사용하였습니다.
+#### 증권 페이지의 주가 정보 및 포트폴리오는 KIS의 API를 사용하여 실시간 데이터 및 종목정보를 가져와 사용하였습니다.
