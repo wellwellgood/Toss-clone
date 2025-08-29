@@ -1,0 +1,29 @@
+.list {
+    margin-top: 6px;
+}
+
+.item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 4px;
+    border-bottom: 1px solid rgba(0, 0, 0, .06);
+    color: #1f2329;
+    text-decoration: none;
+}
+
+.leftCol {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.sub {
+    font-size: 12px;
+    color: #9aa1a9;
+}
+
+.chev {
+    font-size: 20px;
+    color: #c9cdd2;
+}

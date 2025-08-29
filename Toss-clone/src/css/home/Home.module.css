@@ -1,0 +1,130 @@
+@import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css);
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    background: rgba(242, 243, 245, 0.507);
+    padding: 30px 0px;
+    width: 100%;
+}
+
+.top {
+    position: fixed;
+    top: 0;
+    z-index: 999;
+    background-color: rgba(242, 243, 245, 0.507);
+    backdrop-filter: blur(25px);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: 60px;
+    padding: 24px 39px 24px 34px;
+    box-shadow: none;
+}
+
+.background {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    background-color: #f6f8fc;
+}
+
+.workTitle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.workTitle img {
+    width: 30px;
+    height: 30px;
+}
+
+.work {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    color: #202632;
+    font-family: 'Spoqa Han Sans Neo', 'sans-serif';
+    gap: 10px;
+}
+
+.work span {
+    color: #626979;
+}
+
+.notify {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 20px;
+}
+
+.notify a img {
+    width: 50px;
+    height: 32px;
+}
+
+.components {
+    position: absolute;
+    top: 20px;
+    width: 100%;
+    height: auto;
+    overflow: hidden;
+    margin-bottom: 60px;
+}
+
+.text {
+    /* margin: 20px 0; */
+    padding: 10px 30px;
+    font-size: 22px;
+    font-family: 'Spoqa Han Sans Neo', 'sans-serif';
+    color: rgb(47, 46, 51);
+}
+
+
+.container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    border: 20px;
+    /* padding: 10px 20px; */
+    gap: 10px;
+}
+
+.img {
+    /* padding: 20px; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.img a {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 100%;
+
+}
+
+.img img {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    border-radius: 30px;
+}
