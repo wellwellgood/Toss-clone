@@ -16,7 +16,7 @@ const app = express();
 app.disable('x-powered-by');
 app.use(cors());
 app.use(express.json());
-app.use('/api', paymentsRoutes);
+app.use('/api', mountPayments);
 
 // 헬스체크
 app.get('/', (_, res) => res.status(200).send('ok'));
