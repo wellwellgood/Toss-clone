@@ -8,7 +8,9 @@ import { Link } from "react-router-dom";
 // import sendMoney from "";  //송금 컴포넌트 연결
 import { useAccountStore } from "../../store/accountStore";
 
-export default function FirstComponents() {
+export default function FirstComponents( {payments}  ) {
+  if (!payments) return null;
+  const total = payments.reduce((sum, p) => sum + p.amount, 0);
   const { balance } = useAccountStore(); // 예시로 1000000원을 설정
 
   return (

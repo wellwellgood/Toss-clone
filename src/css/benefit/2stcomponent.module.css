@@ -22,7 +22,7 @@
     display: flex;
     width: 100%;
     align-items: flex-start;
-    margin-left: 10px;
+    padding: 6px 16px;
     font-size: 14px;
     font-weight: 500;
     font-family: 'Spoqa Han Sans Neo', 'sans-serif';

@@ -1,0 +1,2002 @@
+[
+  {
+    "id": "pay_1",
+    "user_id": "u1",
+    "merchant": "이마트24",
+    "amount": 43277,
+    "currency": "KRW",
+    "method": "point",
+    "status": "approved",
+    "approved_at": "2025-06-27T01:41:04.568Z"
+  },
+  {
+    "id": "pay_2",
+    "user_id": "u1",
+    "merchant": "스타벅스",
+    "amount": 95931,
+    "currency": "KRW",
+    "method": "account",
+    "status": "canceled",
+    "approved_at": "2025-08-24T12:54:47.036Z"
+  },
+  {
+    "id": "pay_3",
+    "user_id": "u1",
+    "merchant": "스타벅스",
+    "amount": 78266,
+    "currency": "KRW",
+    "method": "card",
+    "status": "canceled",
+    "approved_at": "2025-06-18T20:19:10.273Z"
+  },
+  {
+    "id": "pay_4",
+    "user_id": "u1",
+    "merchant": "이마트24",
+    "amount": 39319,
+    "currency": "KRW",
+    "method": "account",
+    "status": "canceled",
+    "approved_at": "2025-07-06T08:19:46.976Z"
+  },
+  {
+    "id": "pay_5",
+    "user_id": "u1",
+    "merchant": "교보문고",
+    "amount": 40214,
+    "currency": "KRW",
+    "method": "point",
+    "status": "approved",
+    "approved_at": "2025-08-16T10:50:41.002Z"
+  },
+  {
+    "id": "pay_6",
+    "user_id": "u1",
+    "merchant": "넷플릭스",
+    "amount": 40939,
+    "currency": "KRW",
+    "method": "card",
+    "status": "approved",
+    "approved_at": "2025-07-13T02:13:56.428Z"
+  },
+  {
+    "id": "pay_7",
+    "user_id": "u1",
+    "merchant": "네이버페이",
+    "amount": 38114,
+    "currency": "KRW",
+    "method": "card",
+    "status": "canceled",
+    "approved_at": "2025-08-01T11:26:21.158Z"
+  },
+  {
+    "id": "pay_8",
+    "user_id": "u1",
+    "merchant": "스타벅스",
+    "amount": 39998,
+    "currency": "KRW",
+    "method": "card",
+    "status": "canceled",
+    "approved_at": "2025-07-12T14:52:44.946Z"
+  },
+  {
+    "id": "pay_9",
+    "user_id": "u1",
+    "merchant": "카카오택시",
+    "amount": 57140,
+    "currency": "KRW",
+    "method": "card",
+    "status": "approved",
+    "approved_at": "2025-08-12T06:17:18.488Z"
+  },
+  {
+    "id": "pay_10",
+    "user_id": "u1",
+    "merchant": "배달의민족",
+    "amount": 95899,
+    "currency": "KRW",
+    "method": "point",
+    "status": "approved",
+    "approved_at": "2025-07-27T04:24:56.546Z"
+  },
+  {
+    "id": "pay_11",
+    "user_id": "u1",
+    "merchant": "카카오택시",
+    "amount": 67805,
+    "currency": "KRW",
+    "method": "point",
+    "status": "approved",
+    "approved_at": "2025-07-30T22:23:34.000Z"
+  },
+  {
+    "id": "pay_12",
+    "user_id": "u1",
+    "merchant": "교보문고",
+    "amount": 14302,
+    "currency": "KRW",
+    "method": "point",
+    "status": "canceled",
+    "approved_at": "2025-06-02T20:49:05.529Z"
+  },
+  {
+    "id": "pay_13",
+    "user_id": "u1",
+    "merchant": "스타벅스",
+    "amount": 67940,
+    "currency": "KRW",
+    "method": "point",
+    "status": "canceled",
+    "approved_at": "2025-06-11T02:52:39.642Z"
+  },
+  {
+    "id": "pay_14",
+    "user_id": "u1",
+    "merchant": "넷플릭스",
+    "amount": 56148,
+    "currency": "KRW",
+    "method": "account",
+    "status": "approved",
+    "approved_at": "2025-08-17T04:32:24.316Z"
+  },
+  {
+    "id": "pay_15",
+    "user_id": "u1",
+    "merchant": "이마트24",
+    "amount": 97968,
+    "currency": "KRW",
+    "method": "account",
+    "status": "approved",
+    "approved_at": "2025-08-13T10:58:13.619Z"
+  },
+  {
+    "id": "pay_16",
+    "user_id": "u1",
+    "merchant": "쿠팡",
+    "amount": 26345,
+    "currency": "KRW",
+    "method": "point",
+    "status": "approved",
+    "approved_at": "2025-08-17T05:57:54.392Z"
+  },
+  {
+    "id": "pay_17",
+    "user_id": "u1",
+    "merchant": "이마트24",
+    "amount": 4008,
+    "currency": "KRW",
+    "method": "point",
+    "status": "canceled",
+    "approved_at": "2025-07-30T16:32:03.416Z"
+  },
+  {
+    "id": "pay_18",
+    "user_id": "u1",
+    "merchant": "이마트24",
+    "amount": 16010,
+    "currency": "KRW",
+    "method": "account",
+    "status": "canceled",
+    "approved_at": "2025-08-12T11:16:01.058Z"
+  },
+  {
+    "id": "pay_19",
+    "user_id": "u1",
+    "merchant": "스타벅스",
+    "amount": 22372,
+    "currency": "KRW",
+    "method": "card",
+    "status": "approved",
+    "approved_at": "2025-08-10T14:15:55.597Z"
+  },
+  {
+    "id": "pay_20",
+    "user_id": "u1",
+    "merchant": "네이버페이",
+    "amount": 63169,
+    "currency": "KRW",
+    "method": "account",
+    "status": "approved",
+    "approved_at": "2025-06-01T14:23:48.335Z"
+  },
+  {
+    "id": "pay_21",
+    "user_id": "u1",
+    "merchant": "넷플릭스",
+    "amount": 30253,
+    "currency": "KRW",
+    "method": "account",
+    "status": "approved",
+    "approved_at": "2025-07-13T19:34:28.654Z"
+  },
+  {
+    "id": "pay_22",
+    "user_id": "u1",
+    "merchant": "네이버페이",
+    "amount": 25506,
+    "currency": "KRW",
+    "method": "card",
+    "status": "canceled",
+    "approved_at": "2025-07-11T22:41:59.951Z"
+  },
+  {
+    "id": "pay_23",
+    "user_id": "u1",
+    "merchant": "교보문고",
+    "amount": 9553,
+    "currency": "KRW",
+    "method": "card",
+    "status": "canceled",
+    "approved_at": "2025-07-12T21:24:09.500Z"
+  },
+  {
+    "id": "pay_24",
+    "user_id": "u1",
+    "merchant": "이마트24",
+    "amount": 45821,
+    "currency": "KRW",
+    "method": "point",
+    "status": "canceled",
+    "approved_at": "2025-06-13T12:22:51.275Z"
+  },
+  {
+    "id": "pay_25",
+    "user_id": "u1",
+    "merchant": "카카오택시",
+    "amount": 69941,
+    "currency": "KRW",
+    "method": "card",
+    "status": "approved",
+    "approved_at": "2025-07-22T04:02:37.636Z"
+  },
+  {
+    "id": "pay_26",
+    "user_id": "u1",
+    "merchant": "이마트24",
+    "amount": 36911,
+    "currency": "KRW",
+    "method": "account",
+    "status": "canceled",
+    "approved_at": "2025-07-06T17:16:43.507Z"
+  },
+  {
+    "id": "pay_27",
+    "user_id": "u1",
+    "merchant": "교보문고",
+    "amount": 22240,
+    "currency": "KRW",
+    "method": "account",
+    "status": "approved",
+    "approved_at": "2025-08-03T05:01:46.055Z"
+  },
+  {
+    "id": "pay_28",
+    "user_id": "u1",
+    "merchant": "이마트24",
+    "amount": 87832,
+    "currency": "KRW",
+    "method": "point",
+    "status": "approved",
+    "approved_at": "2025-08-22T07:54:13.590Z"
+  },
+  {
+    "id": "pay_29",
+    "user_id": "u1",
+    "merchant": "CU",
+    "amount": 92543,
+    "currency": "KRW",
+    "method": "point",
+    "status": "approved",
+    "approved_at": "2025-07-12T12:40:19.740Z"
+  },
+  {
+    "id": "pay_30",
+    "user_id": "u1",
+    "merchant": "CU",
+    "amount": 36099,
+    "currency": "KRW",
+    "method": "card",
+    "status": "canceled",
+    "approved_at": "2025-06-08T23:35:21.672Z"
+  },
+  {
+    "id": "pay_31",
+    "user_id": "u1",
+    "merchant": "넷플릭스",
+    "amount": 18260,
+    "currency": "KRW",
+    "method": "point",
+    "status": "approved",
+    "approved_at": "2025-06-23T07:41:27.106Z"
+  },
+  {
+    "id": "pay_32",
+    "user_id": "u1",
+    "merchant": "배달의민족",
+    "amount": 38636,
+    "currency": "KRW",
+    "method": "account",
+    "status": "canceled",
+    "approved_at": "2025-08-15T23:38:41.021Z"
+  },
+  {
+    "id": "pay_33",
+    "user_id": "u1",
+    "merchant": "이마트24",
+    "amount": 98179,
+    "currency": "KRW",
+    "method": "point",
+    "status": "canceled",
+    "approved_at": "2025-07-28T10:56:13.151Z"
+  },
+  {
+    "id": "pay_34",
+    "user_id": "u1",
+    "merchant": "네이버페이",
+    "amount": 37388,
+    "currency": "KRW",
+    "method": "account",
+    "status": "approved",
+    "approved_at": "2025-07-25T17:33:46.214Z"
+  },
+  {
+    "id": "pay_35",
+    "user_id": "u1",
+    "merchant": "카카오택시",
+    "amount": 83552,
+    "currency": "KRW",
+    "method": "point",
+    "status": "canceled",
+    "approved_at": "2025-07-16T19:36:00.546Z"
+  },
+  {
+    "id": "pay_36",
+    "user_id": "u1",
+    "merchant": "배달의민족",
+    "amount": 26638,
+    "currency": "KRW",
+    "method": "account",
+    "status": "approved",
+    "approved_at": "2025-06-22T00:41:03.842Z"
+  },
+  {
+    "id": "pay_37",
+    "user_id": "u1",
+    "merchant": "넷플릭스",
+    "amount": 89918,
+    "currency": "KRW",
+    "method": "card",
+    "status": "canceled",
+    "approved_at": "2025-07-01T20:04:10.021Z"
+  },
+  {
+    "id": "pay_38",
+    "user_id": "u1",
+    "merchant": "배달의민족",
+    "amount": 95581,
+    "currency": "KRW",
+    "method": "card",
+    "status": "approved",
+    "approved_at": "2025-08-24T17:38:23.703Z"
+  },
+  {
+    "id": "pay_39",
+    "user_id": "u1",
+    "merchant": "이마트24",
+    "amount": 13071,
+    "currency": "KRW",
+    "method": "point",
+    "status": "canceled",
+    "approved_at": "2025-07-31T13:56:47.424Z"
+  },
+  {
+    "id": "pay_40",
+    "user_id": "u1",
+    "merchant": "네이버페이",
+    "amount": 44433,
+    "currency": "KRW",
+    "method": "account",
+    "status": "canceled",
+    "approved_at": "2025-06-11T09:02:19.337Z"
+  },
+  {
+    "id": "pay_41",
+    "user_id": "u1",
+    "merchant": "넷플릭스",
+    "amount": 12236,
+    "currency": "KRW",
+    "method": "account",
+    "status": "canceled",
+    "approved_at": "2025-07-01T06:56:43.074Z"
+  },
+  {
+    "id": "pay_42",
+    "user_id": "u1",
+    "merchant": "GS25",
+    "amount": 94535,
+    "currency": "KRW",
+    "method": "card",
+    "status": "approved",
+    "approved_at": "2025-07-24T08:27:30.061Z"
+  },
+  {
+    "id": "pay_43",
+    "user_id": "u1",
+    "merchant": "네이버페이",
+    "amount": 99821,
+    "currency": "KRW",
+    "method": "card",
+    "status": "approved",
+    "approved_at": "2025-07-29T07:41:36.999Z"
+  },
+  {
+    "id": "pay_44",
+    "user_id": "u1",
+    "merchant": "GS25",
+    "amount": 2066,
+    "currency": "KRW",
+    "method": "card",
+    "status": "approved",
+    "approved_at": "2025-08-05T20:12:58.624Z"
+  },
+  {
+    "id": "pay_45",
+    "user_id": "u1",
+    "merchant": "GS25",
+    "amount": 61424,
+    "currency": "KRW",
+    "method": "card",
+    "status": "approved",
+    "approved_at": "2025-07-29T12:38:32.946Z"
+  },
+  {
+    "id": "pay_46",
+    "user_id": "u1",
+    "merchant": "CU",
+    "amount": 41616,
+    "currency": "KRW",
+    "method": "account",
+    "status": "canceled",
+    "approved_at": "2025-06-12T15:16:27.506Z"
+  },
+  {
+    "id": "pay_47",
+    "user_id": "u1",
+    "merchant": "이마트24",
+    "amount": 17900,
+    "currency": "KRW",
+    "method": "card",
+    "status": "approved",
+    "approved_at": "2025-06-05T00:57:53.120Z"
+  },
+  {
+    "id": "pay_48",
+    "user_id": "u1",
+    "merchant": "네이버페이",
+    "amount": 73698,
+    "currency": "KRW",
+    "method": "card",
+    "status": "approved",
+    "approved_at": "2025-06-02T23:37:31.047Z"
+  },
+  {
+    "id": "pay_49",
+    "user_id": "u1",
+    "merchant": "카카오택시",
+    "amount": 49347,
+    "currency": "KRW",
+    "method": "card",
+    "status": "approved",
+    "approved_at": "2025-06-19T22:52:56.673Z"
+  },
+  {
+    "id": "pay_50",
+    "user_id": "u1",
+    "merchant": "CU",
+    "amount": 32682,
+    "currency": "KRW",
+    "method": "account",
+    "status": "approved",
+    "approved_at": "2025-06-27T03:12:47.133Z"
+  },
+  {
+    "id": "pay_51",
+    "user_id": "u1",
+    "merchant": "배달의민족",
+    "amount": 12473,
+    "currency": "KRW",
+    "method": "account",
+    "status": "approved",
+    "approved_at": "2025-07-27T19:24:02.528Z"
+  },
+  {
+    "id": "pay_52",
+    "user_id": "u1",
+    "merchant": "이마트24",
+    "amount": 62869,
+    "currency": "KRW",
+    "method": "point",
+    "status": "approved",
+    "approved_at": "2025-07-18T18:06:14.267Z"
+  },
+  {
+    "id": "pay_53",
+    "user_id": "u1",
+    "merchant": "스타벅스",
+    "amount": 52612,
+    "currency": "KRW",
+    "method": "account",
+    "status": "canceled",
+    "approved_at": "2025-07-01T10:50:17.546Z"
+  },
+  {
+    "id": "pay_54",
+    "user_id": "u1",
+    "merchant": "카카오택시",
+    "amount": 78421,
+    "currency": "KRW",
+    "method": "card",
+    "status": "approved",
+    "approved_at": "2025-07-19T00:48:22.154Z"
+  },
+  {
+    "id": "pay_55",
+    "user_id": "u1",
+    "merchant": "CU",
+    "amount": 82027,
+    "currency": "KRW",
+    "method": "point",
+    "status": "approved",
+    "approved_at": "2025-06-13T08:36:42.517Z"
+  },
+  {
+    "id": "pay_56",
+    "user_id": "u1",
+    "merchant": "배달의민족",
+    "amount": 18085,
+    "currency": "KRW",
+    "method": "card",
+    "status": "approved",
+    "approved_at": "2025-07-19T02:41:21.650Z"
+  },
+  {
+    "id": "pay_57",
+    "user_id": "u1",
+    "merchant": "이마트24",
+    "amount": 34626,
+    "currency": "KRW",
+    "method": "card",
+    "status": "approved",
+    "approved_at": "2025-06-03T23:28:29.003Z"
+  },
+  {
+    "id": "pay_58",
+    "user_id": "u1",
+    "merchant": "CU",
+    "amount": 55360,
+    "currency": "KRW",
+    "method": "account",
+    "status": "approved",
+    "approved_at": "2025-08-15T02:43:52.328Z"
+  },
+  {
+    "id": "pay_59",
+    "user_id": "u1",
+    "merchant": "네이버페이",
+    "amount": 79019,
+    "currency": "KRW",
+    "method": "card",
+    "status": "approved",
+    "approved_at": "2025-07-30T19:14:30.893Z"
+  },
+  {
+    "id": "pay_60",
+    "user_id": "u1",
+    "merchant": "카카오택시",
+    "amount": 94294,
+    "currency": "KRW",
+    "method": "point",
+    "status": "canceled",
+    "approved_at": "2025-06-22T18:33:15.915Z"
+  },
+  {
+    "id": "pay_61",
+    "user_id": "u1",
+    "merchant": "스타벅스",
+    "amount": 79561,
+    "currency": "KRW",
+    "method": "card",
+    "status": "canceled",
+    "approved_at": "2025-06-12T04:24:52.245Z"
+  },
+  {
+    "id": "pay_62",
+    "user_id": "u1",
+    "merchant": "넷플릭스",
+    "amount": 98798,
+    "currency": "KRW",
+    "method": "card",
+    "status": "approved",
+    "approved_at": "2025-08-12T07:52:25.435Z"
+  },
+  {
+    "id": "pay_63",
+    "user_id": "u1",
+    "merchant": "쿠팡",
+    "amount": 99777,
+    "currency": "KRW",
+    "method": "account",
+    "status": "canceled",
+    "approved_at": "2025-07-09T04:53:27.107Z"
+  },
+  {
+    "id": "pay_64",
+    "user_id": "u1",
+    "merchant": "GS25",
+    "amount": 33649,
+    "currency": "KRW",
+    "method": "account",
+    "status": "canceled",
+    "approved_at": "2025-06-06T09:53:39.720Z"
+  },
+  {
+    "id": "pay_65",
+    "user_id": "u1",
+    "merchant": "쿠팡",
+    "amount": 62808,
+    "currency": "KRW",
+    "method": "point",
+    "status": "approved",
+    "approved_at": "2025-07-14T09:00:53.451Z"
+  },
+  {
+    "id": "pay_66",
+    "user_id": "u1",
+    "merchant": "교보문고",
+    "amount": 20135,
+    "currency": "KRW",
+    "method": "point",
+    "status": "canceled",
+    "approved_at": "2025-07-02T12:45:05.672Z"
+  },
+  {
+    "id": "pay_67",
+    "user_id": "u1",
+    "merchant": "카카오택시",
+    "amount": 7082,
+    "currency": "KRW",
+    "method": "card",
+    "status": "canceled",
+    "approved_at": "2025-07-31T12:52:09.120Z"
+  },
+  {
+    "id": "pay_68",
+    "user_id": "u1",
+    "merchant": "카카오택시",
+    "amount": 77272,
+    "currency": "KRW",
+    "method": "card",
+    "status": "canceled",
+    "approved_at": "2025-06-29T01:14:49.976Z"
+  },
+  {
+    "id": "pay_69",
+    "user_id": "u1",
+    "merchant": "네이버페이",
+    "amount": 39347,
+    "currency": "KRW",
+    "method": "account",
+    "status": "canceled",
+    "approved_at": "2025-08-13T17:16:59.238Z"
+  },
+  {
+    "id": "pay_70",
+    "user_id": "u1",
+    "merchant": "쿠팡",
+    "amount": 62262,
+    "currency": "KRW",
+    "method": "point",
+    "status": "canceled",
+    "approved_at": "2025-07-11T12:43:24.273Z"
+  },
+  {
+    "id": "pay_71",
+    "user_id": "u1",
+    "merchant": "네이버페이",
+    "amount": 96948,
+    "currency": "KRW",
+    "method": "point",
+    "status": "approved",
+    "approved_at": "2025-07-28T02:47:53.646Z"
+  },
+  {
+    "id": "pay_72",
+    "user_id": "u1",
+    "merchant": "스타벅스",
+    "amount": 95801,
+    "currency": "KRW",
+    "method": "point",
+    "status": "canceled",
+    "approved_at": "2025-07-24T00:25:50.952Z"
+  },
+  {
+    "id": "pay_73",
+    "user_id": "u1",
+    "merchant": "GS25",
+    "amount": 42773,
+    "currency": "KRW",
+    "method": "point",
+    "status": "approved",
+    "approved_at": "2025-08-12T02:21:54.886Z"
+  },
+  {
+    "id": "pay_74",
+    "user_id": "u1",
+    "merchant": "네이버페이",
+    "amount": 89878,
+    "currency": "KRW",
+    "method": "account",
+    "status": "canceled",
+    "approved_at": "2025-08-19T06:43:51.781Z"
+  },
+  {
+    "id": "pay_75",
+    "user_id": "u1",
+    "merchant": "카카오택시",
+    "amount": 31813,
+    "currency": "KRW",
+    "method": "card",
+    "status": "approved",
+    "approved_at": "2025-07-19T12:35:17.161Z"
+  },
+  {
+    "id": "pay_76",
+    "user_id": "u1",
+    "merchant": "쿠팡",
+    "amount": 98864,
+    "currency": "KRW",
+    "method": "point",
+    "status": "approved",
+    "approved_at": "2025-06-01T19:30:53.600Z"
+  },
+  {
+    "id": "pay_77",
+    "user_id": "u1",
+    "merchant": "CU",
+    "amount": 5031,
+    "currency": "KRW",
+    "method": "point",
+    "status": "canceled",
+    "approved_at": "2025-07-22T04:44:36.333Z"
+  },
+  {
+    "id": "pay_78",
+    "user_id": "u1",
+    "merchant": "카카오택시",
+    "amount": 96412,
+    "currency": "KRW",
+    "method": "account",
+    "status": "approved",
+    "approved_at": "2025-08-07T02:57:46.875Z"
+  },
+  {
+    "id": "pay_79",
+    "user_id": "u1",
+    "merchant": "배달의민족",
+    "amount": 82474,
+    "currency": "KRW",
+    "method": "card",
+    "status": "approved",
+    "approved_at": "2025-06-29T19:30:31.321Z"
+  },
+  {
+    "id": "pay_80",
+    "user_id": "u1",
+    "merchant": "스타벅스",
+    "amount": 33772,
+    "currency": "KRW",
+    "method": "point",
+    "status": "canceled",
+    "approved_at": "2025-07-09T17:51:41.810Z"
+  },
+  {
+    "id": "pay_81",
+    "user_id": "u1",
+    "merchant": "교보문고",
+    "amount": 63742,
+    "currency": "KRW",
+    "method": "account",
+    "status": "approved",
+    "approved_at": "2025-08-06T00:55:57.170Z"
+  },
+  {
+    "id": "pay_82",
+    "user_id": "u1",
+    "merchant": "GS25",
+    "amount": 58934,
+    "currency": "KRW",
+    "method": "account",
+    "status": "approved",
+    "approved_at": "2025-06-09T14:33:57.874Z"
+  },
+  {
+    "id": "pay_83",
+    "user_id": "u1",
+    "merchant": "네이버페이",
+    "amount": 86227,
+    "currency": "KRW",
+    "method": "account",
+    "status": "canceled",
+    "approved_at": "2025-07-02T09:56:51.533Z"
+  },
+  {
+    "id": "pay_84",
+    "user_id": "u1",
+    "merchant": "스타벅스",
+    "amount": 21215,
+    "currency": "KRW",
+    "method": "account",
+    "status": "canceled",
+    "approved_at": "2025-08-21T07:01:05.093Z"
+  },
+  {
+    "id": "pay_85",
+    "user_id": "u1",
+    "merchant": "쿠팡",
+    "amount": 12426,
+    "currency": "KRW",
+    "method": "account",
+    "status": "approved",
+    "approved_at": "2025-07-28T17:36:50.206Z"
+  },
+  {
+    "id": "pay_86",
+    "user_id": "u1",
+    "merchant": "쿠팡",
+    "amount": 5186,
+    "currency": "KRW",
+    "method": "point",
+    "status": "approved",
+    "approved_at": "2025-07-20T12:44:36.545Z"
+  },
+  {
+    "id": "pay_87",
+    "user_id": "u1",
+    "merchant": "교보문고",
+    "amount": 41865,
+    "currency": "KRW",
+    "method": "point",
+    "status": "canceled",
+    "approved_at": "2025-08-07T05:19:10.173Z"
+  },
+  {
+    "id": "pay_88",
+    "user_id": "u1",
+    "merchant": "CU",
+    "amount": 50076,
+    "currency": "KRW",
+    "method": "point",
+    "status": "approved",
+    "approved_at": "2025-08-05T07:57:53.687Z"
+  },
+  {
+    "id": "pay_89",
+    "user_id": "u1",
+    "merchant": "GS25",
+    "amount": 94955,
+    "currency": "KRW",
+    "method": "card",
+    "status": "approved",
+    "approved_at": "2025-06-19T23:49:54.126Z"
+  },
+  {
+    "id": "pay_90",
+    "user_id": "u1",
+    "merchant": "넷플릭스",
+    "amount": 54468,
+    "currency": "KRW",
+    "method": "point",
+    "status": "approved",
+    "approved_at": "2025-06-25T21:15:22.349Z"
+  },
+  {
+    "id": "pay_91",
+    "user_id": "u1",
+    "merchant": "교보문고",
+    "amount": 63721,
+    "currency": "KRW",
+    "method": "point",
+    "status": "approved",
+    "approved_at": "2025-06-17T23:24:34.263Z"
+  },
+  {
+    "id": "pay_92",
+    "user_id": "u1",
+    "merchant": "GS25",
+    "amount": 99957,
+    "currency": "KRW",
+    "method": "point",
+    "status": "approved",
+    "approved_at": "2025-07-05T09:45:09.428Z"
+  },
+  {
+    "id": "pay_93",
+    "user_id": "u1",
+    "merchant": "GS25",
+    "amount": 50735,
+    "currency": "KRW",
+    "method": "card",
+    "status": "approved",
+    "approved_at": "2025-07-11T22:20:02.893Z"
+  },
+  {
+    "id": "pay_94",
+    "user_id": "u1",
+    "merchant": "교보문고",
+    "amount": 29700,
+    "currency": "KRW",
+    "method": "account",
+    "status": "canceled",
+    "approved_at": "2025-06-10T17:44:01.387Z"
+  },
+  {
+    "id": "pay_95",
+    "user_id": "u1",
+    "merchant": "스타벅스",
+    "amount": 88615,
+    "currency": "KRW",
+    "method": "point",
+    "status": "approved",
+    "approved_at": "2025-07-19T12:06:17.992Z"
+  },
+  {
+    "id": "pay_96",
+    "user_id": "u1",
+    "merchant": "쿠팡",
+    "amount": 87599,
+    "currency": "KRW",
+    "method": "point",
+    "status": "canceled",
+    "approved_at": "2025-07-06T20:51:11.620Z"
+  },
+  {
+    "id": "pay_97",
+    "user_id": "u1",
+    "merchant": "네이버페이",
+    "amount": 96118,
+    "currency": "KRW",
+    "method": "account",
+    "status": "canceled",
+    "approved_at": "2025-06-16T20:04:28.299Z"
+  },
+  {
+    "id": "pay_98",
+    "user_id": "u1",
+    "merchant": "스타벅스",
+    "amount": 12710,
+    "currency": "KRW",
+    "method": "card",
+    "status": "approved",
+    "approved_at": "2025-07-27T20:36:48.103Z"
+  },
+  {
+    "id": "pay_99",
+    "user_id": "u1",
+    "merchant": "교보문고",
+    "amount": 73150,
+    "currency": "KRW",
+    "method": "point",
+    "status": "approved",
+    "approved_at": "2025-07-14T16:42:17.993Z"
+  },
+  {
+    "id": "pay_100",
+    "user_id": "u1",
+    "merchant": "쿠팡",
+    "amount": 60991,
+    "currency": "KRW",
+    "method": "account",
+    "status": "approved",
+    "approved_at": "2025-06-06T12:56:00.030Z"
+  },
+  {
+    "id": "pay_101",
+    "user_id": "u1",
+    "merchant": "쿠팡",
+    "amount": 72489,
+    "currency": "KRW",
+    "method": "account",
+    "status": "approved",
+    "approved_at": "2025-06-26T06:34:08.441Z"
+  },
+  {
+    "id": "pay_102",
+    "user_id": "u1",
+    "merchant": "카카오택시",
+    "amount": 57395,
+    "currency": "KRW",
+    "method": "card",
+    "status": "approved",
+    "approved_at": "2025-07-11T20:48:00.013Z"
+  },
+  {
+    "id": "pay_103",
+    "user_id": "u1",
+    "merchant": "GS25",
+    "amount": 2085,
+    "currency": "KRW",
+    "method": "point",
+    "status": "approved",
+    "approved_at": "2025-06-24T08:26:07.606Z"
+  },
+  {
+    "id": "pay_104",
+    "user_id": "u1",
+    "merchant": "GS25",
+    "amount": 65164,
+    "currency": "KRW",
+    "method": "point",
+    "status": "canceled",
+    "approved_at": "2025-08-05T09:41:27.879Z"
+  },
+  {
+    "id": "pay_105",
+    "user_id": "u1",
+    "merchant": "이마트24",
+    "amount": 7538,
+    "currency": "KRW",
+    "method": "card",
+    "status": "canceled",
+    "approved_at": "2025-08-11T20:08:40.544Z"
+  },
+  {
+    "id": "pay_106",
+    "user_id": "u1",
+    "merchant": "네이버페이",
+    "amount": 79971,
+    "currency": "KRW",
+    "method": "account",
+    "status": "approved",
+    "approved_at": "2025-08-08T01:09:01.433Z"
+  },
+  {
+    "id": "pay_107",
+    "user_id": "u1",
+    "merchant": "CU",
+    "amount": 52737,
+    "currency": "KRW",
+    "method": "account",
+    "status": "approved",
+    "approved_at": "2025-06-13T13:06:18.129Z"
+  },
+  {
+    "id": "pay_108",
+    "user_id": "u1",
+    "merchant": "카카오택시",
+    "amount": 58985,
+    "currency": "KRW",
+    "method": "point",
+    "status": "approved",
+    "approved_at": "2025-07-07T00:23:26.520Z"
+  },
+  {
+    "id": "pay_109",
+    "user_id": "u1",
+    "merchant": "넷플릭스",
+    "amount": 13348,
+    "currency": "KRW",
+    "method": "card",
+    "status": "canceled",
+    "approved_at": "2025-08-08T22:58:38.077Z"
+  },
+  {
+    "id": "pay_110",
+    "user_id": "u1",
+    "merchant": "카카오택시",
+    "amount": 45812,
+    "currency": "KRW",
+    "method": "point",
+    "status": "approved",
+    "approved_at": "2025-06-03T18:13:33.380Z"
+  },
+  {
+    "id": "pay_111",
+    "user_id": "u1",
+    "merchant": "쿠팡",
+    "amount": 12775,
+    "currency": "KRW",
+    "method": "account",
+    "status": "canceled",
+    "approved_at": "2025-07-07T09:29:00.861Z"
+  },
+  {
+    "id": "pay_112",
+    "user_id": "u1",
+    "merchant": "CU",
+    "amount": 68362,
+    "currency": "KRW",
+    "method": "point",
+    "status": "canceled",
+    "approved_at": "2025-07-14T13:19:10.614Z"
+  },
+  {
+    "id": "pay_113",
+    "user_id": "u1",
+    "merchant": "CU",
+    "amount": 48497,
+    "currency": "KRW",
+    "method": "account",
+    "status": "approved",
+    "approved_at": "2025-08-09T03:35:11.150Z"
+  },
+  {
+    "id": "pay_114",
+    "user_id": "u1",
+    "merchant": "네이버페이",
+    "amount": 89083,
+    "currency": "KRW",
+    "method": "point",
+    "status": "approved",
+    "approved_at": "2025-06-17T03:48:53.944Z"
+  },
+  {
+    "id": "pay_115",
+    "user_id": "u1",
+    "merchant": "GS25",
+    "amount": 53264,
+    "currency": "KRW",
+    "method": "account",
+    "status": "approved",
+    "approved_at": "2025-07-15T06:18:42.608Z"
+  },
+  {
+    "id": "pay_116",
+    "user_id": "u1",
+    "merchant": "교보문고",
+    "amount": 31558,
+    "currency": "KRW",
+    "method": "point",
+    "status": "canceled",
+    "approved_at": "2025-06-17T10:39:09.270Z"
+  },
+  {
+    "id": "pay_117",
+    "user_id": "u1",
+    "merchant": "카카오택시",
+    "amount": 71082,
+    "currency": "KRW",
+    "method": "account",
+    "status": "canceled",
+    "approved_at": "2025-07-20T15:39:41.259Z"
+  },
+  {
+    "id": "pay_118",
+    "user_id": "u1",
+    "merchant": "이마트24",
+    "amount": 51251,
+    "currency": "KRW",
+    "method": "point",
+    "status": "canceled",
+    "approved_at": "2025-08-21T08:00:50.647Z"
+  },
+  {
+    "id": "pay_119",
+    "user_id": "u1",
+    "merchant": "넷플릭스",
+    "amount": 43940,
+    "currency": "KRW",
+    "method": "point",
+    "status": "approved",
+    "approved_at": "2025-07-04T12:02:14.272Z"
+  },
+  {
+    "id": "pay_120",
+    "user_id": "u1",
+    "merchant": "교보문고",
+    "amount": 40674,
+    "currency": "KRW",
+    "method": "card",
+    "status": "approved",
+    "approved_at": "2025-08-29T00:48:01.705Z"
+  },
+  {
+    "id": "pay_121",
+    "user_id": "u1",
+    "merchant": "교보문고",
+    "amount": 33054,
+    "currency": "KRW",
+    "method": "point",
+    "status": "canceled",
+    "approved_at": "2025-08-20T14:21:03.242Z"
+  },
+  {
+    "id": "pay_122",
+    "user_id": "u1",
+    "merchant": "네이버페이",
+    "amount": 27432,
+    "currency": "KRW",
+    "method": "card",
+    "status": "approved",
+    "approved_at": "2025-06-13T01:32:44.316Z"
+  },
+  {
+    "id": "pay_123",
+    "user_id": "u1",
+    "merchant": "GS25",
+    "amount": 60644,
+    "currency": "KRW",
+    "method": "card",
+    "status": "canceled",
+    "approved_at": "2025-08-09T18:07:09.665Z"
+  },
+  {
+    "id": "pay_124",
+    "user_id": "u1",
+    "merchant": "네이버페이",
+    "amount": 15431,
+    "currency": "KRW",
+    "method": "card",
+    "status": "canceled",
+    "approved_at": "2025-06-01T08:00:35.416Z"
+  },
+  {
+    "id": "pay_125",
+    "user_id": "u1",
+    "merchant": "네이버페이",
+    "amount": 58837,
+    "currency": "KRW",
+    "method": "account",
+    "status": "canceled",
+    "approved_at": "2025-07-16T02:50:00.176Z"
+  },
+  {
+    "id": "pay_126",
+    "user_id": "u1",
+    "merchant": "카카오택시",
+    "amount": 77827,
+    "currency": "KRW",
+    "method": "card",
+    "status": "approved",
+    "approved_at": "2025-06-25T04:27:27.383Z"
+  },
+  {
+    "id": "pay_127",
+    "user_id": "u1",
+    "merchant": "스타벅스",
+    "amount": 98782,
+    "currency": "KRW",
+    "method": "account",
+    "status": "canceled",
+    "approved_at": "2025-07-17T05:39:41.475Z"
+  },
+  {
+    "id": "pay_128",
+    "user_id": "u1",
+    "merchant": "쿠팡",
+    "amount": 98906,
+    "currency": "KRW",
+    "method": "card",
+    "status": "canceled",
+    "approved_at": "2025-08-09T04:44:15.891Z"
+  },
+  {
+    "id": "pay_129",
+    "user_id": "u1",
+    "merchant": "이마트24",
+    "amount": 81278,
+    "currency": "KRW",
+    "method": "card",
+    "status": "canceled",
+    "approved_at": "2025-07-06T16:15:42.073Z"
+  },
+  {
+    "id": "pay_130",
+    "user_id": "u1",
+    "merchant": "이마트24",
+    "amount": 97595,
+    "currency": "KRW",
+    "method": "card",
+    "status": "approved",
+    "approved_at": "2025-07-05T14:56:00.539Z"
+  },
+  {
+    "id": "pay_131",
+    "user_id": "u1",
+    "merchant": "CU",
+    "amount": 82628,
+    "currency": "KRW",
+    "method": "point",
+    "status": "approved",
+    "approved_at": "2025-08-21T10:28:02.962Z"
+  },
+  {
+    "id": "pay_132",
+    "user_id": "u1",
+    "merchant": "GS25",
+    "amount": 7413,
+    "currency": "KRW",
+    "method": "account",
+    "status": "canceled",
+    "approved_at": "2025-06-25T07:20:02.666Z"
+  },
+  {
+    "id": "pay_133",
+    "user_id": "u1",
+    "merchant": "카카오택시",
+    "amount": 14569,
+    "currency": "KRW",
+    "method": "point",
+    "status": "canceled",
+    "approved_at": "2025-08-13T21:28:25.931Z"
+  },
+  {
+    "id": "pay_134",
+    "user_id": "u1",
+    "merchant": "배달의민족",
+    "amount": 32479,
+    "currency": "KRW",
+    "method": "card",
+    "status": "approved",
+    "approved_at": "2025-08-04T19:21:59.189Z"
+  },
+  {
+    "id": "pay_135",
+    "user_id": "u1",
+    "merchant": "스타벅스",
+    "amount": 93011,
+    "currency": "KRW",
+    "method": "card",
+    "status": "approved",
+    "approved_at": "2025-07-25T10:02:09.489Z"
+  },
+  {
+    "id": "pay_136",
+    "user_id": "u1",
+    "merchant": "이마트24",
+    "amount": 18331,
+    "currency": "KRW",
+    "method": "card",
+    "status": "canceled",
+    "approved_at": "2025-08-21T09:02:04.874Z"
+  },
+  {
+    "id": "pay_137",
+    "user_id": "u1",
+    "merchant": "교보문고",
+    "amount": 37587,
+    "currency": "KRW",
+    "method": "account",
+    "status": "canceled",
+    "approved_at": "2025-07-07T14:17:14.767Z"
+  },
+  {
+    "id": "pay_138",
+    "user_id": "u1",
+    "merchant": "배달의민족",
+    "amount": 36703,
+    "currency": "KRW",
+    "method": "account",
+    "status": "canceled",
+    "approved_at": "2025-06-10T22:04:55.285Z"
+  },
+  {
+    "id": "pay_139",
+    "user_id": "u1",
+    "merchant": "교보문고",
+    "amount": 7337,
+    "currency": "KRW",
+    "method": "card",
+    "status": "approved",
+    "approved_at": "2025-06-06T02:25:22.035Z"
+  },
+  {
+    "id": "pay_140",
+    "user_id": "u1",
+    "merchant": "카카오택시",
+    "amount": 51331,
+    "currency": "KRW",
+    "method": "card",
+    "status": "approved",
+    "approved_at": "2025-06-16T08:43:32.424Z"
+  },
+  {
+    "id": "pay_141",
+    "user_id": "u1",
+    "merchant": "CU",
+    "amount": 78072,
+    "currency": "KRW",
+    "method": "point",
+    "status": "approved",
+    "approved_at": "2025-07-29T16:11:04.357Z"
+  },
+  {
+    "id": "pay_142",
+    "user_id": "u1",
+    "merchant": "배달의민족",
+    "amount": 21866,
+    "currency": "KRW",
+    "method": "point",
+    "status": "canceled",
+    "approved_at": "2025-06-19T04:01:39.237Z"
+  },
+  {
+    "id": "pay_143",
+    "user_id": "u1",
+    "merchant": "교보문고",
+    "amount": 15136,
+    "currency": "KRW",
+    "method": "point",
+    "status": "approved",
+    "approved_at": "2025-07-12T15:26:34.766Z"
+  },
+  {
+    "id": "pay_144",
+    "user_id": "u1",
+    "merchant": "쿠팡",
+    "amount": 22816,
+    "currency": "KRW",
+    "method": "account",
+    "status": "canceled",
+    "approved_at": "2025-08-07T15:35:35.665Z"
+  },
+  {
+    "id": "pay_145",
+    "user_id": "u1",
+    "merchant": "쿠팡",
+    "amount": 10521,
+    "currency": "KRW",
+    "method": "card",
+    "status": "canceled",
+    "approved_at": "2025-08-24T16:11:04.660Z"
+  },
+  {
+    "id": "pay_146",
+    "user_id": "u1",
+    "merchant": "CU",
+    "amount": 63870,
+    "currency": "KRW",
+    "method": "account",
+    "status": "canceled",
+    "approved_at": "2025-06-03T17:13:22.760Z"
+  },
+  {
+    "id": "pay_147",
+    "user_id": "u1",
+    "merchant": "쿠팡",
+    "amount": 32315,
+    "currency": "KRW",
+    "method": "card",
+    "status": "approved",
+    "approved_at": "2025-08-19T16:01:48.471Z"
+  },
+  {
+    "id": "pay_148",
+    "user_id": "u1",
+    "merchant": "넷플릭스",
+    "amount": 57536,
+    "currency": "KRW",
+    "method": "card",
+    "status": "approved",
+    "approved_at": "2025-08-24T07:10:21.641Z"
+  },
+  {
+    "id": "pay_149",
+    "user_id": "u1",
+    "merchant": "배달의민족",
+    "amount": 75230,
+    "currency": "KRW",
+    "method": "account",
+    "status": "approved",
+    "approved_at": "2025-06-07T19:12:55.977Z"
+  },
+  {
+    "id": "pay_150",
+    "user_id": "u1",
+    "merchant": "넷플릭스",
+    "amount": 90984,
+    "currency": "KRW",
+    "method": "point",
+    "status": "approved",
+    "approved_at": "2025-06-11T10:27:04.399Z"
+  },
+  {
+    "id": "pay_151",
+    "user_id": "u1",
+    "merchant": "교보문고",
+    "amount": 12898,
+    "currency": "KRW",
+    "method": "account",
+    "status": "approved",
+    "approved_at": "2025-07-24T17:30:55.171Z"
+  },
+  {
+    "id": "pay_152",
+    "user_id": "u1",
+    "merchant": "스타벅스",
+    "amount": 90650,
+    "currency": "KRW",
+    "method": "account",
+    "status": "approved",
+    "approved_at": "2025-06-03T11:22:03.768Z"
+  },
+  {
+    "id": "pay_153",
+    "user_id": "u1",
+    "merchant": "GS25",
+    "amount": 93588,
+    "currency": "KRW",
+    "method": "point",
+    "status": "canceled",
+    "approved_at": "2025-06-12T02:12:58.174Z"
+  },
+  {
+    "id": "pay_154",
+    "user_id": "u1",
+    "merchant": "카카오택시",
+    "amount": 84765,
+    "currency": "KRW",
+    "method": "account",
+    "status": "canceled",
+    "approved_at": "2025-06-02T21:45:31.536Z"
+  },
+  {
+    "id": "pay_155",
+    "user_id": "u1",
+    "merchant": "네이버페이",
+    "amount": 10651,
+    "currency": "KRW",
+    "method": "account",
+    "status": "approved",
+    "approved_at": "2025-08-28T21:14:44.458Z"
+  },
+  {
+    "id": "pay_156",
+    "user_id": "u1",
+    "merchant": "GS25",
+    "amount": 52775,
+    "currency": "KRW",
+    "method": "point",
+    "status": "approved",
+    "approved_at": "2025-08-21T22:48:20.318Z"
+  },
+  {
+    "id": "pay_157",
+    "user_id": "u1",
+    "merchant": "넷플릭스",
+    "amount": 10416,
+    "currency": "KRW",
+    "method": "account",
+    "status": "canceled",
+    "approved_at": "2025-06-14T19:43:13.327Z"
+  },
+  {
+    "id": "pay_158",
+    "user_id": "u1",
+    "merchant": "배달의민족",
+    "amount": 80921,
+    "currency": "KRW",
+    "method": "account",
+    "status": "approved",
+    "approved_at": "2025-06-30T11:10:52.408Z"
+  },
+  {
+    "id": "pay_159",
+    "user_id": "u1",
+    "merchant": "교보문고",
+    "amount": 98234,
+    "currency": "KRW",
+    "method": "point",
+    "status": "canceled",
+    "approved_at": "2025-08-16T06:26:30.980Z"
+  },
+  {
+    "id": "pay_160",
+    "user_id": "u1",
+    "merchant": "이마트24",
+    "amount": 19253,
+    "currency": "KRW",
+    "method": "account",
+    "status": "canceled",
+    "approved_at": "2025-08-04T10:06:23.582Z"
+  },
+  {
+    "id": "pay_161",
+    "user_id": "u1",
+    "merchant": "카카오택시",
+    "amount": 49288,
+    "currency": "KRW",
+    "method": "account",
+    "status": "approved",
+    "approved_at": "2025-06-27T08:18:58.893Z"
+  },
+  {
+    "id": "pay_162",
+    "user_id": "u1",
+    "merchant": "교보문고",
+    "amount": 42800,
+    "currency": "KRW",
+    "method": "card",
+    "status": "canceled",
+    "approved_at": "2025-07-09T00:47:19.274Z"
+  },
+  {
+    "id": "pay_163",
+    "user_id": "u1",
+    "merchant": "이마트24",
+    "amount": 42822,
+    "currency": "KRW",
+    "method": "card",
+    "status": "approved",
+    "approved_at": "2025-07-23T22:03:24.537Z"
+  },
+  {
+    "id": "pay_164",
+    "user_id": "u1",
+    "merchant": "교보문고",
+    "amount": 46711,
+    "currency": "KRW",
+    "method": "card",
+    "status": "approved",
+    "approved_at": "2025-07-07T16:57:01.415Z"
+  },
+  {
+    "id": "pay_165",
+    "user_id": "u1",
+    "merchant": "교보문고",
+    "amount": 67007,
+    "currency": "KRW",
+    "method": "account",
+    "status": "canceled",
+    "approved_at": "2025-08-03T01:08:04.021Z"
+  },
+  {
+    "id": "pay_166",
+    "user_id": "u1",
+    "merchant": "이마트24",
+    "amount": 62275,
+    "currency": "KRW",
+    "method": "card",
+    "status": "approved",
+    "approved_at": "2025-06-26T15:57:13.320Z"
+  },
+  {
+    "id": "pay_167",
+    "user_id": "u1",
+    "merchant": "쿠팡",
+    "amount": 71738,
+    "currency": "KRW",
+    "method": "card",
+    "status": "approved",
+    "approved_at": "2025-08-12T05:44:35.954Z"
+  },
+  {
+    "id": "pay_168",
+    "user_id": "u1",
+    "merchant": "배달의민족",
+    "amount": 44783,
+    "currency": "KRW",
+    "method": "card",
+    "status": "canceled",
+    "approved_at": "2025-07-27T16:23:43.754Z"
+  },
+  {
+    "id": "pay_169",
+    "user_id": "u1",
+    "merchant": "GS25",
+    "amount": 76013,
+    "currency": "KRW",
+    "method": "point",
+    "status": "approved",
+    "approved_at": "2025-06-10T15:09:54.559Z"
+  },
+  {
+    "id": "pay_170",
+    "user_id": "u1",
+    "merchant": "스타벅스",
+    "amount": 24879,
+    "currency": "KRW",
+    "method": "account",
+    "status": "approved",
+    "approved_at": "2025-08-09T07:15:56.160Z"
+  },
+  {
+    "id": "pay_171",
+    "user_id": "u1",
+    "merchant": "스타벅스",
+    "amount": 28254,
+    "currency": "KRW",
+    "method": "point",
+    "status": "canceled",
+    "approved_at": "2025-07-02T11:06:25.291Z"
+  },
+  {
+    "id": "pay_172",
+    "user_id": "u1",
+    "merchant": "스타벅스",
+    "amount": 9237,
+    "currency": "KRW",
+    "method": "card",
+    "status": "canceled",
+    "approved_at": "2025-06-04T11:13:58.134Z"
+  },
+  {
+    "id": "pay_173",
+    "user_id": "u1",
+    "merchant": "배달의민족",
+    "amount": 10139,
+    "currency": "KRW",
+    "method": "card",
+    "status": "approved",
+    "approved_at": "2025-06-29T12:28:27.544Z"
+  },
+  {
+    "id": "pay_174",
+    "user_id": "u1",
+    "merchant": "GS25",
+    "amount": 71574,
+    "currency": "KRW",
+    "method": "account",
+    "status": "canceled",
+    "approved_at": "2025-08-17T18:28:26.090Z"
+  },
+  {
+    "id": "pay_175",
+    "user_id": "u1",
+    "merchant": "교보문고",
+    "amount": 3215,
+    "currency": "KRW",
+    "method": "card",
+    "status": "approved",
+    "approved_at": "2025-07-25T19:49:54.220Z"
+  },
+  {
+    "id": "pay_176",
+    "user_id": "u1",
+    "merchant": "네이버페이",
+    "amount": 85939,
+    "currency": "KRW",
+    "method": "account",
+    "status": "canceled",
+    "approved_at": "2025-07-18T12:45:52.645Z"
+  },
+  {
+    "id": "pay_177",
+    "user_id": "u1",
+    "merchant": "넷플릭스",
+    "amount": 23355,
+    "currency": "KRW",
+    "method": "point",
+    "status": "canceled",
+    "approved_at": "2025-06-11T22:53:46.286Z"
+  },
+  {
+    "id": "pay_178",
+    "user_id": "u1",
+    "merchant": "CU",
+    "amount": 19696,
+    "currency": "KRW",
+    "method": "account",
+    "status": "approved",
+    "approved_at": "2025-06-22T19:53:16.730Z"
+  },
+  {
+    "id": "pay_179",
+    "user_id": "u1",
+    "merchant": "네이버페이",
+    "amount": 58577,
+    "currency": "KRW",
+    "method": "account",
+    "status": "approved",
+    "approved_at": "2025-08-17T07:52:17.474Z"
+  },
+  {
+    "id": "pay_180",
+    "user_id": "u1",
+    "merchant": "이마트24",
+    "amount": 41274,
+    "currency": "KRW",
+    "method": "account",
+    "status": "approved",
+    "approved_at": "2025-07-19T04:32:33.097Z"
+  },
+  {
+    "id": "pay_181",
+    "user_id": "u1",
+    "merchant": "GS25",
+    "amount": 70745,
+    "currency": "KRW",
+    "method": "card",
+    "status": "approved",
+    "approved_at": "2025-08-14T03:01:50.427Z"
+  },
+  {
+    "id": "pay_182",
+    "user_id": "u1",
+    "merchant": "교보문고",
+    "amount": 57321,
+    "currency": "KRW",
+    "method": "point",
+    "status": "canceled",
+    "approved_at": "2025-08-28T21:30:39.449Z"
+  },
+  {
+    "id": "pay_183",
+    "user_id": "u1",
+    "merchant": "CU",
+    "amount": 5498,
+    "currency": "KRW",
+    "method": "account",
+    "status": "approved",
+    "approved_at": "2025-07-26T21:29:16.526Z"
+  },
+  {
+    "id": "pay_184",
+    "user_id": "u1",
+    "merchant": "쿠팡",
+    "amount": 78230,
+    "currency": "KRW",
+    "method": "point",
+    "status": "approved",
+    "approved_at": "2025-06-14T10:50:14.931Z"
+  },
+  {
+    "id": "pay_185",
+    "user_id": "u1",
+    "merchant": "스타벅스",
+    "amount": 79842,
+    "currency": "KRW",
+    "method": "account",
+    "status": "approved",
+    "approved_at": "2025-07-30T05:59:07.562Z"
+  },
+  {
+    "id": "pay_186",
+    "user_id": "u1",
+    "merchant": "CU",
+    "amount": 87117,
+    "currency": "KRW",
+    "method": "account",
+    "status": "approved",
+    "approved_at": "2025-08-10T22:32:51.007Z"
+  },
+  {
+    "id": "pay_187",
+    "user_id": "u1",
+    "merchant": "CU",
+    "amount": 62954,
+    "currency": "KRW",
+    "method": "point",
+    "status": "approved",
+    "approved_at": "2025-06-15T06:28:13.929Z"
+  },
+  {
+    "id": "pay_188",
+    "user_id": "u1",
+    "merchant": "네이버페이",
+    "amount": 64500,
+    "currency": "KRW",
+    "method": "account",
+    "status": "approved",
+    "approved_at": "2025-07-10T03:07:16.973Z"
+  },
+  {
+    "id": "pay_189",
+    "user_id": "u1",
+    "merchant": "네이버페이",
+    "amount": 62270,
+    "currency": "KRW",
+    "method": "card",
+    "status": "approved",
+    "approved_at": "2025-07-25T22:50:34.144Z"
+  },
+  {
+    "id": "pay_190",
+    "user_id": "u1",
+    "merchant": "배달의민족",
+    "amount": 36726,
+    "currency": "KRW",
+    "method": "account",
+    "status": "canceled",
+    "approved_at": "2025-07-14T13:04:59.952Z"
+  },
+  {
+    "id": "pay_191",
+    "user_id": "u1",
+    "merchant": "GS25",
+    "amount": 48065,
+    "currency": "KRW",
+    "method": "account",
+    "status": "canceled",
+    "approved_at": "2025-07-23T19:40:42.632Z"
+  },
+  {
+    "id": "pay_192",
+    "user_id": "u1",
+    "merchant": "넷플릭스",
+    "amount": 94333,
+    "currency": "KRW",
+    "method": "card",
+    "status": "approved",
+    "approved_at": "2025-08-28T03:17:36.110Z"
+  },
+  {
+    "id": "pay_193",
+    "user_id": "u1",
+    "merchant": "배달의민족",
+    "amount": 84880,
+    "currency": "KRW",
+    "method": "account",
+    "status": "approved",
+    "approved_at": "2025-07-01T12:10:30.217Z"
+  },
+  {
+    "id": "pay_194",
+    "user_id": "u1",
+    "merchant": "GS25",
+    "amount": 67259,
+    "currency": "KRW",
+    "method": "point",
+    "status": "approved",
+    "approved_at": "2025-07-31T13:57:09.115Z"
+  },
+  {
+    "id": "pay_195",
+    "user_id": "u1",
+    "merchant": "쿠팡",
+    "amount": 51931,
+    "currency": "KRW",
+    "method": "account",
+    "status": "canceled",
+    "approved_at": "2025-06-13T17:59:01.775Z"
+  },
+  {
+    "id": "pay_196",
+    "user_id": "u1",
+    "merchant": "GS25",
+    "amount": 46063,
+    "currency": "KRW",
+    "method": "card",
+    "status": "canceled",
+    "approved_at": "2025-07-17T11:53:20.509Z"
+  },
+  {
+    "id": "pay_197",
+    "user_id": "u1",
+    "merchant": "GS25",
+    "amount": 7783,
+    "currency": "KRW",
+    "method": "account",
+    "status": "canceled",
+    "approved_at": "2025-06-08T11:13:38.568Z"
+  },
+  {
+    "id": "pay_198",
+    "user_id": "u1",
+    "merchant": "교보문고",
+    "amount": 18767,
+    "currency": "KRW",
+    "method": "point",
+    "status": "canceled",
+    "approved_at": "2025-08-28T09:50:03.408Z"
+  },
+  {
+    "id": "pay_199",
+    "user_id": "u1",
+    "merchant": "CU",
+    "amount": 85077,
+    "currency": "KRW",
+    "method": "card",
+    "status": "approved",
+    "approved_at": "2025-08-26T18:06:11.850Z"
+  },
+  {
+    "id": "pay_200",
+    "user_id": "u1",
+    "merchant": "교보문고",
+    "amount": 29870,
+    "currency": "KRW",
+    "method": "point",
+    "status": "canceled",
+    "approved_at": "2025-06-26T05:29:57.160Z"
+  }
+]

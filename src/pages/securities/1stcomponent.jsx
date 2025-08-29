@@ -1,11 +1,15 @@
 import { useRef } from "react";
 import { Link } from "react-router-dom";
 import styles from "../../css/securities/1stcomponent.module.css";
+import { exchangemoney } from "../../store/exchangemoney";
 
 import light from "./img/right.jpg";
 
 export default function FirstComponent() {
   const reloadedAtRef = useRef(new Date());
+  const { mvKRW, mvUSD } = exchangemoney();
+
+
   const reloadedAt = new Intl.DateTimeFormat("ko-KR", {
     hour: "2-digit",
     minute: "2-digit",
@@ -28,12 +32,12 @@ export default function FirstComponent() {
           <div className={styles.woncontainer}>
             <Link to="/" alt="won" className={styles.won} />
             원화
-            <span>{}원</span>
+            <span>{(mvKRW ?? 0).toLocaleString()}원</span>
           </div>
           <div className={styles.dolcontainer}>
             <Link to="/" alt="bol" className={styles.bol} />
             달러
-            <span>${}</span>
+            <span>${(mvUSD ?? 0).toLocaleString()}</span>
           </div>
         </div>
       </div>

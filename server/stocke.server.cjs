@@ -54,6 +54,43 @@ wss.on("connection", (ws, req) => {
   ws.on("close", () => { if (timer) clearInterval(timer); });
 });
 
+const fetch = (...a) => import("node-fetch").then(({default: f}) => f(...a));
+
+
+app.get("/api/dividends", async (req, res) => {
+  try {
+    const codes = String(req.query.codes||"").split(",").filter(Boolean);
+    if (!codes.length) return res.json({});
+    // ① KIS 토큰 가져오기(네 환경에 맞게 구현)
+    const accessToken = process.env.KIS_ACCESS_TOKEN; // 또는 캐시된 토큰
+    // ② 코드별로 KIS 재무/비율 API 호출 → DPS/배당수익률 추출
+    const out = {};
+    for (const code of codes) {
+      // 아래는 “의사 코드”. 실제 KIS 엔드포인트와 필드명은 문서대로 매핑해라.
+      // (예: [국내주식] 재무비율/기타주요비율 or 주식기본조회에 DPS, 배당수익률 제공)
+      const r = await fetch("https://openapi.koreainvestment.com:9443/...", {
+        method: "GET",
+        headers: {
+          "authorization": `Bearer ${accessToken}`,
+          "appkey": process.env.KIS_APPKEY,
+          "appsecret": process.env.KIS_APPSECRET,
+          "tr_id": "...",           // KIS 문서 기준
+        }
+      });
+      const j = await r.json();
+      // 문서의 필드명에 맞춰 파싱
+      const dps   = Number(j?.output?.dps ?? j?.output?.DVD_PTS ?? 0);       // 주당배당금
+      const divYield = Number(j?.output?.div_yield ?? j?.output?.DVD_YIELD ?? 0); // 배당수익률(%)
+      const ex    = j?.output?.ex_div_date || null;  // 배당락일(있으면)
+      const pay   = j?.output?.pay_date   || null;   // 지급일(있으면)
+      out[code] = { dps, yield:divYield, exDate: ex, payDate: pay };
+    }
+    res.json(out);
+  } catch (e) {
+    res.status(500).json({ error: String(e) });
+  }
+});
+
 server.listen(process.env.PORT || 8080, () => {
   console.log("HTTP/WS :", process.env.PORT || 8080);
 });

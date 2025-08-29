@@ -25,6 +25,9 @@ export default function Home() {
   const [appLoading, setAppLoading] = useState(true);
   const [dataLoading, setDataLoading] = useState(true);
 
+  // ✅ 결제 내역 상태 추가
+  const [payments, setPayments] = useState([]);
+
   // Step 1: App-level loading (logo animation)
   useEffect(() => {
     const alreadyLoaded = sessionStorage.getItem("appLoaded");
@@ -41,20 +44,30 @@ export default function Home() {
     return () => clearTimeout(logoTimer);
   }, []);
 
-  // Step 2: Skeleton loading
+  // Step 2: Skeleton loading + 데이터 fetch
   useEffect(() => {
     const getMockDelay = () => Math.random() * 1500 + 500;
 
     if (!appLoading) {
-      const dataTimer = setTimeout(() => {
-        setAccount(120000, "김기윤");
-        setDataLoading(false);
-      }, getMockDelay()); // 2초 스켈레톤 로딩
-      return () => clearTimeout(dataTimer);
+      const fetchPayments = async () => {
+        try {
+          const res = await fetch("http://localhost:4000/api/payments");
+          const data = await res.json();
+          setPayments(data);              // ✅ 이제 정상 작동
+          setAccount(120000, "김기윤");
+          setDataLoading(false);
+        } catch (err) {
+          console.error("결제 데이터 불러오기 실패:", err);
+        }
+      };
+
+      const timer = setTimeout(fetchPayments, getMockDelay());
+      return () => clearTimeout(timer);
     }
   }, [appLoading, setAccount]);
 
   if (appLoading) return <Loading />;
+
 
   return (
     <div className={styles.background}>
@@ -89,9 +102,9 @@ export default function Home() {
       </div>
 
       <div className={styles.components}>
-        <FirstComponents />
+        <FirstComponents payments={payments} />
         <TwoThComponent />
-        <ThreeThComponent />
+        <ThreeThComponent payments={payments} />
         <FourthComponent />
 
         <div className={styles.text}>{owner}님을 위해 준비했어요</div>

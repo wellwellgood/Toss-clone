@@ -12,8 +12,8 @@ export default function FirstComponent() {
         <div className={styles.container1st}>
             <div className={styles.text}>
                 <div className={styles.textspan}>
-                    <span className="text-xm font-medium text-gray-600">받을수 있는 혜택 1개</span>
-                    <span className="text-xm text-black-500 font-semibold">만보기 복권</span>
+                    <span className={styles.sub}>받을 수 있는 혜택 1개</span>
+                    <span className={styles.main}>만보기 복권</span>
                 </div>
                 <img src={shoe} alt="" />
             </div>
