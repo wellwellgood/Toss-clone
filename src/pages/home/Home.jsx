@@ -1,4 +1,5 @@
-import { useState, useEffect, use } from "react";
+// src/pages/Home/Home.jsx
+import { useState, useEffect } from "react";
 import { useAccountStore } from "../../store/accountStore";
 import styles from "../../css/home/Home.module.css";
 import { Link, NavLink } from "react-router-dom";
@@ -25,7 +26,7 @@ export default function Home() {
   const [appLoading, setAppLoading] = useState(true);
   const [dataLoading, setDataLoading] = useState(true);
 
-  // ✅ 결제 내역 상태 추가
+  // ✅ 결제 내역 상태
   const [payments, setPayments] = useState([]);
 
   // Step 1: App-level loading (logo animation)
@@ -35,39 +36,54 @@ export default function Home() {
       setAppLoading(false);
       return;
     }
-
     const logoTimer = setTimeout(() => {
       setAppLoading(false);
       sessionStorage.setItem("appLoaded", "true");
     }, 2000);
-
     return () => clearTimeout(logoTimer);
   }, []);
 
   // Step 2: Skeleton loading + 데이터 fetch
   useEffect(() => {
+    if (appLoading) return;
+
+    const BASE = import.meta.env.VITE_API_BASE || '';
+    const now = new Date();
+    const ym = `${now.getUTCFullYear()}-${String(now.getUTCMonth()+1).padStart(2,'0')}`;
+    const endpoint = `${BASE}/api/payments`;
+    const cardEndpoint = `${BASE}/api/payments/card`;
+
     const getMockDelay = () => Math.random() * 1500 + 500;
+    const controller = new AbortController();
+    let cancelled = false;
 
-    if (!appLoading) {
-      const fetchPayments = async () => {
-        try {
-          const res = await fetch(`${import.meta.env.VITE_API_BASE}/api/payments`)
-          const data = await res.json();
-          setPayments(data);              // ✅ 이제 정상 작동
-          setAccount(120000, "김기윤");
-          setDataLoading(false);
-        } catch (err) {
-          console.error("[payments] fetch failed:", e, import.meta.env.VITE_API_BASE)
-        }
-      };
+    const fetchPayments = async () => {
+      try {
+        const res = await fetch(endpoint, {
+          signal: controller.signal,
+        });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+        if (cancelled) return;
+        setPayments(Array.isArray(data) ? data : []);
+        setAccount(120000, "김기윤");
+      } catch (err) {
+        if (cancelled) return;
+        console.error("[payments] fetch failed:", err, endpoint);
+      } finally {
+        if (!cancelled) setDataLoading(false);
+      }
+    };
 
-      const timer = setTimeout(fetchPayments, getMockDelay());
-      return () => clearTimeout(timer);
-    }
+    const timer = setTimeout(fetchPayments, getMockDelay());
+    return () => {
+      cancelled = true;
+      controller.abort();
+      clearTimeout(timer);
+    };
   }, [appLoading, setAccount]);
 
   if (appLoading) return <Loading />;
-
 
   return (
     <div className={styles.background}>

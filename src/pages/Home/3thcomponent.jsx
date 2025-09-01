@@ -1,46 +1,41 @@
-import { useState, useEffect } from "react";
+// src/pages/Home/3thcomponent.jsx
 import { Link } from "react-router-dom";
 import styles from "../../css/home/3th.module.css";
 import { month, day } from "../../store/dateStore";
-
 import Won from "../../img/Won.png";
 import Card from "../../img/card.jpg";
 
-export default function ThirdComponent() {
-  const [allPayments, setAllPayments] = useState([]);
-  const [cardPayments, setCardPayments] = useState([]);
+export default function ThirdComponent({ payments = [] }) {
+  const list = Array.isArray(payments) ? payments : [];
 
-  useEffect(() => {
-    const load = async () => {
-      const res = await fetch(`${import.meta.env.VITE_API_BASE}/api/payments`)
-      const data = await res.json();
-      setAllPayments(data);
-    };
-    load();
-  }, []);
+  const fmtKRW = (n) => (Number.isFinite(n) ? n.toLocaleString("ko-KR") : "0");
 
-  // 카드 결제만 불러오기
-  useEffect(() => {
-    const load = async () => {
-      try {
-        const res = await fetch("http://localhost:4000/api/payments/card");
-        if (!res.ok) {
-          setCardPayments([]);
-          return;
-        }
-        const data = await res.json();
-        setCardPayments(Array.isArray(data) ? data : []);
-      } catch {
-        setCardPayments([]);
-      }
-    };
-    load();
-  }, []);
+  const isApproved = (p) =>
+    p?.status === "approved" && Number.isFinite(Number(p?.amount));
+  const inThisMonth = (p) => {
+    const raw = p?.approved_at ?? p?.created_at ?? p?.time;
+    const d = new Date(raw);
+    if (Number.isNaN(d)) return false;
+    const now = new Date();
+    return (
+      d.getUTCFullYear() === now.getUTCFullYear() &&
+      d.getUTCMonth() === now.getUTCMonth()
+    );
+  };
 
-  const total = allPayments.reduce((sum, p) => sum + p.amount, 0);
-  const cardTotal = cardPayments.reduce((s, p) => s + p.amount, 0);
+  const monthTotal = list.reduce(
+    (s, p) => s + (isApproved(p) && inThisMonth(p) ? Number(p.amount) : 0),
+    0
+  );
 
-  // const {month, day} = dateAccount();
+  const cardTotal = list.reduce(
+    (s, p) =>
+      s +
+      (isApproved(p) && inThisMonth(p) && p.method === "card"
+        ? Number(p.amount)
+        : 0),
+    0
+  );
 
   return (
     <div className={styles.container}>
@@ -51,24 +46,21 @@ export default function ThirdComponent() {
               <img src={Won} alt="" />
             </div>
             <div className={styles.month1}>
-              <div className={styles.monthmoney}>
-                {total.toLocaleString()}원
-              </div>
+              <div className={styles.monthmoney}>{fmtKRW(monthTotal)}원</div>
               <span className={styles.span}>{month}월달에 쓴 돈</span>
             </div>
           </div>
-          <Link to="/" className={styles.firstbtn}>
-            <button className="sendbtn">내역</button>
-          </Link>
+          <button className={styles.sendbtn}>내역</button>
         </div>
       </Link>
+
       <Link to="/" className={styles.usemonthmoney}>
         <div className={styles.cardprice}>
           <div className={styles.img2}>
             <img src={Card} alt="" />
           </div>
           <div className={styles.month1}>
-            <div className={styles.monthmoney}>{cardTotal.toLocaleString()}원</div>
+            <div className={styles.monthmoney}>{fmtKRW(cardTotal)}원</div>
             <span className={styles.span}>
               {month}월{day}일에 낼 카드값
             </span>
