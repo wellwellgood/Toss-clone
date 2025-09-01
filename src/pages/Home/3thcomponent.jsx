@@ -12,7 +12,7 @@ export default function ThirdComponent() {
 
   useEffect(() => {
     const load = async () => {
-      const res = await fetch("http://localhost:4000/api/payments");
+      const res = await fetch(`${import.meta.env.VITE_API_BASE}/api/payments`)
       const data = await res.json();
       setAllPayments(data);
     };
