@@ -59,7 +59,7 @@
 ## Architecture
 
 - **Front**: React 18, Router, Zustand, Framer Motion, Vite  
-- **Back**: Node/Express, `ws`, PostgreSQL(Neon), Firebase Admin, Cloudflare R2  
+- **Back**: Node/Express, `ws` , render 
 - **Flow**: REST(거래/파일 메타) + WS(`/ws`) → Zustand → 미니 차트 렌더
 
 ## 📡 API 연동
@@ -69,7 +69,8 @@
 - **사용 목적**: 실시간 주가 조회, 종목 정보 가져오기
 - **환경 변수 (.env)**
 
+## ♣ 참고사항
 
-#### 1. 홈 페이지의 결제금액은 MOCk데이터를 사용하였습니다.
-#### 2. 증권 페이지의 주가 정보 및 포트폴리오는 KIS의 API를 사용하여 실시간 데이터 및 종목정보를 가져와 사용하였습니다.또한 가독성 및 API의 원활한 사용을 위하여 chatGPT의 도움을 받아 제작하였습니다.
+#### 1. 홈 페이지의 결제금액은 MOCK데이터를 사용하였 나타냈습니다.
+#### 2. 증권 페이지의 주가 정보 및 포트폴리오는 KIS의 API를 사용하여 실시간 데이터 및 종목정보를 가져와 사용하였습니다.또한 가독성 및 API의 원활한 사용 및 통신을 위하여 chatGPT의 도움을 받아 제작하였습니다.
 #### 3. 각 css들은 각각 수정에 용이하기 위해 중복되는 요소들이 많음을 알려드립니다.
