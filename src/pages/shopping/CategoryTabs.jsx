@@ -71,6 +71,7 @@ export default function CategoryTabs({ labels, activeIndex, onChange }) {
         touchAction: "none",
         cursor: "grab",
         background: "#fff",
+        scrollbehavior: "smooth",
       }}
     >
       {/* 탭들 */}
