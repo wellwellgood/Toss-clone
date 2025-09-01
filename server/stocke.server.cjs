@@ -6,7 +6,10 @@ const cors = require('cors');
 
 const app = express();
 app.disable('x-powered-by');
-app.use(cors());
+app.use(cors({
+  origin: ['http://localhost:5173','https://tossclone.netlify.app'],
+  credentials: true
+}));
 app.use(express.json());
 
 // ---- payments 라우터 로드(경로 유연 처리) ----

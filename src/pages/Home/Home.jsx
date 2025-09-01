@@ -51,13 +51,13 @@ export default function Home() {
     if (!appLoading) {
       const fetchPayments = async () => {
         try {
-          const res = await fetch("http://localhost:4000/api/payments");
+          const res = await fetch(`${import.meta.env.VITE_API_BASE}/api/payments`)
           const data = await res.json();
           setPayments(data);              // ✅ 이제 정상 작동
           setAccount(120000, "김기윤");
           setDataLoading(false);
         } catch (err) {
-          console.error("결제 데이터 불러오기 실패:", err);
+          console.error("[payments] fetch failed:", e, import.meta.env.VITE_API_BASE)
         }
       };
 
