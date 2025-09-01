@@ -5,7 +5,7 @@ const http = require('http');
 const express = require('express');
 const cors = require('cors');
 const { WebSocketServer } = require('ws');
-const mountPayments = require('./payments.routes.cjs');
+const paymentsRoutes  = require('./payments.routes.cjs');
 
 const APP_PORT = Number(process.env.PORT) || 8080;
 const WS_PATH = process.env.WS_PATH || '/ws';
@@ -16,13 +16,15 @@ const app = express();
 app.disable('x-powered-by');
 app.use(cors());
 app.use(express.json());
-mountPayments(app); 
+paymentsRoutes (app); 
+app.use(require('cors')());
+app.use('/api', paymentsRoutes);
 
 // 헬스체크
 app.get('/', (_, res) => res.status(200).send('ok'));
 
 // 결제 Mock API 라우트 장착
-mountPayments(app);
+paymentsRoutes (app);
 
 // --- HTTP + WS 서버
 const server = http.createServer(app);
@@ -75,6 +77,11 @@ function startMockTicks() {
 }
 
 if (MOCK_TICKS) startMockTicks();
+
+if (typeof paymentsRoutes !== 'function') {
+  console.error('paymentsRoutes type =', typeof paymentsRoutes);
+  process.exit(1);
+}
 
 // 종료 처리
 function shutdown(sig) {
