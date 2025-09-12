@@ -75,7 +75,8 @@
   position: relative;
   /* 서브탭은 30px 위로 */
   bottom: var(--raised-offset);
-  border: 1px solid #000;
+  /* border: 1px solid #000; */
+  box-shadow: 0 0 20px  5px rgba(0, 0, 0, 0.1);
   border-radius: 50px;
   opacity: 1;
   pointer-events: auto;
@@ -129,6 +130,7 @@
   width: calc(100% / 5);
   text-align: center;
   color: #8e9092;
+  height: var(--tab-size);
 }
 
 .btncontainer nav a {

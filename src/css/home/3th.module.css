@@ -34,7 +34,7 @@
     align-items: center;
     justify-content: flex-start;
     flex-direction: row;
-    gap: 10px;
+    gap: 12px;
 }
 .img{
     position: relative;
@@ -73,7 +73,7 @@
 .month1 .span{
     font-size: 12px;
 }
-button{
+.month1 button{
     width: 70px;
     height: 40px;
     background: #ebebeb;
@@ -122,4 +122,12 @@ button{
 .month1 .span{
     font-size: 10px;
     color: #c1c1c1;
+}
+.sendbtn{
+    width: 70px;
+    height: 40px;
+    background: #ebebeb;
+    text-align: center;
+    line-height: 40px;
+    color: #111;
 }
