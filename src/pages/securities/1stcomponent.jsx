@@ -1,3 +1,4 @@
+import React from "react";
 import { useRef } from "react";
 import { Link } from "react-router-dom";
 import styles from "../../css/securities/1stcomponent.module.css";

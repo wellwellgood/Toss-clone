@@ -1,3 +1,4 @@
+import React from "react";
 import { useState, useEffect } from "react";
 import { Dot } from "lucide-react";
 import styles from "../../css/home/firstcomponent.module.css";

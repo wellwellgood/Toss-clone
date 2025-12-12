@@ -48,6 +48,7 @@ body {
   flex-direction: row;
   width: 100%;
   gap: 5px;
+  margin-top: 80px;
 }
 
 .brandRow {

@@ -1,3 +1,4 @@
+import React from "react";
 import styles from "../../css/securities/portfolioToolbar.module.css";
 
 export default function PortfolioToolbar({

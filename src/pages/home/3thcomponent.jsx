@@ -1,4 +1,5 @@
 // src/pages/Home/3thcomponent.jsx
+import React from "react";
 import { Link } from "react-router-dom";
 import styles from "../../css/home/3th.module.css";
 import { month, day } from "../../store/dateStore";

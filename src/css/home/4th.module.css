@@ -55,11 +55,13 @@
 .check{
     font-size: 14px;
     line-height: 20px;
+    width: 70px;
     height: 40px;
     background: #ebebeb;
     text-align: center;
     font-family: 'apple sd gothic neo';
     font-weight: 500;
+    border-radius: 10px;
 }
 .buttonContainer{
     display: flex;

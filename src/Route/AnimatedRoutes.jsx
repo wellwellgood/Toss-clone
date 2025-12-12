@@ -1,4 +1,5 @@
 // Route/AnimatedRoutes.jsx — 최종본 (현재 화면 기준 좌/우 분리)
+import React from "react";
 import {
   Routes,
   Route,

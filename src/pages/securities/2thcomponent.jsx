@@ -1,4 +1,5 @@
 // src/components/securities/2thcomponent.jsx
+import React from "react";
 import { useMemo, useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import styles from "../../css/securities/2thcomponent.module.css";

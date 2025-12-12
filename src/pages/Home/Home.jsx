@@ -1,4 +1,5 @@
 // src/pages/Home/Home.jsx
+import React from "react";
 import { useState, useEffect } from "react";
 import { useAccountStore } from "../../store/accountStore";
 import styles from "../../css/home/Home.module.css";
@@ -47,9 +48,11 @@ export default function Home() {
   useEffect(() => {
     if (appLoading) return;
 
-    const BASE = import.meta.env.VITE_API_BASE || '';
+    const BASE = import.meta.env.VITE_API_BASE || "";
     const now = new Date();
-    const ym = `${now.getUTCFullYear()}-${String(now.getUTCMonth()+1).padStart(2,'0')}`;
+    const ym = `${now.getUTCFullYear()}-${String(
+      now.getUTCMonth() + 1
+    ).padStart(2, "0")}`;
     const endpoint = `${BASE}/api/payments`;
     const cardEndpoint = `${BASE}/api/payments/card`;
 

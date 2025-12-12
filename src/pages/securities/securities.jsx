@@ -1,3 +1,4 @@
+import React from "react";
 import { useEffect, useMemo, useRef, useState, useLayoutEffect } from "react";
 import styles from "../../css/securities/securities.module.css";
 
